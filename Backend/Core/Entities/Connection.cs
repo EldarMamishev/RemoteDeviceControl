@@ -7,6 +7,6 @@ namespace Core.Entities
 {
     public class Connection : IBaseEntity
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
     }
 }

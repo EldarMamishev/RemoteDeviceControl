@@ -7,6 +7,6 @@ namespace Core.Entities
 {
     public class Location : IBaseEntity
     {
-        public long Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

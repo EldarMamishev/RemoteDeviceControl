@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Core.Entities.Users;
+using Core.Entities.ApplicationIdentity;
 using WebApi.Model.Auth;
 
 namespace WebApi.ModelMapping

@@ -1,12 +1,13 @@
 ﻿using Core.Entities.Base;
+using Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Entities.Users
+namespace Core.Entities
 {
-    public class Device : IdentityUser<long>, IBaseEntity
+    public class Device : ApplicationUser
     {
         public string NoSQLDeviceId { get; set; }
 

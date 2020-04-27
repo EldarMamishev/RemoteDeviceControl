@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Users.Access
+﻿namespace Core.Entities.ApplicationIdentity.Access
 {
     public enum Actions
     {

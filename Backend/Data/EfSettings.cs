@@ -1,5 +1,5 @@
-﻿using Core.Entities.Users;
-using Core.Entities.Users.Access;
+﻿using Core.Entities.ApplicationIdentity;
+using Core.Entities.ApplicationIdentity.Access;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

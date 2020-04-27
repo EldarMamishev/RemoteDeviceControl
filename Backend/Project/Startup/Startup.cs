@@ -1,7 +1,8 @@
 using System.Text;
 using AutoMapper;
-using Core.Entities.Users;
-using Core.Entities.Users.Access;
+using Core.Entities.Identity;
+using Core.Entities.ApplicationIdentity;
+using Core.Entities.ApplicationIdentity.Access;
 using Data;
 using Data.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -64,7 +65,7 @@ namespace WebApi.Startup
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
