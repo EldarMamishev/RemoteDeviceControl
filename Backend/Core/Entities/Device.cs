@@ -9,7 +9,11 @@ namespace Core.Entities
 {
     public class Device : ApplicationUser
     {
-        public string NoSQLDeviceId { get; set; }
-
+        public string Name { get; set; }
+        public string MongoDeviceId { get; set; }
+        public string MongoAccessDefinitionsId { get; set; }
+        public virtual Location Location { get; set; }
+        public int? LocationId { get; set; }
+        public virtual ICollection<LogEntity> Logs { get; set; }
     }
 }

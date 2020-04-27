@@ -7,6 +7,8 @@ namespace Core.Entities
 {
     public class Location : IBaseEntity
     {
-        public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int Id { get; set; }
+        public string MongoLocationId { get; set; }
+        public virtual ICollection<Device> Devices { get; set; }
     }
 }

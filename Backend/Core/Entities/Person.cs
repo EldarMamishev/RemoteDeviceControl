@@ -16,5 +16,7 @@ namespace Core.Entities
         public DateTime Birthday { get; set; }
 
         public Gender Gender { get; set; }
+
+        public virtual ICollection<PersonalDevice> PersonalDevices { get; set; }
     }
 }
