@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.Entities.Base;
-using Core.Entities.Identity;
+using Core.Entities.ApplicationIdentity;
 using Core.Enums;
 using Microsoft.AspNetCore.Identity;
 

@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Core.Entities.Identity
+namespace Core.Entities.ApplicationIdentity
 {
     [Table("AspNetUsers")]
     public class ApplicationUser : IdentityUser<int>, IBaseEntity

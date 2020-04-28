@@ -1,6 +1,5 @@
 using System.Text;
 using AutoMapper;
-using Core.Entities.Identity;
 using Core.Entities.ApplicationIdentity;
 using Core.Entities.ApplicationIdentity.Access;
 using Data;

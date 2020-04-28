@@ -1,5 +1,5 @@
 ﻿using Core.Entities.Base;
-using Core.Entities.Identity;
+using Core.Entities.ApplicationIdentity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
