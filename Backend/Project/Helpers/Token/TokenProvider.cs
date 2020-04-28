@@ -9,7 +9,7 @@ namespace WebApi.Helpers.Token
 {
     public class TokenProvider : ITokenProvider
     {
-        public string MakeToken(IdentityUser<long> user, TokenConfiguration configuration)
+        public string MakeToken(IdentityUser<int> user, TokenConfiguration configuration)
         {
             var utcNow = DateTime.UtcNow;
 

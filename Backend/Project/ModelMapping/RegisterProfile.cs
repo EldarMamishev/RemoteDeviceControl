@@ -8,7 +8,7 @@ namespace WebApi.ModelMapping
     {
         public RegisterProfile()
         {
-            CreateMap<Register, User>()
+            CreateMap<Register, ApplicationUser>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }

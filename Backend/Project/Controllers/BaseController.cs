@@ -10,14 +10,14 @@ namespace WebApi.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected readonly UserManager<User> _userManager;
+        protected readonly UserManager<ApplicationUser> _userManager;
 
-        public BaseController(UserManager<User> userManager)
+        public BaseController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        public Task<User> CurrentUser => _userManager.FindByEmailAsync(
+        public Task<ApplicationUser> CurrentUser => _userManager.FindByNameAsync(
             User.Identity.Name ??
             User.Claims.Where(c => c.Properties.ContainsKey("unique_name"))
                 .Select(c => c.Value)

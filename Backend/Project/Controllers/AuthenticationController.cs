@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Core.Entities;
 using Core.Entities.ApplicationIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,11 @@ namespace WebApi.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IConfiguration _configuration;
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenProvider _tokenProvider;
 
-        public AuthenticationController(IConfiguration configuration, UserManager<User> userManager, SignInManager<User> signInManager,
+        public AuthenticationController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             IMapper mapper, ITokenProvider tokenProvider) 
             : base(userManager)
         {
@@ -33,7 +34,7 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] Register register)
         {
-            var user = _mapper.Map<User>(register);
+            var user = _mapper.Map<ApplicationUser>(register);
 
             var identityResult = await _userManager.CreateAsync(user, register.Password);
             if (!identityResult.Succeeded)
@@ -71,7 +72,7 @@ namespace WebApi.Controllers
             return Ok(token);
         }
 
-        private string MakeToken(IdentityUser<long> user)
+        private string MakeToken(IdentityUser<int> user)
         {
             var config = GetTokenConfiguration();
             return _tokenProvider.MakeToken(user, config);
