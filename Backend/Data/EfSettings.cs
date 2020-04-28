@@ -9,15 +9,15 @@ namespace Data
     {
         public static void SetSettings(ModelBuilder builder)
         {
-            builder.Entity<IdentityRoleClaim<long>>().ToTable("RoleClaim");
+            builder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaim");
             builder.Entity<ApplicationRole>().ToTable("Roles")
                 .Ignore(r => r.ConcurrencyStamp);
-            builder.Entity<IdentityUserClaim<long>>().ToTable("UserClaim");
-            builder.Entity<IdentityUserLogin<long>>().ToTable("UserLogin");
-            builder.Entity<IdentityUserRole<long>>().ToTable("UserRole");
+            builder.Entity<IdentityUserClaim<int>>().ToTable("UserClaim");
+            builder.Entity<IdentityUserLogin<int>>().ToTable("UserLogin");
+            builder.Entity<IdentityUserRole<int>>().ToTable("UserRole");
             builder.Entity<ApplicationUser>().ToTable("Users");
-
-            builder.Ignore<IdentityUserToken<long>>();
+            
+            builder.Ignore<IdentityUserToken<int>>();
         }
     }
 }
