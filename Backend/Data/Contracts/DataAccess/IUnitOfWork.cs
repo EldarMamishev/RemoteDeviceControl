@@ -2,7 +2,7 @@
 using Core.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repositories.DataAccess
+namespace Data.Contracts.DataAccess
 {
     public interface IUnitOfWork
     {

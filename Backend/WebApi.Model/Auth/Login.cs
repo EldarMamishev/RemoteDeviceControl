@@ -1,4 +1,4 @@
-﻿namespace WebApi.Model.Auth
+﻿namespace ViewModel.Auth
 {
     public class Login
     {

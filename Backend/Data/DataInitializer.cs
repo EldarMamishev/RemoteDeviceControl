@@ -1,4 +1,4 @@
-using Repositories;
+using Data.Contracts;
 
 namespace Data
 {

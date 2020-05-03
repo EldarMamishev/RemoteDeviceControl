@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebApi.Helpers.Token;
-using WebApi.Model.Auth;
+using ViewModel.Auth;
 
 namespace WebApi.Controllers
 {

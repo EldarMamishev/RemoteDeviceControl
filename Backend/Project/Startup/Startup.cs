@@ -3,6 +3,8 @@ using AutoMapper;
 using Core.Entities.ApplicationIdentity;
 using Core.Entities.ApplicationIdentity.Access;
 using Data;
+using Data.Contracts;
+using Data.Contracts.DataAccess;
 using Data.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,8 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Repositories;
-using Repositories.DataAccess;
 using WebApi.Helpers.Token;
 
 namespace WebApi.Startup

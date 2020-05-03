@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities.Base;
+using Data.Contracts.DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Repositories.DataAccess;
 
 namespace Data.DataAccess
 {
     public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : class
+        where TEntity : class, IBaseEntity
     {
         private readonly DbSet<TEntity> _dbSet;
 

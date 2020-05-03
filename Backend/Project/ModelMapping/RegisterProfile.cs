@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities.ApplicationIdentity;
-using WebApi.Model.Auth;
+using ViewModel.Auth;
 
 namespace WebApi.ModelMapping
 {
