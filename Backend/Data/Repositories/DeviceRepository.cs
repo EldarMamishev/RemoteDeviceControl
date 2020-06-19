@@ -12,6 +12,7 @@ namespace Data.Repositories
         public DeviceRepository(IUnitOfWork unitOfWork) 
             : base(unitOfWork)
         {
+
         }
     }
 }

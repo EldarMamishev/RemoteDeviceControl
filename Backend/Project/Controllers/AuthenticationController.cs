@@ -8,6 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebApi.Helpers.Token;
 using ViewModel.Auth;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebApi.Controllers
 {
@@ -50,13 +56,26 @@ namespace WebApi.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
-            var loginResult = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
-
-            if (!loginResult.Succeeded)
-                return BadRequest();
+            await this.Authenticate(login.Username);
 
             var user = await _userManager.FindByNameAsync(login.Username);
             var token = MakeToken(user);
+
+            if (!Request.Headers.ContainsKey("www-authenticate"))
+                Request.Headers.Append("www-authenticate", "Bearer " + token);
+
+
+            Response.Cookies.Append("www-authenticate", token,
+            new CookieOptions
+            {
+                MaxAge = TimeSpan.FromMinutes(60)
+            });
+ 
+            Response.Cookies.Append(".AspNetCore.Application.Id", token,
+            new CookieOptions
+            {
+                MaxAge = TimeSpan.FromMinutes(60)
+            });
 
             return Ok(token);
         }
@@ -70,6 +89,19 @@ namespace WebApi.Controllers
             var token = MakeToken(user);
 
             return Ok(token);
+        }
+
+        private async Task Authenticate(string userName)
+        {
+            // создаем один claim
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+            };
+            // создаем объект ClaimsIdentity
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            // установка аутентификационных куки
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         private string MakeToken(IdentityUser<int> user)

@@ -9,6 +9,7 @@ namespace Core.Entities
     {
         public int Id { get; set; }
         public string MongoLocationId { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<Device> Devices { get; set; }
     }
 }

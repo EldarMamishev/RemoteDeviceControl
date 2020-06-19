@@ -9,5 +9,7 @@ namespace Data.Contracts.DataAccess
         Task Add(TEntity entity);
         void Delete(TEntity entity);
         IEnumerable<TEntity> Get();
+        TEntity GetById(int id);
+        Task<IEnumerable<TEntity>> GetAsync();
     }
 }

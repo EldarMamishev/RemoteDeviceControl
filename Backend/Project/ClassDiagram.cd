@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="WebApi.Controllers.AuthenticationController">
+    <Position X="1.5" Y="5.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAIBBAAIAAAABABAAAAEQIAAAAAA=</HashCode>
+      <FileName>Controllers\AuthenticationController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_tokenProvider" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WebApi.Controllers.BaseController">
+    <Position X="2.75" Y="1.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\BaseController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApi.Controllers.PersonController">
+    <Position X="6.5" Y="2.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAgAIAAAAAAAgAIAA=</HashCode>
+      <FileName>Controllers\PersonController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="unitOfWork" />
+      <Field Name="mappersFacade" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WebApi.ModelMapping.DeviceMapper">
+    <Position X="12.25" Y="5.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAABAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelMapping\DeviceMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApi.ModelMapping.PersonalDeviceMapper">
+    <Position X="10.75" Y="3.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModelMapping\PersonalDeviceMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Data.DataAccess.UnitOfWork">
+    <Position X="7.5" Y="8.75" Width="3.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="CommandRepository" />
+      <Property Name="ConnectionRepository" />
+      <Property Name="DeviceRepository" />
+      <Property Name="LocationRepository" />
+      <Property Name="LogEntityRepository" />
+      <Property Name="PersonalDeviceRepository" />
+      <Property Name="PersonRepository" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Data.Repositories.CommandRepository">
+    <Position X="13.5" Y="8.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.ConnectionRepository">
+    <Position X="5.5" Y="7" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.DeviceRepository">
+    <Position X="10.75" Y="7.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.LocationRepository">
+    <Position X="5" Y="9" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.LogEntityRepository">
+    <Position X="14" Y="10.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.PersonalDeviceRepository">
+    <Position X="9.25" Y="11" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Data.Repositories.PersonRepository">
+    <Position X="6" Y="11.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Data.Contracts.DataAccess.IUnitOfWork">
+    <Position X="5.75" Y="4.75" Width="3.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="WebApi.Helpers.Facades.Base.IPersonMappersFacade">
+    <Position X="9.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\Facades\Base\IPersonMappersFacade.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DeviceMapper" />
+      <Property Name="PersonalDeviceMapper" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="WebApi.Helpers.Token.ITokenProvider">
+    <Position X="2.25" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helpers\Token\ITokenProvider.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

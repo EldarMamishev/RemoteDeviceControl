@@ -31,5 +31,15 @@ namespace Data.DataAccess
         {
             return _dbSet.AsEnumerable();
         }
+
+        public TEntity GetById(int id)
+        {
+            return _dbSet.FirstOrDefault(e => e.Id == id);
+        }
+
+        public Task<IEnumerable<TEntity>> GetAsync()
+        {
+            return _dbSet.ToListAsync() as Task<IEnumerable<TEntity>>;
+        }
     }
 }

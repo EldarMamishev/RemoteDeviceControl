@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using AutoMapper;
 using Core.Entities.ApplicationIdentity;
 using Core.Entities.ApplicationIdentity.Access;
@@ -6,15 +6,20 @@ using Data;
 using Data.Contracts;
 using Data.Contracts.DataAccess;
 using Data.DataAccess;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using WebApi.Helpers.Facades;
+using WebApi.Helpers.Facades.Base;
 using WebApi.Helpers.Token;
 
 namespace WebApi.Startup
@@ -53,11 +58,35 @@ namespace WebApi.Startup
                 c.RoutePrefix = string.Empty;
             });
 
-            app.UseAuthentication();
+            app.UseCors(x => x
+                .WithOrigins("https://localhost:44397") // путь к нашему SPA клиенту
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always
+            });
+
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("www-authenticate", "Bearer " + token);
+                    context.Response.Headers.Add("www-authenticate", "Bearer " + token);
+                }
+
+                await next();
+            });
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
@@ -68,7 +97,14 @@ namespace WebApi.Startup
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new PathString("/Authentication/Login");
+                });
+
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]));
+
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,6 +133,7 @@ namespace WebApi.Startup
             services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPersonMappersFacade, PersonMappersFacade>();
         }
     }
 }
