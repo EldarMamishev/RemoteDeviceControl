@@ -1,0 +1,93 @@
+:host {
+
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: block;
+  
+  .heading5 {
+    margin: 0 24px 0 0;
+    color: var(--text-basic-color);
+  }
+    
+  .space8 {
+    height: 100%;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: visible;
+    background-color: unset;
+  }
+    
+  .users-data-table {
+    width: 100%;
+    height: auto;
+  }
+    
+  .datatable-space {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: flex-start;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .users-table {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+    
+  @media (max-width: 1024px) {
+    .users-data-table {
+      width: 100%;
+      height: auto;
+    }
+  }
+    
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 220px;
+    margin: 0;
+    flex-grow: 0;
+    
+    .users-table {
+      > nb-card-body {
+        padding: 0;
+      }
+    }
+  }
+    
+  @media (max-width: 480px) {
+    .space8 {
+      justify-content: space-between;
+    }
+  }
+    
+  @media (max-width: 320px) {
+    .heading5 {
+      margin: 0 0 8px 0;
+    }
+    
+    .space8 {
+      align-items: flex-start;
+      align-content: flex-start;
+      justify-content: space-between;
+    }
+    
+    .datatable-space {
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }width: 100%;
+    height: auto;
+    flex-grow: 0;
+  }
+  
+}

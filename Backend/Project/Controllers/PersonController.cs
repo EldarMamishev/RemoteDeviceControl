@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         private IUnitOfWork unitOfWork;
         private IPersonMappersFacade mappersFacade;
 
-        public PersonController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade) 
+        public PersonController(UserManager<Person> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade) 
             : base(userManager)
         {
             this.unitOfWork = unitOfWork;

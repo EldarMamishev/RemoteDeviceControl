@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using WebApi.Helpers.Facades.Base;
 
 namespace WebApi.Controllers
 {
@@ -21,18 +22,20 @@ namespace WebApi.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IConfiguration _configuration;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<Person> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenProvider _tokenProvider;
+        private IPersonMappersFacade mappersFacade;
 
-        public AuthenticationController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IMapper mapper, ITokenProvider tokenProvider) 
+        public AuthenticationController(IConfiguration configuration, UserManager<Person> userManager, SignInManager<Person> signInManager,
+            IMapper mapper, ITokenProvider tokenProvider, IPersonMappersFacade mappersFacade) 
             : base(userManager)
         {
             _configuration = configuration;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenProvider = tokenProvider;
+            this.mappersFacade = mappersFacade;
         }
 
         [HttpPost]
@@ -40,7 +43,7 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] Register register)
         {
-            var user = _mapper.Map<ApplicationUser>(register);
+            var user = this.mappersFacade.PersonMapper.MapPersonFromRegister(register);
 
             var identityResult = await _userManager.CreateAsync(user, register.Password);
             if (!identityResult.Succeeded)

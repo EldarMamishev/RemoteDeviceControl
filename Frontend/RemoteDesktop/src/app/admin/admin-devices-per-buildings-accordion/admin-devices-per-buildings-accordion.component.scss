@@ -1,0 +1,45 @@
+:host {
+
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: block;
+  
+  .devices-in-building-data-table {
+    width: 100%;
+    height: auto;
+  }
+    
+  .space2 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space3 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .admin-devices-per-buildings-accordion {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  
+}

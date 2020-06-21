@@ -46,17 +46,18 @@ namespace WebApi.Startup
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllers();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" }));
+            services.AddCors();
+            //services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                c.RoutePrefix = string.Empty;
-            });
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+            //    c.RoutePrefix = string.Empty;
+            //});
 
             app.UseCors(x => x
                 .WithOrigins("https://localhost:44397") // путь к нашему SPA клиенту
@@ -93,7 +94,7 @@ namespace WebApi.Startup
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentity<Core.Entities.Person, ApplicationRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

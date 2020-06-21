@@ -10,5 +10,6 @@ namespace WebApi.Helpers.Facades.Base
     {
         public DeviceMapper DeviceMapper { get; }
         public PersonalDeviceMapper PersonalDeviceMapper { get; }
+        public PersonMapper PersonMapper { get; }
     }
 }

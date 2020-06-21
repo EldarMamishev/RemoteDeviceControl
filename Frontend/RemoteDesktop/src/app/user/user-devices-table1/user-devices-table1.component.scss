@@ -1,0 +1,154 @@
+:host {
+
+  width: 100%;
+  height: auto;
+  display: block;
+  
+  .text9 {
+    color: var(--text-basic-color);
+  }
+    
+  .space31 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .text12 {
+    color: var(--text-basic-color);
+  }
+    
+  .space39 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .id-input1 {
+    width: auto;
+  }
+    
+  .space43 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .type-select1 {
+    width: auto;
+  }
+    
+  .space46 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space52 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .name-input1 {
+    width: auto;
+  }
+    
+  .space521 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .space53 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .connect-button1 {
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+    
+    span {
+      display: inline;
+    }
+    
+    > nb-icon {
+      display: none;
+    }
+  }
+    
+  .space531 {
+    height: auto;
+    min-height: 2rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+    overflow: visible;
+    background-color: unset;
+  }
+    
+  .user-devices-table1 {
+  
+    width: 100%;
+    height: 100%;
+    background-color: unset;
+  
+  }
+}

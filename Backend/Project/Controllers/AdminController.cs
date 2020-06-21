@@ -1,4 +1,5 @@
-﻿using Core.Entities.ApplicationIdentity;
+﻿using Core.Entities;
+using Core.Entities.ApplicationIdentity;
 using Data.Contracts.DataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace WebApi.Controllers
         private IUnitOfWork unitOfWork;
         private IPersonMappersFacade mappersFacade;
 
-        public AdminController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade)
+        public AdminController(UserManager<Person> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade)
             : base(userManager)
         {
             this.unitOfWork = unitOfWork;
@@ -29,6 +30,15 @@ namespace WebApi.Controllers
         {
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("users")]
+        public IActionResult GetAllUsers()
+        {
+            var people = this.unitOfWork.PersonRepository.Get();
+
+            return Ok(this.mappersFacade.PersonMapper.MapPeopleToViewModel(people));
         }
     }
 }

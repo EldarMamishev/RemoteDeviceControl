@@ -1,0 +1,19 @@
+<nb-tabset class="tabs1" fullWidth>
+  <nb-tab tabTitle="Buildings" class="slot">
+    <div class="space space110">
+      <app-user-buildings-filter-card></app-user-buildings-filter-card>
+      <a nbButton routerLink="/user" class="filter-button1 size-xl-large" appearance="filled" status="basic">
+        <nb-icon class="icon btn-icon" icon="funnel"></nb-icon>
+        <span>Button Link</span>
+      </a>
+      <app-user-devices-per-buildings-accordion></app-user-devices-per-buildings-accordion>
+      <app-user-devices-table1></app-user-devices-table1>
+    </div>
+  </nb-tab>
+
+  <nb-tab tabTitle="Profile" class="slot">
+    <div class="space space47">
+      <app-profile-card></app-profile-card>
+    </div>
+  </nb-tab>
+</nb-tabset>

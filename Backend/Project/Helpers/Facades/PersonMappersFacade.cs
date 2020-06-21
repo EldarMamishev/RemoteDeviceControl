@@ -10,6 +10,7 @@ namespace WebApi.Helpers.Facades
     public class PersonMappersFacade : IPersonMappersFacade
     {
         private DeviceMapper deviceMapper;
+        private PersonMapper personMapper;
         private PersonalDeviceMapper personalDeviceMapper;
 
         public DeviceMapper DeviceMapper
@@ -31,6 +32,17 @@ namespace WebApi.Helpers.Facades
                     this.personalDeviceMapper = new PersonalDeviceMapper();
 
                 return this.personalDeviceMapper;
+            }
+        }
+
+        public PersonMapper PersonMapper
+        {
+            get
+            {
+                if (this.personMapper == null)
+                    this.personMapper = new PersonMapper();
+
+                return this.personMapper;
             }
         }
     }
