@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ViewModel.Person
+﻿namespace ViewModel.Person
 {
     public class PersonResponse
     {

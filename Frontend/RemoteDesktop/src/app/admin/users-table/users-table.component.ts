@@ -1,9 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Person } from 'src/app/view-models/people-viewmodel';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Person} from 'src/app/view-models/people-viewmodel';
 import {CONNECTION_PATH} from "../../constants";
 import {HttpHeaders, HttpClient} from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
+import {showWarningOnce} from "tslint/lib/error";
+import { DefaultEditor } from 'ng2-smart-table';
+import {NumberInputEditorComponent} from "../../number-input-editor.component";
 
-const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
+const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
 @Component({
   selector: 'app-users-table',
@@ -13,11 +17,18 @@ const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/js
 })
 export class UsersTableComponent implements OnInit {
   private root = CONNECTION_PATH + '/admin/';
-  settings =   {
+  settings = {
     "columns": {
       "id": {
-        "title": "ID",
-        "filter": true
+        title: "ID",
+        filter: true,
+        // type: 'number',
+        editable: false,
+        addable: false,
+        /*editor: {
+          type: 'custom',
+          component: NumberInputEditorComponent,
+        },*/
       },
       "userName": {
         "title": "User Name",
@@ -41,13 +52,26 @@ export class UsersTableComponent implements OnInit {
           "type": "list",
           "config": {
             "selectText": "Select ...",
-            "list": []
+            list: [
+              { value: 'Male', title: 'Male' },
+              { value: 'Female', title: 'Female' },
+            ],
+          }
+        },
+        "editor": {
+          "type": "list",
+          "config": {
+            "selectText": "Select ...",
+            list: [
+              { value: 'Male', title: 'Male' },
+              { value: 'Female', title: 'Female' },
+            ],
           }
         }
       },
       "birthday": {
         "title": "Birthday"
-      }
+      },
     },
     "delete": {
       "confirmDelete": true
@@ -55,49 +79,34 @@ export class UsersTableComponent implements OnInit {
     "add": {
       "confirmCreate": true
     },
-    "edit": {
-      "confirmSave": true
-    },
     "actions": {
       "add": true,
-      "edit": true,
+      "edit": false,
       "delete": true
     },
     "mode": "internal"
   };
-  source;
-
-/*    [
-     {
-       "id": 1,
-       "email": "danielle_91@example.com",
-       "userName": "Danielle Kennedy"
-     },
-     {
-       "id": 2,
-       "email": "russell_88@example.com",
-       "userName": "Russell Payne"
-     },
-     {
-       "id": 3,
-       "email": "brenda97@example.com",
-       "userName": "Brenda Hanson"
-     },
-     {
-       "id": 4,
-       "email": "nathan-85@example.com",
-       "userName": "Nathan Knight"
-     }
-   ];*/
+  source = [
+  ];
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
+
+  onCreate() {
+
+  }
 
   ngOnInit(): void {
+    this.getUsers();
+  }
+
+  getUsers() {
     debugger;
-    this.source =
-      this.http.get<Person[]>(this.root + "users", httpOptions);
+    var methodUrl = this.root + "GetAllUsers"
+    this.http.get<Person[]>(methodUrl).subscribe(data => this.source = data);
   }
 
 }
+

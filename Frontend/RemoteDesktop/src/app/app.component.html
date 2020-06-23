@@ -1,21 +1,21 @@
 <nb-layout withScroll [class.header-hidden]="!(layout$ | async)?.header">
 
   <nb-layout-header *ngIf="(layout$ | async)?.header" class="header">
+    <img class="image7" src="/assets/images/home.svg" (click)="OnHomeClicked()">
     <div class="space space5">
-      <nb-select class="localization size-xl-tiny" placeholder="Localization" status="primary">
-          <nb-option>Українська</nb-option>
-          <nb-option>English</nb-option>
+      <nb-select [(selected)]="language" (selectedChange)="OnSelectedLanguageChanged()" class="localization size-xl-tiny" placeholder="Localization" status="primary">
+          <nb-option value="ua" translate>Lang.Ukrainian</nb-option>
+          <nb-option value="en" translate>Lang.English</nb-option>
       </nb-select>
-      <nb-select [(selected)]="theme" (selectedChange)="OnSelectedChanged()" class="mode size-xl-tiny" placeholder="Mode" status="primary">
-          <nb-option value="light">Light mode</nb-option>
-          <nb-option value="mydark">Dark mode</nb-option>
+      <nb-select [(selected)]="theme" (selectedChange)="OnSelectedThemeChanged()" class="mode size-xl-tiny" placeholder="Mode" status="primary">
+          <nb-option value="light" translate>Mode.Light</nb-option>
+          <nb-option value="mydark" translate>Mode.Dark</nb-option>
       </nb-select>
-      <input nbInput class="input size-xl-medium" placeholder="Search" type="text" shape="rectangle" status="basic">
-      <img class="image7" src="/assets/images/default.svg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB2NOYEVAvkEen65Agj2fFeGV88-r_hJm3mL4nPChzz_ih9NpV">
+      <img class="image7" src="/assets/images/default.svg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB2NOYEVAvkEen65Agj2fFeGV88-r_hJm3mL4nPChzz_ih9NpV" (click)="OnProfilePhotoClicked()">
     </div>
   </nb-layout-header>
 
-  <nb-sidebar *ngIf="(layout$ | async)?.sidebar" class="sidebar" responsive="true" [collapsedBreakpoints]="['xs', 'is', 'sm']" [compactedBreakpoints]="[]">
+  <nb-sidebar *ngIf="(layout$ | async)?.sidebar" class="sidebar" responsive="true" [collapsedBreakpoints]="['xs', 'is', 'sm']" [compactedBreakpoints]="[]" translate>
     <div class="space sidebar-space">
       <nb-menu class="menu" [items]="items"></nb-menu>
     </div>

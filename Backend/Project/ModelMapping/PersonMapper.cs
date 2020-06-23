@@ -49,5 +49,18 @@ namespace WebApi.ModelMapping
 
             return result;
         }
+        
+        public Person MapPerson(PersonRequest person)
+        {
+            var result = new Person()
+            {
+                FirstName = person.firstName,
+                LastName = person.lastName,
+                Email = person.email,
+                UserName = person.userName
+            };
+
+            return result;
+        }
     }
 }

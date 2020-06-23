@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Helpers.Facades;
@@ -35,66 +36,85 @@ namespace WebApi.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
+            //services.AddAutoMapper(typeof(Startup));
 
-            services.AddDbContext<AppDbContext>(opt => 
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseLazyLoadingProxies();
+            });
 
             ConfigureAuthentication(services);
 
             ConfigureDI(services);
 
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddControllers();
-            services.AddCors();
-            //services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" }));
+            services.AddControllersWithViews();
+            //services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-            //    c.RoutePrefix = string.Empty;
-            //});
-
-            app.UseCors(x => x
-                .WithOrigins("https://localhost:44397") // путь к нашему SPA клиенту
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthorization();
 
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
-                HttpOnly = HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.Always
-            });
+            //app.UseCookiePolicy(new CookiePolicyOptions
+            //{
+            //    MinimumSameSitePolicy = SameSiteMode.Strict,
+            //    HttpOnly = HttpOnlyPolicy.Always,
+            //    Secure = CookieSecurePolicy.Always
+            //});
 
-            app.Use(async (context, next) =>
-            {
-                var token = context.Request.Cookies[".AspNetCore.Application.Id"];
-                if (!string.IsNullOrEmpty(token))
-                {
-                    context.Request.Headers.Add("www-authenticate", "Bearer " + token);
-                    context.Response.Headers.Add("www-authenticate", "Bearer " + token);
-                }
+            //app.Use(async (context, next) =>
+            //{
+            //    var token = context.Request.Cookies[".AspNetCore.Application.Id"];
+            //    if (!string.IsNullOrEmpty(token))
+            //    {
+            //        context.Request.Headers.Add("www-authenticate", "Bearer " + token);
+            //        context.Response.Headers.Add("www-authenticate", "Bearer " + token);
+            //    }
 
-                await next();
-            });
+            //    await next();
+            //});
             app.UseAuthentication();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();  
+                //endpoints.MapHub<ChatHub>("/chat");
+            });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
+            });
         }
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            services.AddIdentity<Core.Entities.Person, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -126,6 +146,8 @@ namespace WebApi.Startup
                         ValidateIssuerSigningKey = true
                     };
                 });
+
+            services.AddAuthorization();
         }
 
         private void ConfigureDI(IServiceCollection services)

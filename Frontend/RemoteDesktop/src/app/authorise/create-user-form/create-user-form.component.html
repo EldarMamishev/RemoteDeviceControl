@@ -1,0 +1,43 @@
+<nb-card class="create-user-form">
+  <nb-card-header>
+    <div class="space space19">
+      <h5 class="heading8 text-basic">Create User</h5>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body ngNativeValidate>
+    <div class="space space20">
+      <div class="space space22">
+        <div class="space space23">
+          <div class="space space25">
+            <label class="text8 text-basic label" >First Name</label>
+            <input nbInput class="first-name-register size-xl-medium" name="firstName" ngDefaultControl [(ngModel)]="fields.firstName" placeholder="First name" type="text" shape="rectangle" status="basic">
+            <label class="text81 text-basic label" >Last Name</label>
+            <input nbInput class="last-name-register size-xl-medium" placeholder="Last name" name="lastName" ngDefaultControl [(ngModel)]="fields.lastName" type="text" shape="rectangle" status="basic">
+            <label class="text14 text-basic label" >Username</label>
+            <input nbInput class="user-name-register size-xl-medium" name="userName" ngDefaultControl [(ngModel)]="fields.userName" placeholder="User name" type="text" shape="rectangle" status="basic">
+         </div>
+        </div>
+        <div class="space space24">
+          <div class="space space32">
+            <label class="text101 text-basic label" >Email</label>
+            <input nbInput class="emai-register size-xl-medium" placeholder="E-mail" type="email" name="email" ngDefaultControl [(ngModel)]="fields.email" shape="rectangle" status="basic">
+            <label class="text1011 text-basic label">Password</label>
+            <input nbInput class="password-register size-xl-medium" placeholder="" name="password" ngDefaultControl [(ngModel)]="fields.password" type="password" shape="rectangle" status="basic">
+            <label class="text1012 text-basic label" >Repeat password</label>
+            <input nbInput class="repeat-password-register size-xl-medium" name="repeatPassword" ngDefaultControl [(ngModel)]="fields.repeatPassword" placeholder="" type="password" shape="rectangle" status="basic">
+          </div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="space space21">
+      <button nbButton class="create-user-button size-xl-medium" appearance="filled" status="primary" (click)="onRegister()">
+        <nb-icon class="icon btn-icon" icon="star"></nb-icon>
+        <span>CREATE USER</span>
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -24,5 +24,19 @@ namespace Business.Helpers
 
             }
         }
+
+        public DeviceType DeviceTypeStringToEnumConverter(string deviceType)
+        {
+            switch (deviceType.ToLower())
+            {
+                case "lift":
+                    return DeviceType.Lift;
+                case "lock":
+                    return DeviceType.Lock;
+                default:
+                    return DeviceType.NotSelected;
+
+            }
+        }
     }
 }

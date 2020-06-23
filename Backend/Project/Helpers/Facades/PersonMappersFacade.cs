@@ -12,6 +12,7 @@ namespace WebApi.Helpers.Facades
         private DeviceMapper deviceMapper;
         private PersonMapper personMapper;
         private PersonalDeviceMapper personalDeviceMapper;
+        private LocationMapper locationMapper;
 
         public DeviceMapper DeviceMapper
         {
@@ -43,6 +44,17 @@ namespace WebApi.Helpers.Facades
                     this.personMapper = new PersonMapper();
 
                 return this.personMapper;
+            }
+        }
+
+        public LocationMapper LocationMapper
+        {
+            get
+            {
+                if (this.locationMapper == null)
+                    this.locationMapper = new LocationMapper();
+
+                return this.locationMapper;
             }
         }
     }

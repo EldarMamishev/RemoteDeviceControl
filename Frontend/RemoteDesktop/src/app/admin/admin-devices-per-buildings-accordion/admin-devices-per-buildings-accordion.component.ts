@@ -1,4 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Dictionary } from "lodash";
+import {BuildingViewmodel} from "../../view-models/building-viewmodel";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {CONNECTION_PATH} from "../../constants";
+import {Person} from "../../view-models/people-viewmodel";
+import {LocationViewmodel} from "../../view-models/location-viewmodel";
+
+const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
 @Component({
   selector: 'app-admin-devices-per-buildings-accordion',
@@ -18,11 +26,24 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
       },
       "type": {
         "title": "Type",
+        "editor": {
+          "type": "list",
+          "config": {
+            "selectText": "Select ...",
+            list: [
+              { value: 'lock', title: 'Lock' },
+              { value: 'lift', title: 'Lift' },
+            ],
+          }
+        },
         "filter": {
           "type": "list",
           "config": {
             "selectText": "Select ...",
-            "list": []
+            list: [
+              { value: 'lock', title: 'Lock' },
+              { value: 'lift', title: 'Lift' },
+            ],
           }
         }
       }
@@ -44,35 +65,50 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
     "mode": "internal"
   };
   source =   [
-    {
-      "id": 1,
-      "email": "danielle_91@example.com",
-      "name": "Danielle Kennedy",
-      "type": "danielle.kennedy"
-    },
-    {
-      "id": 2,
-      "email": "russell_88@example.com",
-      "name": "Russell Payne",
-      "type": "russell.payne"
-    },
-    {
-      "id": 3,
-      "email": "brenda97@example.com",
-      "name": "Brenda Hanson",
-      "type": "brenda.hanson"
-    },
-    {
-      "id": 4,
-      "email": "nathan-85@example.com",
-      "name": "Nathan Knight",
-      "type": "nathan.knight"
-    }
   ];
 
-  constructor() { }
+  data : KeyValuePair<string, BuildingViewmodel[]>[];
+  locations : LocationViewmodel[];
 
-  ngOnInit(): void {
+  constructor(private http: HttpClient) {
+    this.getDevices();
   }
 
+  ngOnInit(): void {
+    debugger;
+    this.getDevices();
+
+  }
+
+  getDevices() {
+    debugger;
+    var methodUrl = CONNECTION_PATH + "/Admin/GetAllDevicesPerLocations"
+    this.http.get<KeyValuePair<string, BuildingViewmodel[]>[]>(methodUrl).subscribe(data => this.data = data);
+  }
+
+  getLocations() {
+    debugger;
+    var methodUrl = CONNECTION_PATH + "/Admin/GetLocations"
+    this.http.get<LocationViewmodel[]>(methodUrl).subscribe(data => this.locations = data);
+  }
+
+  addDevice(value, locationId) {
+    debugger;
+    var device = new BuildingViewmodel();
+    device.name = value.newData.name;
+    device.type = value.newData.type;
+    device.locationId = locationId;
+    var methodUrl = CONNECTION_PATH + "/Admin/AddNewDevice"
+    this.http.post<Person>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
+  }
+}
+
+export class KeyValuePair<T, U>{
+  Key: T;
+  Value: U;
+
+  constructor(key: T, value: U) {
+    this.Key = key;
+    this.Value = value;
+  }
 }

@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { FormsModule }   from '@angular/forms';
 
 import {
   NbThemeModule,
@@ -58,6 +59,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     CommonModule,

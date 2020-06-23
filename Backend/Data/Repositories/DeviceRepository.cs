@@ -1,9 +1,10 @@
-﻿using Core.Entities;
+﻿using Business.Filters;
+using Core.Entities;
 using Data.Contracts.DataAccess;
 using Data.Repositories.Identity;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Data.Repositories
 {
@@ -12,7 +13,26 @@ namespace Data.Repositories
         public DeviceRepository(IUnitOfWork unitOfWork) 
             : base(unitOfWork)
         {
+        }
 
+        public IDictionary<Location, List<Device>> GetAllDevicesPerLocations()
+        {
+            return this.GetAsQuery().Include(d => d.Location).ToList().GroupBy(d => d.Location).ToDictionary(d => d.Key, d => d.ToList());
+        }
+
+        public IDictionary<Location, Device> GetFilteredDevicesPerLocations(BuildingsFilter filter)
+        {
+            return this.GetAsQuery().Where(d => 
+                (d.Location.City.Equals(filter.City) || string.IsNullOrWhiteSpace(filter.City)) 
+                && (d.Location.Country.Equals(filter.Country) || string.IsNullOrWhiteSpace(filter.Country)) 
+                && (d.Location.Name.Equals(filter.Building) || string.IsNullOrWhiteSpace(filter.Building))
+                && (d.Location.Devices.Count >= filter.DevicesAmountFrom && d.Location.Devices.Count <= filter.DevicesAmountTo))
+                .ToDictionary(d => d.Location);
+        }
+
+        public IEnumerable<Device> GetDevicesByLocationId(int locationId)
+        {
+            return this.GetAsQuery().Where(d => d.LocationId != null && d.LocationId.Value.Equals(locationId)).ToList();
         }
     }
 }

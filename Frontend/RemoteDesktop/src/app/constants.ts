@@ -1,1 +1,1 @@
-﻿﻿﻿export const CONNECTION_PATH ='http://localhost:44397/api';
+﻿﻿﻿export const CONNECTION_PATH ='https://localhost:44397/api';

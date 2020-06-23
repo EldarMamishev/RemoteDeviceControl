@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Data.Contracts.DataAccess
@@ -11,5 +12,6 @@ namespace Data.Contracts.DataAccess
         IEnumerable<TEntity> Get();
         TEntity GetById(int id);
         Task<IEnumerable<TEntity>> GetAsync();
+        IQueryable<TEntity> GetAsQuery();
     }
 }

@@ -1,0 +1,30 @@
+<nb-card class="login-card">
+  <nb-card-header>
+    <div class="space space14">
+      <div class="space space16">
+        <img class="image3" src="/assets/images/default.svg" src="https://c7.uihere.com/files/348/800/890/computer-icons-avatar-user-login-avatar.jpg">
+      </div>
+      <div class="space space17">
+        <h5 class="heading7 text-basic">Login</h5>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="space sign-up-form">
+      <label class="text text-basic label">Email or User name</label>
+      <input nbInput class="username-email-login size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic" [(ngModel)]="loginValues.username">
+      <label class="text1 text-basic label">Password</label>
+      <input nbInput class="password-login size-xl-medium" placeholder="" type="password" shape="rectangle" status="basic" [(ngModel)]="loginValues.password">
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="space space15">
+      <button type="submit" nbButton (click)="login()" class="login-button size-xl-medium" appearance="filled" status="success">
+        <nb-icon class="icon btn-icon" icon="star"></nb-icon>
+        <span>Login</span>
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

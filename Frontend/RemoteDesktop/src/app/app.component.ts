@@ -18,7 +18,7 @@ import {environment} from "../environments/environment";
 })
 export class AppComponent {
   private theme = 'light';
-  private static theme = 'light';
+  private language = 'en';
 
   defaultLayout: BkLayout = {
     paddings: {
@@ -62,23 +62,45 @@ export class AppComponent {
       "title": "User",
       "link": "/user",
       "children": null
+    },
+    {
+      "title": "Authorise",
+      "link": "/authorise",
+      "children": null
+    },
+    {
+      "title": "Profile",
+      "link": "/profile",
+      "children": null
     }
   ];
 
-  constructor(private router: Router, private themeService: NbThemeService, private translateService: TranslateService) {
-  }
+  constructor(private router: Router, private themeService: NbThemeService, private translate: TranslateService) {
+   }
 
   ngOnInit(): void {
-    this.translateService.use(environment.defaultLocale);
+    this.translate.use(environment.defaultLocale);
   }
 
-  public OnSelectedChanged() {
+  public OnSelectedThemeChanged() {
     this.themeService.changeTheme(this.theme);
 
     this.themeService.onThemeChange()
       .subscribe((theme: any) => {
         console.log(`Theme changed to ${theme.name}`);
       });
+  }
+
+  public OnSelectedLanguageChanged() {
+    this.translate.use(this.language);
+  }
+
+  private OnProfilePhotoClicked() {
+    this.router.navigate(['./profile']);
+  }
+
+  private OnHomeClicked() {
+    this.router.navigate(['.']);
   }
 
   private getPaddingCssValue(paddings): string {

@@ -4,13 +4,13 @@
   height: auto;
   margin: 0;
   display: block;
-  
-  .devices-in-building-data-table1 {
+
+  .devices-in-building-data-table {
     width: 100%;
     height: auto;
   }
-    
-  .space210 {
+
+  .space2 {
     height: auto;
     min-height: 2rem;
     flex-grow: 1;
@@ -22,8 +22,8 @@
     overflow: visible;
     background-color: unset;
   }
-    
-  .space38 {
+
+  .space3 {
     height: auto;
     min-height: 2rem;
     flex-grow: 1;
@@ -35,11 +35,11 @@
     overflow: visible;
     background-color: unset;
   }
-    
-  .user-devices-per-buildings-accordion {
+
+  .admin-devices-per-buildings-accordion {
     width: 100%;
     height: 100%;
     margin: 0;
   }
-  
+
 }

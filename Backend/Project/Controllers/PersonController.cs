@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         private IUnitOfWork unitOfWork;
         private IPersonMappersFacade mappersFacade;
 
-        public PersonController(UserManager<Person> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade) 
+        public PersonController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade) 
             : base(userManager)
         {
             this.unitOfWork = unitOfWork;
@@ -28,7 +28,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("devices")]
         public IActionResult GetAllDevices()
         {
             IEnumerable<Device> allDevices = this.unitOfWork.GetRepository<Device>().Get();
@@ -38,7 +37,6 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("device")]
         public async Task<IActionResult> AddNewDevice(DeviceRequest device)
         {
             Device newDeviceEntity = this.mappersFacade.DeviceMapper.MapFromDeviceRequestToDevice(device);
@@ -49,7 +47,6 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("personalDevice")]
         public async Task<IActionResult> AddNewPersonalDevice(AddPersonalDeviceRequest request)
         {
             Person person = this.unitOfWork.GetRepository<Person>().GetById(request.PersonId);
@@ -69,6 +66,14 @@ namespace WebApi.Controllers
             await this.unitOfWork.Context.SaveChangesAsync();
 
             return Ok(this.mappersFacade.PersonalDeviceMapper.MapFromDeviceToDeviceResponse(personalDevice));
+        }
+
+        [HttpGet]
+        public IActionResult GetAllDevicesPerLocations()
+        {
+            var devices = this.mappersFacade.DeviceMapper.DevicesByBuildingsMapper(this.unitOfWork.DeviceRepository.GetAllDevicesPerLocations());
+
+            return Ok(devices);
         }
     }
 }

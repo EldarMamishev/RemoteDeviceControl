@@ -1,4 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnChanges } from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {ButtonInputEditorComponent} from "../../button-input-editor.component";
+import {CONNECTION_PATH} from "../../constants";
+import {BuildingViewmodel} from "../../view-models/building-viewmodel";
+import {LocationViewmodel} from "../../view-models/location-viewmodel";
+import {Person} from "../../view-models/people-viewmodel";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+
+const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
 @Component({
   selector: 'app-user-devices-per-buildings-accordion',
@@ -7,6 +16,16 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
+  nameTitle :string;
+  typeTitle :string;
+  nameSubscr = this.translate.get('T.Buildings').subscribe((res: string) => {
+    this.nameTitle = res
+  });
+
+  typeSubscr = this.translate.get('Type').subscribe((res: string) => {
+    this.typeTitle = res
+  });
+
   settings =   {
     "columns": {
       "id": {
@@ -14,16 +33,39 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
         "filter": true
       },
       "name": {
-        "title": "Name"
+        "title": this.nameTitle
       },
       "type": {
         "title": "Type",
+        "editor": {
+          "type": "list",
+          "config": {
+            "selectText": "Select ...",
+            list: [
+              { value: 'lock', title: 'Lock' },
+              { value: 'lift', title: 'Lift' },
+            ],
+          }
+        },
         "filter": {
           "type": "list",
           "config": {
             "selectText": "Select ...",
-            "list": []
+            list: [
+              { value: 'lock', title: 'Lock' },
+              { value: 'lift', title: 'Lift' },
+            ],
           }
+        }
+      },
+      "button": {
+        "title": 'Button',
+        "type": 'custom',
+        "renderComponent": ButtonInputEditorComponent,
+        onComponentInitFunction(instance) {
+          instance.save.subscribe(row => {
+            alert(`${row.name} saved!`)
+          });
         }
       }
     },
@@ -43,36 +85,29 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
     },
     "mode": "internal"
   };
-  source =   [
-    {
-      "id": 1,
-      "email": "danielle_91@example.com",
-      "name": "Danielle Kennedy",
-      "type": "danielle.kennedy"
-    },
-    {
-      "id": 2,
-      "email": "russell_88@example.com",
-      "name": "Russell Payne",
-      "type": "russell.payne"
-    },
-    {
-      "id": 3,
-      "email": "brenda97@example.com",
-      "name": "Brenda Hanson",
-      "type": "brenda.hanson"
-    },
-    {
-      "id": 4,
-      "email": "nathan-85@example.com",
-      "name": "Nathan Knight",
-      "type": "nathan.knight"
-    }
-  ];
 
-  constructor() { }
+  data : KeyValuePair<string, BuildingViewmodel[]>[];
+
+  constructor(private http: HttpClient, private translate: TranslateService) {
+    this.getDevices();
+  }
 
   ngOnInit(): void {
   }
 
+  getDevices() {
+    debugger;
+    var methodUrl = CONNECTION_PATH + "/Person/GetAllDevicesPerLocations"
+    this.http.get<KeyValuePair<string, BuildingViewmodel[]>[]>(methodUrl).subscribe(data => this.data = data);
+  }
+}
+
+export class KeyValuePair<T, U>{
+  Key: T;
+  Value: U;
+
+  constructor(key: T, value: U) {
+    this.Key = key;
+    this.Value = value;
+  }
 }

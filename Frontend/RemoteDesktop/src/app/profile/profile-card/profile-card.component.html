@@ -1,0 +1,72 @@
+<nb-card class="profile-card">
+  <nb-card-header>
+    <div class="space space48">
+      <h5 class="heading10 text-basic" translate>T.Profile</h5>
+      <span class="text16 text-basic caption-2" translate>UpdateInfoHere</span>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="space space49">
+      <div class="space space51">
+        <div class="space space65">
+          <label class="text141 text-basic label">{{'Username'| translate}}</label>
+          <input nbInput class="user-name-profile size-xl-medium" placeholder="{{'Username'| translate}}" type="text" shape="rectangle" status="basic">
+          <label class="text24 text-basic label" translate>{{'Email' | translate}}</label>
+          <input nbInput class="email-profile size-xl-medium" placeholder="" type="email" shape="rectangle" status="basic">
+        </div>
+        <h6 class="heading12 text-basic" translate>Password</h6>
+        <div class="space space58">
+          <label class="text17 text-basic label" translate>Profile.Current</label>
+          <input nbInput class="current-password-profile size-xl-medium" placeholder="" type="password" shape="rectangle" status="basic">
+          <label class="text18 text-basic label" translate>Profile.New</label>
+          <input nbInput class="new-password-profile size-xl-medium" placeholder="" type="password" shape="rectangle" status="basic">
+          <label class="text19 text-basic label" translate>Profile.Repeat</label>
+          <input nbInput class="repeat-new-password-profile size-xl-medium" placeholder="" type="password" shape="rectangle" status="basic">
+        </div>
+      </div>
+      <div class="space space54">
+        <div class="space space64">
+          <h6 class="heading14 text-basic" translate="">ContactInfo</h6>
+        </div>
+        <div class="space space251">
+          <label class="text82 text-basic label" translate>FirstName</label>
+          <input nbInput class="first-name-profile size-xl-medium" placeholder="{{'FirstName'| translate }}" type="text" shape="rectangle" status="basic">
+          <label class="text811 text-basic label" translate>LastName</label>
+          <input nbInput class="last-name-profile size-xl-medium" placeholder="{{'LastName' | translate}}" type="text" shape="rectangle" status="basic">
+          <label class="text25 text-basic label">Phone</label>
+          <input nbInput class="phone-profile size-xl-medium" placeholder="" type="text" shape="rectangle" status="basic">
+          <div class="space space272">
+            <label class="text112 text-basic label" translate>Address</label>
+          </div>
+          <nb-select class="country-profile size-xl-medium" placeholder="{{'Country' | translate}}" status="primary">
+              <nb-option value="USA">USA</nb-option>
+              <nb-option value="UK">UK</nb-option>
+              <nb-option value="France">France</nb-option>
+          </nb-select>
+          <nb-select class="city-profile size-xl-medium" placeholder="{{'City' | translate}}" status="primary">
+              <nb-option value="New York">New York</nb-option>
+              <nb-option value="Denver">Denver</nb-option>
+              <nb-option value="Salt Lake City">Salt Lake City</nb-option>
+          </nb-select>
+          <input nbInput class="address-profile size-xl-medium" placeholder="{{'Line1' | translate}}" type="text" shape="rectangle" status="basic">
+          <label class="text1111 text-basic label" translate>DoB</label>
+
+            <input [nbDatepicker]="datepicker2" nbInput class="birthday-profile size-xl-medium" placeholder="{{'EnterDate' | translate}}" shape="rectangle" status="basic">
+            <nb-datepicker #datepicker2>
+            </nb-datepicker>
+
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="space space50">
+      <button nbButton class="update-profile-button size-xl-medium" appearance="filled" status="success">
+        <nb-icon class="icon btn-icon" icon="star"></nb-icon>
+        <span>{{'Profile.Button' | translate}}</span>
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

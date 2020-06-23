@@ -22,6 +22,11 @@ namespace Data.DataAccess
             await _dbSet.AddAsync(entity);
         }
 
+        public TEntity Update(TEntity entity)
+        {
+             return _dbSet.Update(entity).Entity;
+        }
+
         public void Delete(TEntity entity)
         {
             _dbSet.Remove(entity);
@@ -30,6 +35,11 @@ namespace Data.DataAccess
         public IEnumerable<TEntity> Get()
         {
             return _dbSet.AsEnumerable();
+        }
+
+        public IQueryable<TEntity> GetAsQuery()
+        {
+            return _dbSet;
         }
 
         public TEntity GetById(int id)

@@ -19,27 +19,25 @@ using WebApi.Helpers.Facades.Base;
 namespace WebApi.Controllers
 {
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class AuthenticationController : BaseController
     {
         private readonly IConfiguration _configuration;
-        private readonly SignInManager<Person> _signInManager;
-        private readonly IMapper _mapper;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenProvider _tokenProvider;
         private IPersonMappersFacade mappersFacade;
 
-        public AuthenticationController(IConfiguration configuration, UserManager<Person> userManager, SignInManager<Person> signInManager,
-            IMapper mapper, ITokenProvider tokenProvider, IPersonMappersFacade mappersFacade) 
+        public AuthenticationController(IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            ITokenProvider tokenProvider, IPersonMappersFacade mappersFacade) 
             : base(userManager)
         {
             _configuration = configuration;
             _signInManager = signInManager;
-            _mapper = mapper;
             _tokenProvider = tokenProvider;
             this.mappersFacade = mappersFacade;
         }
 
         [HttpPost]
-        [Route("register")]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] Register register)
         {
@@ -51,18 +49,34 @@ namespace WebApi.Controllers
 
             await _signInManager.SignInAsync(user, false);
             var token = MakeToken(user);
+            var result = new PersonLoginResponse
+            {
+                Token = token,
+                Id = user.Id,
+                Role = "user"
+            };
 
-            return Ok(token);
+            return Ok(result);
         }
 
         [HttpPost]
-        [Route("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
             await this.Authenticate(login.Username);
-
+            var result = new PersonLoginResponse();
             var user = await _userManager.FindByNameAsync(login.Username);
             var token = MakeToken(user);
+            result.Token = token;
+            result.Id = user.Id;
+
+            if (user is Person)
+            {
+                result.Role = "user";
+            }
+            else
+            {
+                result.Role = "admin";
+            }
 
             if (!Request.Headers.ContainsKey("www-authenticate"))
                 Request.Headers.Append("www-authenticate", "Bearer " + token);
@@ -80,11 +94,10 @@ namespace WebApi.Controllers
                 MaxAge = TimeSpan.FromMinutes(60)
             });
 
-            return Ok(token);
+            return Ok(result);
         }
 
         [HttpPost]
-        [Route("refreshtoken")]
         [Authorize]
         public async Task<IActionResult> RefreshToken()
         {

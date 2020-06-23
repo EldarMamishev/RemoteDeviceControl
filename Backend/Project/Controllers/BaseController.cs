@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]s")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected readonly UserManager<Person> _userManager;
+        protected readonly UserManager<ApplicationUser> _userManager;
 
-        public BaseController(UserManager<Person> userManager)
+        public BaseController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        public Task<Person> CurrentUser => _userManager.FindByNameAsync(
+        public Task<ApplicationUser> CurrentUser => _userManager.FindByNameAsync(
             User.Identity.Name ??
             User.Claims.Where(c => c.Properties.ContainsKey("unique_name"))
                 .Select(c => c.Value)
