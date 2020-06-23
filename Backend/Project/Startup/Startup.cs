@@ -36,8 +36,6 @@ namespace WebApi.Startup
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper(typeof(Startup));
-
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
@@ -50,7 +48,6 @@ namespace WebApi.Startup
 
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
-            //services.AddControllers();
 
             services.AddCors(options =>
             {
@@ -79,36 +76,16 @@ namespace WebApi.Startup
             app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
-
-            //app.UseCookiePolicy(new CookiePolicyOptions
-            //{
-            //    MinimumSameSitePolicy = SameSiteMode.Strict,
-            //    HttpOnly = HttpOnlyPolicy.Always,
-            //    Secure = CookieSecurePolicy.Always
-            //});
-
-            //app.Use(async (context, next) =>
-            //{
-            //    var token = context.Request.Cookies[".AspNetCore.Application.Id"];
-            //    if (!string.IsNullOrEmpty(token))
-            //    {
-            //        context.Request.Headers.Add("www-authenticate", "Bearer " + token);
-            //        context.Response.Headers.Add("www-authenticate", "Bearer " + token);
-            //    }
-
-            //    await next();
-            //});
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();  
-                //endpoints.MapHub<ChatHub>("/chat");
-            });
-
+                endpoints.MapDefaultControllerRoute();
+            }); 
+            
             app.UseSignalR(routes =>
             {
-                routes.MapHub<ChatHub>("/chat");
+                routes.MapHub<ChatHub>("/chatter");
             });
         }
 

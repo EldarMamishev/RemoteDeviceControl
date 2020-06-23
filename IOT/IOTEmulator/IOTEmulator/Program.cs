@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -14,54 +15,16 @@ namespace IOTEmulator
             Console.ReadLine();
         }
 
-        static async Task MainAsync()
-        {
-            try
-            {
-
-                var hubConnection = new HubConnection("http://localhost:44397");
-                //hubConnection.TraceLevel = TraceLevels.All;
-                //hubConnection.TraceWriter = Console.Out;
-                IHubProxy hubProxy = hubConnection.CreateHubProxy("ChatHub");
-                hubProxy.On<string, string>("sendToAll", (name, message) =>
-                {
-                    Console.WriteLine("Incoming data: {0} {1}", name, message);
-                });
-                ServicePointManager.DefaultConnectionLimit = 10;
-                await hubConnection.Start();
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
         static async Task SendAsync(string message)
         {
-            try
-            {
-
-                var hubConnection = new HubConnection("http://localhost:44397");
-                hubConnection.TraceLevel = TraceLevels.All;
-                hubConnection.TraceWriter = Console.Out;
-                await hubConnection.Start();
-                IHubProxy hubProxy = hubConnection.CreateHubProxy("ChatHub");
-                await hubProxy.Invoke("sendToAll", message);
-
-                hubProxy.On<string, string>("sendToAll", (name, message) =>
-                {
-                    Console.WriteLine("Incoming data: {0} {1}", name, message);
-                });
-
-                ServicePointManager.DefaultConnectionLimit = 10;
-                await hubConnection.Start();
-
-            }
-            catch (Exception ex)
-            {
-
-            }
+            var connection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:44397/chatter")
+                .ConfigureLogging(logging => {
+                    logging.AddConsole();
+                }).Build();
+            await Task.Delay(new Random().Next(0, 5) * 1000);
+            await connection.StartAsync();
+            await connection.InvokeAsync("SendMessage", "Console Client", message);
         }
     }
 }
