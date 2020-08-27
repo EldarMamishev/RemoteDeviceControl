@@ -1,5 +1,6 @@
 ﻿using Business.Helpers;
 using Core.Entities;
+using Data.Contracts.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -29,7 +30,7 @@ namespace WebApi.ModelMapping
             {
                 Id = device.Id,
                 Name = device.Name,
-                Type = device.Type.ToString(),
+                Type = device.Type.ToString().ToLower(),
                 LocationId = device.LocationId,
                 LocationName = $"{device.Location?.Country} - {device.Location?.City} - {device.Location?.Name}"
             };
@@ -55,6 +56,32 @@ namespace WebApi.ModelMapping
             {
                 response.Add($"{n.Key.Id}:{n.Key.Name}", this.MapFromDevicesToDeviceResponses(n.Value));
             }
+
+            return response.ToImmutableList();
+        }
+
+        public IEnumerable<KeyValuePair<string, IEnumerable<DeviceResponse>>> DevicesByBuildingsMapperAdmin(IDictionary<Location, List<Device>> deviceLocations, IUnitOfWork unitOfWork)
+        {
+            var response = new Dictionary<string, IEnumerable<DeviceResponse>>();
+            unitOfWork.LocationRepository.Get().Where(location => !deviceLocations.Keys.Any(key => key.Id == location.Id))
+                .ToList().ForEach(n => response.Add($"{n.Id}:{n.Name}", new List<DeviceResponse>() 
+                { 
+                    new DeviceResponse() 
+                    { 
+                        LocationId = n.Id, 
+                        LocationName = n.Name
+                    } 
+                }));
+
+            foreach (var n in deviceLocations)
+            {
+                response.Add($"{n.Key.Id}:{n.Key.Name}", this.MapFromDevicesToDeviceResponses(n.Value));
+            }
+
+            //foreach (var n in unitOfWork.LocationRepository.Get().ToList())
+            //{
+            //    response.Add($"{n.Id}:{n.Name}", new List<DeviceResponse>());
+            //}
 
             return response.ToImmutableList();
         }

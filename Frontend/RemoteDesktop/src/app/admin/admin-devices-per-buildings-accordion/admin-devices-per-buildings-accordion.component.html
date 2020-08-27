@@ -1,3 +1,6 @@
+<div class="space space50">
+  <button nbButton class="update-profile-button size-xl-medium" appearance="filled" (click)="addLocation()">{{'AddLocation' | translate}}</button>
+</div>
 <nb-accordion class="admin-devices-per-buildings-accordion"  multi="false">
   <nb-accordion-item class="slot" *ngFor="let pair of data;">
     <nb-accordion-item-header>{{pair.Key}}</nb-accordion-item-header>
@@ -9,4 +12,4 @@
   </nb-accordion-item>
 </nb-accordion>
 
-<button (click)="getDevices()">{{'Submit' | translate}}</button>
+<button nbButton (click)="getDevices()">{{'Submit' | translate}}</button>

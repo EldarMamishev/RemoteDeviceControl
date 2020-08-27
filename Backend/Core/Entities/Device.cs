@@ -19,5 +19,6 @@ namespace Core.Entities
         public virtual ICollection<LogEntity> Logs { get; set; }
         public virtual ICollection<Connection> Connections { get; set; }
         public DeviceStatus Status { get; set; }
+        public string ActiveState { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAllDevicesPerLocations()
         {
-            var devices = this.mappersFacade.DeviceMapper.DevicesByBuildingsMapper(this.unitOfWork.DeviceRepository.GetAllDevicesPerLocations());
+            var devices = this.mappersFacade.DeviceMapper.DevicesByBuildingsMapperAdmin(this.unitOfWork.DeviceRepository.GetAllDevicesPerLocations(), this.unitOfWork);
 
             return Ok(devices);
         }
@@ -79,15 +79,21 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLocation([FromBody]LocationRequest location)
         {
-            var newLocation = new Location() {
-                City = location.City,
-                Country = location.Country,
-                Name = location.Name
-            };
-            await this.unitOfWork.LocationRepository.Add(newLocation);
-            await this.unitOfWork.Commit();
+            if (!string.IsNullOrWhiteSpace(location.Name))
+            {
+                var newLocation = new Location()
+                {
+                    City = location.City,
+                    Country = location.Country,
+                    Name = location.Name
+                };
+                await this.unitOfWork.LocationRepository.Add(newLocation);
+                await this.unitOfWork.Commit();
 
-            return Ok();
+                return Ok($"Location {location.Name} created.");
+            }
+
+            return Ok("No location entered.");
         }
 
         [HttpPost]

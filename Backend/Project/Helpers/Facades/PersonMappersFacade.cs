@@ -11,8 +11,20 @@ namespace WebApi.Helpers.Facades
     {
         private DeviceMapper deviceMapper;
         private PersonMapper personMapper;
-        private PersonalDeviceMapper personalDeviceMapper;
         private LocationMapper locationMapper;
+        private LogsMapper logsMapper;
+        private ConnectionMapper connectionMapper;
+
+        public ConnectionMapper ConnectionMapper
+        {
+            get
+            {
+                if (this.connectionMapper == null)
+                    this.connectionMapper = new ConnectionMapper();
+
+                return this.connectionMapper;
+            }
+        }
 
         public DeviceMapper DeviceMapper
         {
@@ -22,17 +34,6 @@ namespace WebApi.Helpers.Facades
                     this.deviceMapper = new DeviceMapper();
 
                 return this.deviceMapper;
-            }
-        }
-
-        public PersonalDeviceMapper PersonalDeviceMapper
-        {
-            get
-            {
-                if (this.personalDeviceMapper == null)
-                    this.personalDeviceMapper = new PersonalDeviceMapper();
-
-                return this.personalDeviceMapper;
             }
         }
 
@@ -55,6 +56,17 @@ namespace WebApi.Helpers.Facades
                     this.locationMapper = new LocationMapper();
 
                 return this.locationMapper;
+            }
+        }
+
+        public LogsMapper LogsMapper
+        {
+            get
+            {
+                if (this.logsMapper == null)
+                    this.logsMapper = new LogsMapper();
+
+                return this.logsMapper;
             }
         }
     }

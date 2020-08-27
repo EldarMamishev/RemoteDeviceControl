@@ -8,8 +8,8 @@ namespace Core.Entities
     public class Connection : IBaseEntity
     {
         public int Id { get; set; }
-        public virtual PersonalDevice PersonalDevice { get; set; }
-        public int? PersonalDeviceId { get; set; }
+        public virtual Person Person { get; set; }
+        public int? PersonId { get; set; }
         public virtual Device Device { get; set; }
         public int? DeviceId { get; set; }
         public virtual ICollection<Command> Commands { get; set; }

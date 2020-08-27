@@ -359,6 +359,9 @@ namespace Data.Migrations
                 {
                     b.HasBaseType("Core.Entities.ApplicationIdentity.ApplicationUser");
 
+                    b.Property<string>("ActiveState")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");
 

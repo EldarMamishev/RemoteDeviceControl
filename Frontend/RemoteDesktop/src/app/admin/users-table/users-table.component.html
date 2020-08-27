@@ -1,15 +1,15 @@
 <nb-card class="users-table">
   <nb-card-header>
     <div class="space space8">
-      <h6 class="heading5 text-undefined text-alignment-left text-transform-none">Data Overview</h6>
+      <h6 class="heading5 text-undefined text-alignment-left text-transform-none" translate>UsersData</h6>
     </div>
   </nb-card-header>
 
   <nb-card-body>
     <div class="space datatable-space">
-      <users-smart-table class="users-data-table" (create)="onCreate()" [settings]="settings" [source]="source"></users-smart-table>
+      <users-smart-table class="users-data-table" [settings]="settings" [source]="source"></users-smart-table>
     </div>
   </nb-card-body>
 </nb-card>
 
-<button (click)="onCreate()">Submit</button>
+<button nbButton (click)="onCreate()" translate>Submit</button>

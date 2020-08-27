@@ -12,13 +12,15 @@ const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/js
   template: `
     <ng2-smart-table [settings]="settings"
                      [source]="dataSource"
-                     (createConfirm)="onCreate($event)"
                      (editConfirm)="onEdit($event)"
                      (deleteConfirm)="onDelete($event)"
                      (userRowSelect)="onSelect($event)"></ng2-smart-table>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
+// (createConfirm)="onCreate($event)"
+
 export class UsersSmartTableComponent implements AfterViewInit {
 
   private _source = new LocalDataSource([]);
@@ -36,7 +38,7 @@ export class UsersSmartTableComponent implements AfterViewInit {
   }
 
   @Output() edit = new EventEmitter<any>();
-  @Output() create = new EventEmitter<any>();
+  // @Output() create = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() select = new EventEmitter<any>();
 
@@ -51,23 +53,23 @@ export class UsersSmartTableComponent implements AfterViewInit {
     Promise.resolve().then(() => this.cd.detectChanges());
   }
 
-  onCreate(value) {
-    debugger;
-    var person = new Person();
-    person.userName = value.newData.userName;
-    person.firstName = value.newData.firstName;
-    person.lastName = value.newData.lastName;
-    person.email = value.newData.email;
-    person.id = 0;
-    var methodUrl = CONNECTION_PATH + "/Admin/AddNewUser"
-    this.http.post<Person>(methodUrl, person, httpOptions).subscribe(data =>
-    {
-      person.id = data.id;
-      this._source.add(person);
-      this._source.refresh();
-      value.confirm.reject();
-    });
-  }
+  // onCreate(value) {
+  //   debugger;
+  //   var person = new Person();
+  //   person.userName = value.newData.userName;
+  //   person.firstName = value.newData.firstName;
+  //   person.lastName = value.newData.lastName;
+  //   person.email = value.newData.email;
+  //   person.id = 0;
+  //   var methodUrl = CONNECTION_PATH + "/Admin/AddNewUser"
+  //   this.http.post<Person>(methodUrl, person, httpOptions).subscribe(data =>
+  //   {
+  //     person.id = data.id;
+  //     this._source.add(person);
+  //     this._source.refresh();
+  //     value.confirm.reject();
+  //   });
+  // }
 
   onEdit(value) {
     value.confirm.resolve();

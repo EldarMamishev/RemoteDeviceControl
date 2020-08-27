@@ -17,7 +17,6 @@ namespace Data.DataAccess
         private DeviceRepository deviceRepository;
         private LocationRepository locationRepository;
         private LogEntityRepository logEntityRepository;
-        private PersonalDeviceRepository personalDeviceRepository;
         private PersonRepository personRepository;
 
 
@@ -95,16 +94,6 @@ namespace Data.DataAccess
                 return this.logEntityRepository;
             }
         }
-        public PersonalDeviceRepository PersonalDeviceRepository
-        {
-            get
-            {
-                if (this.personalDeviceRepository is null)
-                    this.personalDeviceRepository = new PersonalDeviceRepository(this);
-
-                return this.personalDeviceRepository;
-            }
-        }
         public PersonRepository PersonRepository
         {
             get
@@ -141,9 +130,6 @@ namespace Data.DataAccess
 
                 case nameof(this.DeviceRepository):
                     return this.DeviceRepository as IRepository<TEntity>;
-
-                case nameof(this.PersonalDeviceRepository):
-                    return this.PersonalDeviceRepository as IRepository<TEntity>;
 
                 case nameof(this.ConnectionRepository):
                     return this.ConnectionRepository as IRepository<TEntity>;

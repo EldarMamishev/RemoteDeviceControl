@@ -34,10 +34,6 @@ namespace Data.Contracts.DataAccess
         {
             get;
         }
-        PersonalDeviceRepository PersonalDeviceRepository
-        {
-            get;
-        }
         PersonRepository PersonRepository
         {
             get;

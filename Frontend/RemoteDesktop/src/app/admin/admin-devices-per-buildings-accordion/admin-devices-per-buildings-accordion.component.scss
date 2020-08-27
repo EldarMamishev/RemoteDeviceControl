@@ -4,12 +4,39 @@
   height: auto;
   margin: 0;
   display: block;
-  
+
   .devices-in-building-data-table {
     width: 100%;
     height: auto;
   }
-    
+  .space50 {
+    height: auto;
+    min-height: 2rem;
+    width: 100%;
+    margin: 20px;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: visible;
+    background-color: unset;
+  }
+
+  .update-profile-button {
+    width: auto;
+    flex-direction: row;
+    > nb-icon.btn-icon.icon {
+      margin: 0;
+    }
+
+    span {
+      display: inline;
+    }
+
+    > nb-icon {
+      display: none;
+    }
+  }
+
   .space2 {
     height: auto;
     min-height: 2rem;
@@ -22,7 +49,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space3 {
     height: auto;
     min-height: 2rem;
@@ -35,11 +62,11 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .admin-devices-per-buildings-accordion {
     width: 100%;
     height: 100%;
     margin: 0;
   }
-  
+
 }

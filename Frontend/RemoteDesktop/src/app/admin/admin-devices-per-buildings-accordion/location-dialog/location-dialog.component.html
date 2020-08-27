@@ -1,0 +1,10 @@
+<div class="dialog_window">
+  <div>
+    <p>Write new location's name.</p>
+    <input nbInput [(ngModel)]="data">
+  </div>
+  <div class="buttons_div">
+      <button nbButton [mat-dialog-close]="data">Ok</button>
+      <button style="float: right;" nbButton (click)="onNoClick()">No Thanks</button>
+  </div>
+</div>

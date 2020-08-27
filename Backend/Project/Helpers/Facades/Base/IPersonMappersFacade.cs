@@ -9,8 +9,9 @@ namespace WebApi.Helpers.Facades.Base
     public interface IPersonMappersFacade
     {
         public DeviceMapper DeviceMapper { get; }
-        public PersonalDeviceMapper PersonalDeviceMapper { get; }
         public PersonMapper PersonMapper { get; }
         public LocationMapper LocationMapper{ get; }
+        public LogsMapper LogsMapper { get; }
+        public ConnectionMapper ConnectionMapper{ get; }
     }
 }

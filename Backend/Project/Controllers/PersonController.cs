@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         public IActionResult GetAllDevices()
         {
             IEnumerable<Device> allDevices = this.unitOfWork.GetRepository<Device>().Get();
-            IEnumerable<Device> devices = allDevices?.Where(d => d.Connections.Any(c => c.PersonalDevice.PersonId == CurrentUser.Result.Id));
+            IEnumerable<Device> devices = allDevices?.Where(d => d.Connections.Any(c => c.PersonId == CurrentUser.Result.Id));
 
             return Ok(this.mappersFacade.DeviceMapper.MapFromDevicesToDeviceResponses(allDevices));
         }
@@ -44,28 +44,6 @@ namespace WebApi.Controllers
             await this.unitOfWork.Context.SaveChangesAsync();
 
             return Ok(this.mappersFacade.DeviceMapper.MapFromDeviceToDeviceResponse(newDeviceEntity));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddNewPersonalDevice(AddPersonalDeviceRequest request)
-        {
-            Person person = this.unitOfWork.GetRepository<Person>().GetById(request.PersonId);
-            StringToEnumConverter converter = new StringToEnumConverter();
-
-            if (person == null)
-                return this.BadRequest("Person does not exist.");
-
-            PersonalDevice personalDevice = new PersonalDevice()
-            {
-                PersonId = request.PersonId,
-                Name = request.PersonalDeviceName,
-                Type = converter.UserDeviceTypeStringToEnumConverter(request.DeviceType)
-            };
-
-            await this.unitOfWork.GetRepository<PersonalDevice>().Add(personalDevice);
-            await this.unitOfWork.Context.SaveChangesAsync();
-
-            return Ok(this.mappersFacade.PersonalDeviceMapper.MapFromDeviceToDeviceResponse(personalDevice));
         }
 
         [HttpGet]

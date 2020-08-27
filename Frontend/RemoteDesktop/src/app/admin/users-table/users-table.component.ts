@@ -6,6 +6,7 @@ import {Observable, throwError} from "rxjs";
 import {showWarningOnce} from "tslint/lib/error";
 import { DefaultEditor } from 'ng2-smart-table';
 import {NumberInputEditorComponent} from "../../number-input-editor.component";
+import {TranslateService} from "@ngx-translate/core";
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
@@ -16,6 +17,60 @@ const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersTableComponent implements OnInit {
+  actionsTitle :string;
+  userNameTitle :string;
+  emailTitle :string;
+  lastNameTitle :string;
+  firstNameTitle :string;
+  genderTitle :string;
+  selectTitle :string;
+  maleTitle :string;
+  femaleTitle :string;
+  editTitle :string;
+  saveTitle :string;
+  cancelTitle :string;
+  deleteTitle :string;
+
+  actionsSubscr = this.translate.get('Actions').subscribe((res: string) => {
+    this.actionsTitle = res
+  });
+  nameSubscr = this.translate.get('Username').subscribe((res: string) => {
+    this.userNameTitle = res
+  });
+  firstNameSubscr = this.translate.get('FirstName').subscribe((res: string) => {
+    this.firstNameTitle = res
+  });
+  lastNameSubscr = this.translate.get('LastName').subscribe((res: string) => {
+    this.lastNameTitle = res
+  });
+  emailSubscr = this.translate.get('Email').subscribe((res: string) => {
+    this.emailTitle = res
+  });
+  genderSubscr = this.translate.get('Gender').subscribe((res: string) => {
+    this.genderTitle = res
+  });
+  selectSubscr = this.translate.get('Select').subscribe((res: string) => {
+    this.selectTitle = res
+  });
+  maleSubscr = this.translate.get('Male').subscribe((res: string) => {
+    this.maleTitle = res
+  });
+  femaleSubscr = this.translate.get('Female').subscribe((res: string) => {
+    this.femaleTitle = res
+  });
+  editSubscr = this.translate.get('Edit').subscribe((res: string) => {
+    this.editTitle = res
+  });
+  saveSubscr = this.translate.get('Save').subscribe((res: string) => {
+    this.saveTitle = res
+  });
+  cancelSubscr = this.translate.get('Cancel').subscribe((res: string) => {
+    this.cancelTitle = res
+  });
+  deleteSubscr = this.translate.get('Delete').subscribe((res: string) => {
+    this.deleteTitle = res
+  });
+
   private root = CONNECTION_PATH + '/admin/';
   settings = {
     "columns": {
@@ -31,57 +86,36 @@ export class UsersTableComponent implements OnInit {
         },*/
       },
       "userName": {
-        "title": "User Name",
+        "title": this.userNameTitle,
         "filter": true
       },
       "email": {
-        "title": "Email",
+        "title": this.emailTitle,
         "filter": true
       },
       "firstName": {
-        "title": "First Name",
+        "title": this.firstNameTitle,
         "filter": true
       },
       "lastName": {
-        "title": "Last Name",
+        "title": this.lastNameTitle,
         "filter": true
-      },
-      "gender": {
-        "title": "Gender",
-        "filter": {
-          "type": "list",
-          "config": {
-            "selectText": "Select ...",
-            list: [
-              { value: 'Male', title: 'Male' },
-              { value: 'Female', title: 'Female' },
-            ],
-          }
-        },
-        "editor": {
-          "type": "list",
-          "config": {
-            "selectText": "Select ...",
-            list: [
-              { value: 'Male', title: 'Male' },
-              { value: 'Female', title: 'Female' },
-            ],
-          }
-        }
-      },
-      "birthday": {
-        "title": "Birthday"
-      },
+      }
     },
     "delete": {
-      "confirmDelete": true
+      "confirmDelete": true,
+      "deleteButtonContent": this.deleteTitle
     },
-    "add": {
-      "confirmCreate": true
+    "edit": {
+      "confirmSave": true,
+      "cancelButtonContent": this.cancelTitle,
+      "editButtonContent": this.editTitle,
+      "saveButtonContent": this.saveTitle
     },
     "actions": {
-      "add": true,
-      "edit": false,
+      "columnTitle": this.actionsTitle,
+      "add": false,
+      "edit": true,
       "delete": true
     },
     "mode": "internal"
@@ -90,7 +124,7 @@ export class UsersTableComponent implements OnInit {
   ];
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient, private translate: TranslateService
   ) {
   }
 

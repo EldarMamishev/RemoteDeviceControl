@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import {ButtonInputEditorComponent} from "../../button-input-editor.component";
 import {CONNECTION_PATH} from "../../constants";
 import {BuildingViewmodel} from "../../view-models/building-viewmodel";
 import {LocationViewmodel} from "../../view-models/location-viewmodel";
 import {Person} from "../../view-models/people-viewmodel";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {ConnectButtonInputEditorComponent} from "../../connect-button-input-editor/connect-button-input-editor.component";
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
@@ -88,8 +88,8 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
           "config": {
             "selectText": "Select ...",
             list: [
-              { value: 'lock', title: this.liftTitle },
-              { value: 'lift', title: this.lockTitle },
+              { value: 'lock', title: this.lockTitle },
+              { value: 'lift', title: this.liftTitle },
             ],
           }
         },
@@ -98,8 +98,8 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
           "config": {
             "selectText": this.selectTitle + '...',
             list: [
-              { value: 'lock', title: this.liftTitle },
-              { value: 'lift', title: this.lockTitle },
+              { value: 'lock', title: this.lockTitle },
+              { value: 'lift', title: this.liftTitle },
             ],
           }
         }
@@ -107,7 +107,7 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
       "button": {
         "title": this.buttonTitle,
         "type": 'custom',
-        "renderComponent": ButtonInputEditorComponent,
+        "renderComponent": ConnectButtonInputEditorComponent,
         onComponentInitFunction(instance) {
           instance.save.subscribe(row => {
             alert(`${row.name} connected!`)

@@ -6,10 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RestSharp" Version="106.11.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Business\Business.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Data\Data.csproj" />
     <ProjectReference Include="..\..\Repositories\Repositories.csproj" />
+    <ProjectReference Include="..\..\WebApi.Model\ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

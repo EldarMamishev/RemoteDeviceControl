@@ -59,6 +59,7 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
     device.name = value.newData.name;
     device.type = value.newData.type;
     device.locationId = value.source.data[0].locationId;
+    // device.locationId = this. parent.name.split(':')[0];
     var methodUrl = CONNECTION_PATH + "/Admin/AddNewDevice"
     this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
     this._source.refresh();

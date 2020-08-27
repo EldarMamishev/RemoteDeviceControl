@@ -17,6 +17,6 @@ namespace Core.Entities
 
         public Gender Gender { get; set; }
 
-        public virtual ICollection<PersonalDevice> PersonalDevices { get; set; }
+        public virtual ICollection<Connection> Connections { get; set; }
     }
 }

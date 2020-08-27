@@ -14,7 +14,6 @@ namespace Data
     {
         public DbSet<Person> People { get; set; }
         public DbSet<Device> Devices { get; set; }
-        public DbSet<PersonalDevice> PersonalDevices { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Location> Locations { get; set; }

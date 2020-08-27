@@ -3,6 +3,7 @@ using Data.Contracts.DataAccess;
 using Data.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Data.Repositories
@@ -12,6 +13,11 @@ namespace Data.Repositories
         public ConnectionRepository(IUnitOfWork unitOfWork) 
             : base(unitOfWork)
         {
+        }
+
+        public IEnumerable<Connection> GetActiveConnectionsForPerson(int personId)
+        {
+            return this.GetAsQuery().Where(c => c.PersonId != null && c.PersonId.Value.Equals(personId)).ToList();
         }
     }
 }

@@ -3,15 +3,15 @@
   width: 100%;
   height: auto;
   display: block;
-  
+
   .heading10 {
     margin: 0;
   }
-    
+
   .text16 {
     margin: 0 0 0 auto;
   }
-    
+
   .space48 {
     height: auto;
     min-height: 2rem;
@@ -22,26 +22,26 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .text141 {
     margin: 0;
     color: var(--text-hint-color);
   }
-    
+
   .user-name-profile {
     margin: 0 0 10px 0;
     width: 100%;
   }
-    
+
   .text24 {
     margin: 0 0 4px 0;
   }
-    
+
   .email-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .space65 {
     height: auto;
     min-height: 2rem;
@@ -52,38 +52,38 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .heading12 {
     margin: 0;
   }
-    
+
   .text17 {
     margin: 0 0 4px 0;
   }
-    
+
   .current-password-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text18 {
     margin: 0 0 4px 0;
   }
-    
+
   .new-password-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text19 {
     margin: 0 0 4px 0;
   }
-    
+
   .repeat-new-password-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .space58 {
     height: auto;
     min-height: 2rem;
@@ -94,7 +94,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space51 {
     height: auto;
     min-height: 2rem;
@@ -106,11 +106,11 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .heading14 {
     margin: 0;
   }
-    
+
   .space64 {
     height: auto;
     min-height: 2rem;
@@ -121,38 +121,38 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .text82 {
     margin: 0 0 4px 0;
   }
-    
+
   .first-name-profile {
     margin: 0 0 10px 0;
     width: 100%;
   }
-    
+
   .text811 {
     margin: 0 0 4px 0;
   }
-    
+
   .last-name-profile {
     margin: 0 0 4px 0;
     width: 100%;
   }
-    
+
   .text25 {
     margin: 0 0 4px 0;
   }
-    
+
   .phone-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text112 {
     margin: 0 0 4px 0;
   }
-    
+
   .space272 {
     height: 24px;
     width: 100%;
@@ -162,31 +162,31 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .country-profile {
     margin: 0 0 20px 0;
     width: auto;
   }
-    
+
   .city-profile {
     margin: 0 0 20px 12px;
     width: auto;
   }
-    
+
   .address-profile {
     margin: 0 0 20px 0;
     width: 100%;
   }
-    
+
   .text1111 {
     margin: 0 0 4px 0;
   }
-    
+
   .birthday-profile {
     margin: 0 0 10px 0;
     width: 100%;
   }
-    
+
   .space251 {
     height: auto;
     min-height: 2rem;
@@ -198,7 +198,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space54 {
     height: auto;
     min-height: 2rem;
@@ -210,7 +210,7 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .space49 {
     height: auto;
     min-height: 2rem;
@@ -221,37 +221,40 @@
     overflow: visible;
     background-color: unset;
   }
-    
+
   .update-profile-button {
     width: auto;
     flex-direction: row;
+    margin: 10px;
     > nb-icon.btn-icon.icon {
       margin: 0;
     }
-    
+
     span {
       display: inline;
     }
-    
+
     > nb-icon {
       display: none;
     }
   }
-    
+
   .space50 {
     height: auto;
     min-height: 2rem;
     width: 100%;
+    padding: 20px;
+    margin: 20px;
     align-items: center;
     align-content: center;
     justify-content: center;
     overflow: visible;
     background-color: unset;
   }
-    
+
   .profile-card {
     width: 100%;
     height: 100%;
   }
-  
+
 }
