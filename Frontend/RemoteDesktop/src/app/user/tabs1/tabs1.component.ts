@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-tabs1',
@@ -8,7 +10,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class Tabs1Component implements OnInit {
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
   }

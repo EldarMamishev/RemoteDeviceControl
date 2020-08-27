@@ -18,5 +18,6 @@ namespace Core.Entities
         public int? LocationId { get; set; }
         public virtual ICollection<LogEntity> Logs { get; set; }
         public virtual ICollection<Connection> Connections { get; set; }
+        public DeviceStatus Status { get; set; }
     }
 }

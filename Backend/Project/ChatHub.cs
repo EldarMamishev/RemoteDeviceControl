@@ -12,7 +12,6 @@ namespace WebApi
 
         public ChatHub()
         {
-            Clients.All.SendAsync("sendToAll", "Server", "Hello");
         }
 
         public Task SendMessage(string user, string message)

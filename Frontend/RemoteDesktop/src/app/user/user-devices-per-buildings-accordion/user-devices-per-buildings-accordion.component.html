@@ -1,4 +1,5 @@
-<nb-accordion class="admin-devices-per-buildings-accordion"  multi="false">
+<link rel="stylesheet" href="user-devices-per-buildings-accordion.component.scss">
+<nb-accordion class="admin-devices-per-buildings-accordion" multi="false">
   <nb-accordion-item class="slot" *ngFor="let pair of data;">
     <nb-accordion-item-header>{{pair.Key}}</nb-accordion-item-header>
     <nb-accordion-item-body>
@@ -9,4 +10,5 @@
   </nb-accordion-item>
 </nb-accordion>
 
-<button (click)="getDevices()">Submit</button>
+<button (click)="getDevices()">{{'Submit' | translate}}</button>
+

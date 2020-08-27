@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   locales: ['en', 'ua'],
-  defaultLocale: 'ua',
+  defaultLocale: 'en',
+  theme: 'light'
 };
 
 

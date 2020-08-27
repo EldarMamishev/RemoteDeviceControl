@@ -2,7 +2,11 @@
 using Core.Entities.ApplicationIdentity;
 using Core.Entities.ApplicationIdentity.Access;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Data.Common;
+using System.Text;
 
 namespace Data
 {
@@ -18,6 +22,11 @@ namespace Data
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
+        {
+        }
+
+        public AppDbContext()
+            : base()
         {
         }
 

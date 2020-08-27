@@ -12,6 +12,8 @@ namespace Data.Contracts.DataAccess
             where TEntity : class, IBaseEntity;
         Task<int> Commit();
 
+        bool Backup();
+
         CommandRepository CommandRepository
         {
             get;

@@ -18,13 +18,27 @@ namespace IOTEmulator
         static async Task SendAsync(string message)
         {
             var connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:44397/chatter")
+                .WithUrl("https://eldarremotecontrol.azurewebsites.net/chatter")
                 .ConfigureLogging(logging => {
                     logging.AddConsole();
                 }).Build();
             await Task.Delay(new Random().Next(0, 5) * 1000);
-            await connection.StartAsync();
+            try
+            {
+                await connection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                string ss = ex.Message;
+            }
             await connection.InvokeAsync("SendMessage", "Console Client", message);
+        }
+
+        public Task ReceiveMessage(string user, string message)
+        {
+            Console.WriteLine(user + message);
+
+            return Task.CompletedTask;
         }
     }
 }

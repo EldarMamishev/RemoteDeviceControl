@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
 using Core.Entities;
 using Core.Entities.Base;
 using Data.Contracts.DataAccess;
 using Data.Repositories;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.DataAccess
@@ -19,6 +22,28 @@ namespace Data.DataAccess
 
 
         public DbContext Context { get; }
+
+        public bool Backup()
+        {
+            string dbName = "RemoteDeviceControlDb";
+            try
+            {
+                var path = @"E:\dbBackup\";
+
+                var query = new StringBuilder();
+
+                query.AppendLine($"USE {dbName}");
+                query.AppendLine($"BACKUP DATABASE {dbName} TO DISK = '{path}{dbName}{DateTime.Now.Month}{DateTime.Now.Day}_{DateTime.Now.Ticks}.Bak' WITH FORMAT");
+
+                this.Context.Database.ExecuteSqlCommand(query.ToString());
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public CommandRepository CommandRepository
         {
@@ -99,6 +124,11 @@ namespace Data.DataAccess
         public async Task<int> Commit()
         {
             return await Context.SaveChangesAsync();
+        }
+
+        public void Save()
+        {
+            Context.SaveChanges();
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() 

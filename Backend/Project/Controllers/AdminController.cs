@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Entities.ApplicationIdentity;
 using Data.Contracts.DataAccess;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,6 +29,10 @@ namespace WebApi.Controllers
             this.unitOfWork = unitOfWork;
             this.mappersFacade = mappersFacade;
         }
+
+        [HttpPost]
+        public IActionResult Backup()
+            => this.unitOfWork.Backup() ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
 
         [HttpGet]
         public IActionResult GetAllDevicesPerLocations()

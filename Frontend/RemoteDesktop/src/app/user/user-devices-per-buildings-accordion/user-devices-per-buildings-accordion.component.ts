@@ -16,14 +16,60 @@ const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
+  private dialog: HTMLDialogElement;
+
+  actionsTitle :string;
   nameTitle :string;
   typeTitle :string;
+  buttonTitle :string;
+  lockTitle :string;
+  liftTitle :string;
+  selectTitle :string;
+  addTitle :string;
+  createTitle :string;
+  editTitle :string;
+  saveTitle :string;
+  cancelTitle :string;
+  deleteTitle :string;
+
+  actionsSubscr = this.translate.get('Actions').subscribe((res: string) => {
+    this.actionsTitle = res
+  });
   nameSubscr = this.translate.get('T.Buildings').subscribe((res: string) => {
     this.nameTitle = res
   });
-
   typeSubscr = this.translate.get('Type').subscribe((res: string) => {
     this.typeTitle = res
+  });
+  buttonSubscr = this.translate.get('Button').subscribe((res: string) => {
+    this.buttonTitle = res
+  });
+  lockSubscr = this.translate.get('Lock').subscribe((res: string) => {
+    this.lockTitle = res
+  });
+  liftSubscr = this.translate.get('Lift').subscribe((res: string) => {
+    this.liftTitle = res
+  });
+  selectSubscr = this.translate.get('Select').subscribe((res: string) => {
+    this.selectTitle = res
+  });
+  addSubscr = this.translate.get('AddNew').subscribe((res: string) => {
+    this.addTitle = res
+  });
+  createSubscr = this.translate.get('Create').subscribe((res: string) => {
+    this.createTitle = res
+  });
+  editSubscr = this.translate.get('Edit').subscribe((res: string) => {
+    this.editTitle = res
+  });
+  saveSubscr = this.translate.get('Save').subscribe((res: string) => {
+    this.saveTitle = res
+  });
+  cancelSubscr = this.translate.get('Cancel').subscribe((res: string) => {
+    this.cancelTitle = res
+  });
+  deleteSubscr = this.translate.get('Delete').subscribe((res: string) => {
+    this.deleteTitle = res
   });
 
   settings =   {
@@ -36,55 +82,67 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
         "title": this.nameTitle
       },
       "type": {
-        "title": "Type",
+        "title": this.typeTitle,
         "editor": {
           "type": "list",
           "config": {
             "selectText": "Select ...",
             list: [
-              { value: 'lock', title: 'Lock' },
-              { value: 'lift', title: 'Lift' },
+              { value: 'lock', title: this.liftTitle },
+              { value: 'lift', title: this.lockTitle },
             ],
           }
         },
         "filter": {
           "type": "list",
           "config": {
-            "selectText": "Select ...",
+            "selectText": this.selectTitle + '...',
             list: [
-              { value: 'lock', title: 'Lock' },
-              { value: 'lift', title: 'Lift' },
+              { value: 'lock', title: this.liftTitle },
+              { value: 'lift', title: this.lockTitle },
             ],
           }
         }
       },
       "button": {
-        "title": 'Button',
+        "title": this.buttonTitle,
         "type": 'custom',
         "renderComponent": ButtonInputEditorComponent,
         onComponentInitFunction(instance) {
           instance.save.subscribe(row => {
-            alert(`${row.name} saved!`)
+            alert(`${row.name} connected!`)
           });
         }
       }
     },
     "delete": {
-      "confirmDelete": true
+      "confirmDelete": true,
+      "deleteButtonContent": this.deleteTitle
     },
     "add": {
-      "confirmCreate": true
+      "confirmCreate": true,
+      "cancelButtonContent": this.cancelTitle,
+      "addButtonContent": this.addTitle,
+      "createButtonContent": this.createTitle
     },
     "edit": {
-      "confirmSave": true
+      "confirmSave": true,
+      "cancelButtonContent": this.cancelTitle,
+      "editButtonContent": this.editTitle,
+      "saveButtonContent": this.saveTitle
     },
     "actions": {
+      "columnTitle": this.actionsTitle,
       "add": true,
       "edit": true,
       "delete": true
     },
     "mode": "internal"
   };
+
+  logId : number;
+
+  log : string;
 
   data : KeyValuePair<string, BuildingViewmodel[]>[];
 
@@ -101,6 +159,7 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
     this.http.get<KeyValuePair<string, BuildingViewmodel[]>[]>(methodUrl).subscribe(data => this.data = data);
   }
 }
+
 
 export class KeyValuePair<T, U>{
   Key: T;

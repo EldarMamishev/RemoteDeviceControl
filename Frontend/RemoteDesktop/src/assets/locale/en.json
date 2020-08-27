@@ -17,6 +17,7 @@
   "Login.Button": "LOG IN",
   "NoAccount": "Don't have an account? Sign up",
   "Title": "Create User",
+  "Button": "Button",
   "FirstName": "First name",
   "LastName": "Last name",
   "Address": "Address",
@@ -38,6 +39,9 @@
   "Edit": "Edit",
   "Delete": "Delete",
   "AddNew": "Add new",
+  "Create": "Create",
+  "Save": "Save",
+  "Cancel": "Cancel",
   "Connect": "Connect",
   "EnterValue": "Enter value",
   "DevicesAmount": "Devices amount",
@@ -48,5 +52,9 @@
   "Profile.Current": "Current password",
   "Profile.New": "New password",
   "Profile.Repeat": "Repeat new password",
-  "Profile.Button": "UPDATE PROFILE"
+  "Profile.Button": "UPDATE PROFILE",
+  "Lock": "Lock",
+  "Lift": "Lift",
+  "Submit": "Submit",
+  "Backup": "Backup"
 }

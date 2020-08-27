@@ -17,8 +17,8 @@ import {environment} from "../environments/environment";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private theme = 'light';
-  private language = 'en';
+  private theme = localStorage.getItem('theme') ?? environment.theme;
+  private language = localStorage.getItem('lang') ?? environment.defaultLocale;
 
   defaultLayout: BkLayout = {
     paddings: {
@@ -79,10 +79,25 @@ export class AppComponent {
    }
 
   ngOnInit(): void {
-    this.translate.use(environment.defaultLocale);
+    var role = localStorage.getItem('rdc_role');
+    if (role != undefined && role != '')
+      this.router.navigate([role]);
+    else
+      this.router.navigate(['./'])
+
+    if (localStorage.getItem('lang') != undefined)
+      this.translate.use(localStorage.getItem('lang'))
+    else
+      this.translate.use(environment.defaultLocale);
+
+    if (localStorage.getItem('theme') != undefined)
+      this.themeService.changeTheme(localStorage.getItem('theme'))
+    else
+      this.themeService.changeTheme(environment.theme);
   }
 
   public OnSelectedThemeChanged() {
+    localStorage.setItem('theme', this.theme);
     this.themeService.changeTheme(this.theme);
 
     this.themeService.onThemeChange()
@@ -92,15 +107,23 @@ export class AppComponent {
   }
 
   public OnSelectedLanguageChanged() {
+    localStorage.setItem('lang', this.language);
+
     this.translate.use(this.language);
   }
 
   private OnProfilePhotoClicked() {
-    this.router.navigate(['./profile']);
+    var role = localStorage.getItem('rdc_role');
+    if (role != undefined && role != '')
+      this.router.navigate(['./profile']);
   }
 
   private OnHomeClicked() {
-    this.router.navigate(['.']);
+    var role = localStorage.getItem('rdc_role');
+    if (role != undefined && role != '')
+      this.router.navigate([role]);
+    else
+      this.router.navigate(['./'])
   }
 
   private getPaddingCssValue(paddings): string {

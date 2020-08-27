@@ -15,12 +15,6 @@
     </div>
   </nb-layout-header>
 
-  <nb-sidebar *ngIf="(layout$ | async)?.sidebar" class="sidebar" responsive="true" [collapsedBreakpoints]="['xs', 'is', 'sm']" [compactedBreakpoints]="[]" translate>
-    <div class="space sidebar-space">
-      <nb-menu class="menu" [items]="items"></nb-menu>
-    </div>
-  </nb-sidebar>
-
   <nb-layout-column [style.padding]="padding$ | async">
     <router-outlet></router-outlet>
   </nb-layout-column>
