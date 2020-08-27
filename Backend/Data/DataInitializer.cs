@@ -14,11 +14,6 @@ namespace Data
         public void Initialize()
         {
             _context.Database.EnsureCreated();
-
-            //if (databaseExists)
-            //    return;
-
-            InitializeRoles();
         }
 
         //private void InitializeRoles()
