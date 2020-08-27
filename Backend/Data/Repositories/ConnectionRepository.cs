@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using Data.Contracts.DataAccess;
 using Data.DataAccess;
 using System;
@@ -17,7 +18,7 @@ namespace Data.Repositories
 
         public IEnumerable<Connection> GetActiveConnectionsForPerson(int personId)
         {
-            return this.GetAsQuery().Where(c => c.PersonId != null && c.PersonId.Value.Equals(personId)).ToList();
+            return this.GetAsQuery().Where(c => c.PersonId != null && c.PersonId.Value.Equals(personId) && c.Device.Status == DeviceStatus.Waiting).ToList();
         }
     }
 }

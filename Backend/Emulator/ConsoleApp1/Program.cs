@@ -25,17 +25,22 @@ namespace ConsoleApp1
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer("Server=tcp:remotecontraoldbserver.database.windows.net,1433;Initial Catalog=RemoteControl_db;Persist Security Info=False;User ID=Eldar;Password={Admin123!};Encrypt=True;TrustServerCertificate=False;");
+            => options.UseSqlServer("Data Source=tcp:remotecontraoldbserver.database.windows.net,1433;Initial Catalog=RemoteControl_db;User Id=Eldar@remotecontraoldbserver;Password=Admin123!");
+        //=> options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RemoteDeviceControlDb;");
     }
 
     class Program
     {
-        static void Main(string[] args)
+        static async void Main(string[] args)
         {
             string url = @"https://eldarremotecontrol.azurewebsites.net/api/Device/";
+            //string url = @"https://localhost:44397/Api/Device/";
             var restClient = new BaseClient(url);
             int personId = 0;
             ConnectionResponse trueConnection;
+            ConsoleDbContext appDbContext = new ConsoleDbContext();
+            UnitOfWork unitOfWork = new UnitOfWork(appDbContext);
+            Person person;
 
             while (true)
             {
@@ -47,8 +52,10 @@ namespace ConsoleApp1
                     continue;
                 }
 
-                var restResult = restClient.Get<int>("CheckPerson", parameters: new Dictionary<string, string>() { { nameof(personId), id } });
-                if (restResult == null)
+                //person = unitOfWork.PersonRepository.GetById(personId);
+                //var restResult = restClient.Get<int>("CheckPerson", parameters: new Dictionary<string, string>() { { nameof(personId), id } });
+                bool isPersonExist = unitOfWork.PersonRepository.IsPersonExist(personId);
+                if (!isPersonExist)
                 {
                     Console.WriteLine("Person does not exist.");
                     continue;
@@ -96,11 +103,8 @@ namespace ConsoleApp1
                 personId = trueConnection.PersonId
             };
 
-
             var logResponse = restClient.Post<int>("ConnectFromDevice", JsonConvert.SerializeObject(body));
 
-            ConsoleDbContext appDbContext = new ConsoleDbContext();
-            UnitOfWork unitOfWork = new UnitOfWork(appDbContext);
             var connection = unitOfWork.ConnectionRepository.GetById(trueConnection.ConnectionId);
             var device = unitOfWork.DeviceRepository.GetById(trueConnection.DeviceId);
             device.Status = DeviceStatus.Active;
@@ -111,6 +115,8 @@ namespace ConsoleApp1
                 ActionTime = DateTime.Now                
             };
             string currentState = string.Empty;
+
+            Console.WriteLine(device.ActiveState ?? string.Empty);
 
             while (true)
             {
@@ -142,32 +148,35 @@ namespace ConsoleApp1
                 }
                 else if (device.Type == Core.Enums.DeviceType.Lock)
                 {
-                    if (device.Type == Core.Enums.DeviceType.Lift)
+                    if (device.ActiveState.Contains("unlocked"))
                     {
-                        options = "Press 1 to lock the door;\nPress 2 to unclock the door";
+                        options = "Press 1 to lock the door;\nPress anything else to exit";
                         Console.WriteLine(options);
                         var k = Console.ReadKey();
-                        if (k.KeyChar != '1' && k.KeyChar != '2')
+                        if (k.KeyChar == '1')
                         {
-                            Console.WriteLine("Try again");
-                            continue;
+                            Console.WriteLine($"{device.Name} is locked");
+                            currentState = $"{device.Name} is locked.";
+                            log.Comments += $"{device.Name} is locked.";
                         }
-                        else if (k.KeyChar == '1')
-                        {
-                            Console.WriteLine("Door is locked");
-                            currentState = $"Door {device.Name} is locked.";
-                            log.Comments += $"Door {device.Name} is locked.";
+                        else
                             break;
-                        }
-                        else if (k.KeyChar == '2')
-                        {
-                            Console.WriteLine("Door is unlocked");
-                            currentState = $"Door {device.Name} is unlocked.";
-                            log.Comments += $"Door {device.Name} is unlocked.";
-                            break;
-                        }
                     }
-                    break;
+                    else
+                    {
+                        options = "Press 1 to unlock the door;\nPress anything else to exit";
+                        Console.WriteLine(options);
+                        var k = Console.ReadKey();
+
+                        if (k.KeyChar == '1')
+                        {
+                            Console.WriteLine($"{device.Name} is unlocked");
+                            currentState = $"{device.Name} is unlocked.";
+                            log.Comments += $"{device.Name} is unlocked.";
+                        }
+                        else
+                            break;
+                    }
                 }
                 else
                 {
@@ -181,10 +190,10 @@ namespace ConsoleApp1
             device.ActiveState = currentState;
             device.Status = DeviceStatus.Sleeping;
             connection.FinishDateUTC = DateTime.Now;
-            unitOfWork.LogEntityRepository.Update(log);
+            await unitOfWork.LogEntityRepository.Add(log);
             unitOfWork.ConnectionRepository.Update(connection);
             unitOfWork.DeviceRepository.Update(device);
-            unitOfWork.Save();
+            await unitOfWork.Commit();
         }
     }
 }

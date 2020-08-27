@@ -69,7 +69,7 @@ namespace WebApi.Controllers
             result.Token = token;
             result.Id = user.Id;
 
-            if (user is Person)
+            if (user.Id != 1)
             {
                 result.Role = "user";
             }

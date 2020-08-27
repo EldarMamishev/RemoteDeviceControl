@@ -1,5 +1,6 @@
 ﻿using Business.Helpers;
 using Core.Entities;
+using Core.Enums;
 using Data.Contracts.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -40,12 +41,28 @@ namespace WebApi.ModelMapping
         {
             var helper = new StringToEnumConverter();
 
-            return new Device()
+            var newDevice = new Device()
             {
                 Name = device.Name,
                 LocationId = device.LocationId,
                 Type = helper.DeviceTypeStringToEnumConverter(device.Type),
+                Status = DeviceStatus.Sleeping
             };
+
+            switch(newDevice.Type)
+            {
+                case DeviceType.Lift:
+                    newDevice.ActiveState = $"Lift {newDevice.Name} is on 1 floor.";
+                    break;
+                case DeviceType.Lock:
+                    newDevice.ActiveState = $"{newDevice.Name} is locked.";
+                    break;
+                default:
+                    newDevice.ActiveState = string.Empty;
+                    break;
+            }
+
+            return newDevice;
         }
 
         public IEnumerable<KeyValuePair<string, IEnumerable<DeviceResponse>>> DevicesByBuildingsMapper(IDictionary<Location, List<Device>> deviceLocations)

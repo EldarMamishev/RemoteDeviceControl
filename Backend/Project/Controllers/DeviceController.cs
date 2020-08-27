@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult StartConnection([FromBody] ConnectionViewModel connection)
+        public async Task<IActionResult> StartConnection([FromBody] ConnectionViewModel connection)
         {
             Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
             Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
@@ -47,25 +47,28 @@ namespace WebApi.Controllers
                     + Environment.NewLine + DateTime.Now.ToShortDateString() + Environment.NewLine + DateTime.Now.ToShortTimeString() + Environment.NewLine
             };
 
-            this.unitOfWork.LogEntityRepository.Update(logEntity);
-            this.unitOfWork.Commit();
+            Connection connectionEntity = new Connection
+            {
+                DeviceId = connection.deviceId,
+                PersonId = connection.personId,
+                StartDateUTC = DateTime.Now
+            };
 
-            return Ok(logEntity.Id);
+            await this.unitOfWork.LogEntityRepository.Add(logEntity);
+            await this.unitOfWork.Commit();
+            await this.unitOfWork.ConnectionRepository.Add(connectionEntity);
+            await this.unitOfWork.Commit();
+            this.unitOfWork.DeviceRepository.Update(device);
+            await this.unitOfWork.Commit();
+
+            return Ok(connection);
         }
 
         [HttpPost]
-        public IActionResult ConnectFromDevice([FromBody] ConnectionViewModel connection)
+        public async Task<IActionResult> ConnectFromDevice([FromBody] ConnectionViewModel connection)
         {
             Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
             Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
-            Connection connectionEntity = new Connection()
-            {
-                DeviceId = device.Id,
-                PersonId = person.Id,
-                StartDateUTC = DateTime.UtcNow                
-            };
-
-            this.unitOfWork.ConnectionRepository.Add(connectionEntity);
 
             if (device.Status != DeviceStatus.Sleeping)
                 return Ok("Device is already busy.");
@@ -76,18 +79,17 @@ namespace WebApi.Controllers
             {
                 DeviceId = connection.deviceId,
                 ActionTime = DateTime.Now,
-                Comments = $"Connection started by {person.FirstName} {person.LastName}" + Environment.NewLine + $"E-mail: {person.Email}" 
-                    + Environment.NewLine + DateTime.Now.ToShortDateString() + Environment.NewLine + DateTime.Now.ToShortTimeString() + Environment.NewLine
+                Comments = $"Device connected.\n"
             };
 
-            this.unitOfWork.LogEntityRepository.Update(logEntity);
-            this.unitOfWork.Commit();
+            this.unitOfWork.LogEntityRepository.Add(logEntity);
+            await this.unitOfWork.Commit();
 
             return Ok(logEntity.Id);
         }
 
         [HttpGet]
-        [Route("{personId:int}")]
+        //[Route("{personId:int}")]
         public IActionResult GetActiveConnections(int personId)
         {
             IEnumerable<Connection> connections = this.unitOfWork.ConnectionRepository.GetActiveConnectionsForPerson(personId);
@@ -128,7 +130,7 @@ namespace WebApi.Controllers
                 result = "No logs for current device";
             }
 
-            return Ok(new LogViewModel { Log = result });
+            return Ok(new LogViewModel { Log = result ?? string.Empty });
         }
 
         [HttpPost]
@@ -138,7 +140,7 @@ namespace WebApi.Controllers
             if (device is null)
                 return Ok("Device is missing");
 
-            return Ok(new LogViewModel { Log = device.ActiveState });
+            return Ok(new LogViewModel { Log = device.ActiveState ?? string.Empty });
         }
 
 

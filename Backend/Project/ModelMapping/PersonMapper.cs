@@ -17,6 +17,8 @@ namespace WebApi.ModelMapping
 
             foreach (var person in people)
             {
+                if (person.Id == 1)
+                    continue;
                 result.Add(this.MapPersonToViewModel(person));
             }
 

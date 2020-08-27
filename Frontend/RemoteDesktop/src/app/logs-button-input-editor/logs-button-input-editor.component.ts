@@ -33,6 +33,8 @@ export class LogsButtonInputEditorComponent implements ViewCell, OnInit {
 
   onClick() {
     this.save.emit(this.rowData);
+    if (this.rowData.name == null)
+      alert("Data is not set.")
 
     debugger;
     var methodUrl = CONNECTION_PATH + "/Device/GetLogsForDevice"

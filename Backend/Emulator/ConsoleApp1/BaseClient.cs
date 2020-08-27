@@ -35,7 +35,7 @@ namespace ConsoleApp1
             where R : new()
         {
             var request = new RestRequest(url, Method.GET);
-            request.AddJsonBody(requestBody);
+            //request.AddJsonBody(requestBody);
 
             if (parameters != null)
             {
