@@ -11,13 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "WebApi.Model\ViewModel.csproj", "{2881D59B-0F5B-44E4-A5AE-D7F42FFBA2C3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0F14AC96-57E0-4135-B2FC-BB4D0A675B86}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastrucure\Infrastructure.csproj", "{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Tests", "Infrastrucure.Tests\Infrastructure.Tests.csproj", "{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{FBBD2501-DEE6-467D-9DC3-7C40165AC2F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{FBBD2501-DEE6-467D-9DC3-7C40165AC2F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{C393E02A-D739-453F-8529-3978C9B07688}"
 EndProject
@@ -43,14 +37,6 @@ Global
 		{2881D59B-0F5B-44E4-A5AE-D7F42FFBA2C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2881D59B-0F5B-44E4-A5AE-D7F42FFBA2C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2881D59B-0F5B-44E4-A5AE-D7F42FFBA2C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBBD2501-DEE6-467D-9DC3-7C40165AC2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FBBD2501-DEE6-467D-9DC3-7C40165AC2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBBD2501-DEE6-467D-9DC3-7C40165AC2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,10 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{0FDCBBB9-BC8E-43A0-8600-D4FACF2D448D} = {0F14AC96-57E0-4135-B2FC-BB4D0A675B86}
-		{7F9DB6C5-AB25-4939-B618-E67E9A3E6A2B} = {0F14AC96-57E0-4135-B2FC-BB4D0A675B86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6922C29-B244-4124-8035-04FF3A7A15DA}

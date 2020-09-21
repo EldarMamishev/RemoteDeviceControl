@@ -4,6 +4,8 @@ import {Person} from "../../view-models/people-viewmodel";
 import {CONNECTION_PATH} from "../../constants";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {__await} from "tslib";
+import {BuildingViewmodel} from "../../view-models/building-viewmodel";
+import {SingleIdViewmodel} from "../../view-models/singleId-viewmodel";
 
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
 
@@ -72,13 +74,31 @@ export class UsersSmartTableComponent implements AfterViewInit {
   // }
 
   onEdit(value) {
+    debugger;
+    var person = new Person();
+    person.firstName = value.newData.firstName;
+    person.id = value.newData.id;
+    person.lastName = value.newData.lastName;
+    person.userName = value.newData.userName;
+    person.email = value.newData.email;
+    var methodUrl = CONNECTION_PATH + "/Admin/UpdateUser"
+    this.http.post<BuildingViewmodel>(methodUrl, person, httpOptions).subscribe(data => person.id = data.id);
     value.confirm.resolve();
-    this.edit.emit(value.data);
+    this._source.refresh();
+    this.edit.emit(value.data);;
+    this._source.refresh();
   }
 
   onDelete(value) {
+    debugger;
+    var deviceId = new SingleIdViewmodel();
+    deviceId.id = value.data.id;
+    var methodUrl = CONNECTION_PATH + "/Admin/DeleteUser"
+    var subscriber;
+    this.http.post<any>(methodUrl, deviceId, httpOptions).subscribe(data => subscriber = data);
     value.confirm.resolve();
     this.delete.emit(value.data);
+    this._source.refresh();
   }
 
   onSelect(value) {

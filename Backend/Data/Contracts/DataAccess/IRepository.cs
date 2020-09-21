@@ -8,6 +8,7 @@ namespace Data.Contracts.DataAccess
         where TEntity : class
     {
         Task Add(TEntity entity);
+        void AddSync(TEntity entity);
         void Delete(TEntity entity);
         IEnumerable<TEntity> Get();
         TEntity GetById(int id);

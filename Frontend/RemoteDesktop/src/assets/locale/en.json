@@ -1,5 +1,5 @@
 ﻿{
-  "T.Login": "Log in",
+  "T.Login": "Login",
   "T.Register": "Sign up",
   "T.Buildings": "Buildings",
   "T.Users": "Users",
@@ -16,7 +16,7 @@
   "Login.Email": "Email or Username",
   "Login.Button": "LOG IN",
   "NoAccount": "Don't have an account? Sign up",
-  "Title": "Create User",
+  "Register.Button": "Sign up",
   "Button": "Button",
   "FirstName": "First name",
   "LastName": "Last name",

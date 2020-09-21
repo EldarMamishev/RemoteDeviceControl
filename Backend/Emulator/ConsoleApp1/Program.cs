@@ -12,26 +12,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
+using System.Threading;
 using ViewModel.Connection;
 
 namespace ConsoleApp1
 {
-    public class ConsoleDbContext : AppDbContext
-    {
-        public ConsoleDbContext()
-            : base()
-        {
-
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer("Data Source=tcp:remotecontraoldbserver.database.windows.net,1433;Initial Catalog=RemoteControl_db;User Id=Eldar@remotecontraoldbserver;Password=Admin123!");
-        //=> options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RemoteDeviceControlDb;");
-    }
-
     class Program
     {
-        static async void Main(string[] args)
+        static void Main(string[] args)
         {
             string url = @"https://eldarremotecontrol.azurewebsites.net/api/Device/";
             //string url = @"https://localhost:44397/Api/Device/";
@@ -114,9 +103,9 @@ namespace ConsoleApp1
                 DeviceId = trueConnection.DeviceId,
                 ActionTime = DateTime.Now                
             };
-            string currentState = string.Empty;
+            string currentState = device.ActiveState;
 
-            Console.WriteLine(device.ActiveState ?? string.Empty);
+            Console.WriteLine(currentState + Environment.NewLine ?? string.Empty);
 
             while (true)
             {
@@ -138,9 +127,32 @@ namespace ConsoleApp1
                         var floor = Console.ReadLine();
                         if (int.TryParse(floor, out int num))
                         {
+                            int i = int.Parse(Regex.Match(currentState, @"\d+").Value);
+                            if (i == num)
+                                continue;
+
+                            Console.WriteLine($"Lift  is called to floor {num}.");
+                            currentState = $"Lift {device.Name} is busy.";
+                            device.ActiveState = currentState;
+                            unitOfWork.DeviceRepository.Update(device);
+                            unitOfWork.Context.SaveChanges();
+                            bool wasUp = i < num;
+                            while (wasUp && i < num)
+                            {
+                                i++;
+                                Thread.Sleep(1000);
+                                Console.WriteLine($"Lift {device.Name} is on {i} floor.");
+                            }
+
+                            while (!wasUp && i > num)
+                            {
+                                i--;
+                                Thread.Sleep(1000);
+                                Console.WriteLine($"Lift {device.Name} is on {i} floor.");
+                            }
+
                             log.Comments += $"Lift {device.Name} is called to floor {num}.";
                             currentState = $"Lift {device.Name} is on {num} floor.";
-                            Console.WriteLine($"Lift  is called to floor {num}.");
                             break;
                         }
                     }
@@ -148,14 +160,14 @@ namespace ConsoleApp1
                 }
                 else if (device.Type == Core.Enums.DeviceType.Lock)
                 {
-                    if (device.ActiveState.Contains("unlocked"))
+                    if (currentState.Contains("unlocked"))
                     {
                         options = "Press 1 to lock the door;\nPress anything else to exit";
                         Console.WriteLine(options);
                         var k = Console.ReadKey();
                         if (k.KeyChar == '1')
                         {
-                            Console.WriteLine($"{device.Name} is locked");
+                            Console.WriteLine($"\n{device.Name} is locked\n");
                             currentState = $"{device.Name} is locked.";
                             log.Comments += $"{device.Name} is locked.";
                         }
@@ -170,7 +182,7 @@ namespace ConsoleApp1
 
                         if (k.KeyChar == '1')
                         {
-                            Console.WriteLine($"{device.Name} is unlocked");
+                            Console.WriteLine($"\n{device.Name} is unlocked\n");
                             currentState = $"{device.Name} is unlocked.";
                             log.Comments += $"{device.Name} is unlocked.";
                         }
@@ -190,10 +202,23 @@ namespace ConsoleApp1
             device.ActiveState = currentState;
             device.Status = DeviceStatus.Sleeping;
             connection.FinishDateUTC = DateTime.Now;
-            await unitOfWork.LogEntityRepository.Add(log);
             unitOfWork.ConnectionRepository.Update(connection);
             unitOfWork.DeviceRepository.Update(device);
-            await unitOfWork.Commit();
+            unitOfWork.LogEntityRepository.AddSync(log);
+            unitOfWork.Context.SaveChanges();
         }
+    }
+
+    public class ConsoleDbContext : AppDbContext
+    {
+        public ConsoleDbContext()
+            : base()
+        {
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlServer("Data Source=tcp:remotecontraoldbserver.database.windows.net,1433;Initial Catalog=RemoteControl_db;User Id=Eldar@remotecontraoldbserver;Password=Admin123!");
+        //=> options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RemoteDeviceControlDb;");
     }
 }

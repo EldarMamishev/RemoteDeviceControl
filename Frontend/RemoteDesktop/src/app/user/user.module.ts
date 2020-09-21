@@ -8,6 +8,9 @@ import { UserDevicesPerBuildingsAccordionComponent } from './user-devices-per-bu
 import { SharedModule } from '../shared/shared.module';
 import {MissingTranslationHandler, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
   imports: [
     CommonModule,
     UserRoutingModule,
-    SharedModule
+    SharedModule,
+    MatInputModule,
+    FormsModule,
+    MatDialogModule
   ]
 })
 export class UserModule { }

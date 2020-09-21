@@ -10,21 +10,21 @@
       <div class="space space22">
         <div class="space space23">
           <div class="space space25">
-            <label class="text8 text-basic label" >First Name</label>
-            <input nbInput class="first-name-register size-xl-medium" name="firstName" ngDefaultControl [(ngModel)]="fields.firstName" placeholder="First name" type="text" shape="rectangle" status="basic">
-            <label class="text81 text-basic label" >Last Name</label>
-            <input nbInput class="last-name-register size-xl-medium" placeholder="Last name" name="lastName" ngDefaultControl [(ngModel)]="fields.lastName" type="text" shape="rectangle" status="basic">
-            <label class="text14 text-basic label" >Username</label>
-            <input nbInput class="user-name-register size-xl-medium" name="userName" ngDefaultControl [(ngModel)]="fields.userName" placeholder="User name" type="text" shape="rectangle" status="basic">
+            <label class="text8 text-basic label" translate>FirstName</label>
+            <input nbInput class="first-name-register size-xl-medium" name="firstName" ngDefaultControl [(ngModel)]="fields.firstName" placeholder="{{'FirstName' | translate}}" type="text" shape="rectangle" status="basic">
+            <label class="text81 text-basic label" translate>LastName</label>
+            <input nbInput class="last-name-register size-xl-medium" placeholder="{{'LastName' | translate}}" name="lastName" ngDefaultControl [(ngModel)]="fields.lastName" type="text" shape="rectangle" status="basic">
+            <label class="text14 text-basic label" translate>Username</label>
+            <input nbInput class="user-name-register size-xl-medium" name="userName" ngDefaultControl [(ngModel)]="fields.userName" placeholder="{{'Username' | translate}}" type="text" shape="rectangle" status="basic">
          </div>
         </div>
         <div class="space space24">
           <div class="space space32">
-            <label class="text101 text-basic label" >Email</label>
-            <input nbInput class="emai-register size-xl-medium" placeholder="E-mail" type="email" name="email" ngDefaultControl [(ngModel)]="fields.email" shape="rectangle" status="basic">
-            <label class="text1011 text-basic label">Password</label>
+            <label class="text101 text-basic label" translate>Email</label>
+            <input nbInput class="emai-register size-xl-medium" placeholder="{{'Email' | translate}}" type="email" name="email" ngDefaultControl [(ngModel)]="fields.email" shape="rectangle" status="basic">
+            <label class="text1011 text-basic label" translate>Password</label>
             <input nbInput class="password-register size-xl-medium" placeholder="" name="password" ngDefaultControl [(ngModel)]="fields.password" type="password" shape="rectangle" status="basic">
-            <label class="text1012 text-basic label" >Repeat password</label>
+            <label class="text1012 text-basic label" translate>RepeatPassword</label>
             <input nbInput class="repeat-password-register size-xl-medium" name="repeatPassword" ngDefaultControl [(ngModel)]="fields.repeatPassword" placeholder="" type="password" shape="rectangle" status="basic">
           </div>
         </div>

@@ -4,7 +4,9 @@ import {CONNECTION_PATH} from "../../constants";
 import {BuildingViewmodel} from "../../view-models/building-viewmodel";
 import {LocationViewmodel} from "../../view-models/location-viewmodel";
 import {Person} from "../../view-models/people-viewmodel";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {StateButtonInputEditorComponent} from "../../state-button-input-editor/state-button-input-editor.component";
 import {ConnectButtonInputEditorComponent} from "../../connect-button-input-editor/connect-button-input-editor.component";
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
@@ -16,12 +18,11 @@ const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
-  private dialog: HTMLDialogElement;
-
   actionsTitle :string;
   nameTitle :string;
   typeTitle :string;
-  buttonTitle :string;
+  stateTitle :string;
+  connectTitle :string;
   lockTitle :string;
   liftTitle :string;
   selectTitle :string;
@@ -41,8 +42,11 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
   typeSubscr = this.translate.get('Type').subscribe((res: string) => {
     this.typeTitle = res
   });
-  buttonSubscr = this.translate.get('Button').subscribe((res: string) => {
-    this.buttonTitle = res
+  stateSubscr = this.translate.get('State').subscribe((res: string) => {
+    this.stateTitle = res
+  });
+  connectSubscr = this.translate.get('Connect').subscribe((res: string) => {
+    this.connectTitle = res
   });
   lockSubscr = this.translate.get('Lock').subscribe((res: string) => {
     this.lockTitle = res
@@ -104,41 +108,30 @@ export class UserDevicesPerBuildingsAccordionComponent implements OnInit {
           }
         }
       },
-      "button": {
-        "title": this.buttonTitle,
+      "connect": {
+        "title": this.connectTitle,
         "type": 'custom',
+        "width":'150px',
         "renderComponent": ConnectButtonInputEditorComponent,
-        onComponentInitFunction(instance) {
-          instance.save.subscribe(row => {
-            alert(`${row.name} connected!`)
-          });
-        }
+        "filter": false,
+        sort: false
+      },
+      "currentState": {
+        "title": this.stateTitle,
+        "type": 'custom',
+        "width":'170px',
+        "renderComponent": StateButtonInputEditorComponent,
+        "filter": false,
+        sort: false
       }
     },
-    "delete": {
-      "confirmDelete": true,
-      "deleteButtonContent": this.deleteTitle
-    },
-    "add": {
-      "confirmCreate": true,
-      "cancelButtonContent": this.cancelTitle,
-      "addButtonContent": this.addTitle,
-      "createButtonContent": this.createTitle
-    },
-    "edit": {
-      "confirmSave": true,
-      "cancelButtonContent": this.cancelTitle,
-      "editButtonContent": this.editTitle,
-      "saveButtonContent": this.saveTitle
-    },
-    "actions": {
-      "columnTitle": this.actionsTitle,
-      "add": true,
-      "edit": true,
-      "delete": true
-    },
+    "actions": false,
     "mode": "internal"
   };
+
+
+  source =   [
+  ];
 
   logId : number;
 

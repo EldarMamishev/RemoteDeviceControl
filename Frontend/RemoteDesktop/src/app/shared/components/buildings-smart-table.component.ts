@@ -6,6 +6,7 @@ import {Person} from "../../view-models/people-viewmodel";
 import {CONNECTION_PATH} from "../../constants";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {__await} from "tslib";
+import {SingleIdViewmodel} from "../../view-models/singleId-viewmodel";
 
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
 
@@ -68,13 +69,30 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
   }
 
   onEdit(value) {
+    debugger;
+    var device = new BuildingViewmodel();
+    device.name = value.newData.name;
+    device.id = value.newData.id;
+    device.type = value.newData.type;
+    device.locationId = value.source.data[0].locationId;
+    var methodUrl = CONNECTION_PATH + "/Admin/UpdateDevice"
+    this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
     value.confirm.resolve();
-    this.edit.emit(value.data);
+    this._source.refresh();
+    this.edit.emit(value.data);;
+    this._source.refresh();
   }
 
   onDelete(value) {
+    debugger;
+    var deviceId = new SingleIdViewmodel();
+    deviceId.id = value.data.id;
+    var methodUrl = CONNECTION_PATH + "/Admin/DeleteDevice"
+    var subscriber;
+    this.http.post<any>(methodUrl, deviceId, httpOptions).subscribe(data => subscriber = data);
     value.confirm.resolve();
     this.delete.emit(value.data);
+    this._source.refresh();
   }
 
   onSelect(value) {

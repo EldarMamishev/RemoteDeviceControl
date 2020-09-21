@@ -21,6 +21,11 @@ namespace Data.DataAccess
         {
             await _dbSet.AddAsync(entity);
         }
+        
+        public void AddSync(TEntity entity)
+        {
+            _dbSet.Add(entity);
+        }
 
         public TEntity Update(TEntity entity)
         {
