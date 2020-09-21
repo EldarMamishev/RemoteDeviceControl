@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Connection;
-using WebApi.Helpers.Facades.Base;
+using Services.Facades.Base;
 
 namespace WebApi.Controllers
 {

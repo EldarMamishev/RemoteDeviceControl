@@ -7,7 +7,7 @@ using ViewModel.Auth;
 using ViewModel.Device;
 using ViewModel.Person;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class PersonMapper
     {

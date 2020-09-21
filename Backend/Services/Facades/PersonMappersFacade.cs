@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.Helpers.Facades.Base;
-using WebApi.ModelMapping;
+using Services.Facades.Base;
+using Services.ModelMapping;
 
-namespace WebApi.Helpers.Facades
+namespace Services.Facades
 {
     public class PersonMappersFacade : IPersonMappersFacade
     {

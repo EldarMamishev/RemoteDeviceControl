@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Connection;
-using WebApi.Controllers;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class ConnectionMapper
     {

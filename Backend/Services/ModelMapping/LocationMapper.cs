@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Location;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class LocationMapper
     {

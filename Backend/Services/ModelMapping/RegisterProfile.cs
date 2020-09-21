@@ -2,7 +2,7 @@
 using Core.Entities.ApplicationIdentity;
 using ViewModel.Auth;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class RegisterProfile : Profile
     {

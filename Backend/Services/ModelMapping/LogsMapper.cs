@@ -1,6 +1,5 @@
 ﻿using Business.Helpers;
 using Core.Entities;
-using Data.Contracts.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModel.Device;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class LogsMapper
     {

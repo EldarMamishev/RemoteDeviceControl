@@ -19,11 +19,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using WebApi.Helpers.Facades;
-using WebApi.Helpers.Facades.Base;
+using Services.Facades;
+using Services.Facades.Base;
 using WebApi.Helpers.Token;
+using WebApi.Hubs;
 
-namespace WebApi.Startup
+namespace WebApi
 {
     public class Startup
     {

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Device;
 
-namespace WebApi.ModelMapping
+namespace Services.ModelMapping
 {
     public class DeviceMapper
     {

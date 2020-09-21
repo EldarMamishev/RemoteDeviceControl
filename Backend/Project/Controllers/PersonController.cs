@@ -7,7 +7,7 @@ using Data.Contracts.DataAccess;
 using System.Linq;
 using System.Collections.Generic;
 using ViewModel.Device;
-using WebApi.Helpers.Facades.Base;
+using Services.Facades.Base;
 using ViewModel.PersonalDevice;
 using Business.Helpers;
 using Microsoft.AspNetCore.Authorization;

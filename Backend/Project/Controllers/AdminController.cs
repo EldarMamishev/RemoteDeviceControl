@@ -13,7 +13,7 @@ using ViewModel.Device;
 using ViewModel.Location;
 using ViewModel.Person;
 using ViewModel.Shared;
-using WebApi.Helpers.Facades.Base;
+using Services.Facades.Base;
 
 namespace WebApi.Controllers
 {

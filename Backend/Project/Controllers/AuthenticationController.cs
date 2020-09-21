@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using WebApi.Helpers.Facades.Base;
+using Services.Facades.Base;
 
 namespace WebApi.Controllers
 {

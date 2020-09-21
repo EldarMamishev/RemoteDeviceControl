@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApi.ModelMapping;
+using Services.ModelMapping;
 
-namespace WebApi.Helpers.Facades.Base
+namespace Services.Facades.Base
 {
     public interface IPersonMappersFacade
     {

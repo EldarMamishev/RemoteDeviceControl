@@ -25,7 +25,7 @@ namespace WebApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup.Startup>();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
