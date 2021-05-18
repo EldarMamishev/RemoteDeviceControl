@@ -8,16 +8,17 @@ using Core.Enums;
 
 namespace Core.Entities
 {
-    public class Device : ApplicationUser
+    public class Device : IBaseEntity
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public DeviceType Type { get; set; }
-        public string MongoDeviceId { get; set; }
-        public string MongoAccessDefinitionsId { get; set; }
+        public virtual DeviceType DeviceType { get; set; }
+        public int? DeviceTypeId { get; set; }
         public virtual Location Location { get; set; }
         public int? LocationId { get; set; }
         public virtual ICollection<LogEntity> Logs { get; set; }
         public virtual ICollection<Connection> Connections { get; set; }
+        public virtual ICollection<DeviceField> DeviceFields { get; set; }
         public DeviceStatus Status { get; set; }
         public string ActiveState { get; set; }
     }

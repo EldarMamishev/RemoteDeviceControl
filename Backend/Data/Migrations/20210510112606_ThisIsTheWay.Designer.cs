@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200428100321_InitialForMyDB")]
-    partial class InitialForMyDB
+    [Migration("20210510112606_ThisIsTheWay")]
+    partial class ThisIsTheWay
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -171,7 +171,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("FinishDateUTC")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PersonalDeviceId")
+                    b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDateUTC")
@@ -181,9 +181,55 @@ namespace Data.Migrations
 
                     b.HasIndex("DeviceId");
 
-                    b.HasIndex("PersonalDeviceId");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("Core.Entities.Device", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActiveState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeviceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceTypeId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("Core.Entities.DeviceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeviceTypes");
                 });
 
             modelBuilder.Entity("Core.Entities.Location", b =>
@@ -193,7 +239,16 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("MongoLocationId")
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -217,34 +272,14 @@ namespace Data.Migrations
                     b.Property<int?>("DeviceId")
                         .HasColumnType("int");
 
+                    b.Property<byte>("LogType")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceId");
 
                     b.ToTable("Logs");
-                });
-
-            modelBuilder.Entity("Core.Entities.PersonalDevice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("PersonalDevices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -348,29 +383,6 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Core.Entities.Device", b =>
-                {
-                    b.HasBaseType("Core.Entities.ApplicationIdentity.ApplicationUser");
-
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MongoAccessDefinitionsId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MongoDeviceId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator().HasValue("Device");
-                });
-
             modelBuilder.Entity("Core.Entities.Person", b =>
                 {
                     b.HasBaseType("Core.Entities.ApplicationIdentity.ApplicationUser");
@@ -392,6 +404,24 @@ namespace Data.Migrations
                     b.HasDiscriminator().HasValue("Person");
                 });
 
+            modelBuilder.Entity("Core.Entities.Admin", b =>
+                {
+                    b.HasBaseType("Core.Entities.Person");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator().HasValue("Admin");
+                });
+
+            modelBuilder.Entity("Core.Entities.SuperAdmin", b =>
+                {
+                    b.HasBaseType("Core.Entities.Admin");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator().HasValue("SuperAdmin");
+                });
+
             modelBuilder.Entity("Core.Entities.Command", b =>
                 {
                     b.HasOne("Core.Entities.Connection", "Connection")
@@ -402,12 +432,23 @@ namespace Data.Migrations
             modelBuilder.Entity("Core.Entities.Connection", b =>
                 {
                     b.HasOne("Core.Entities.Device", "Device")
-                        .WithMany()
+                        .WithMany("Connections")
                         .HasForeignKey("DeviceId");
 
-                    b.HasOne("Core.Entities.PersonalDevice", "PersonalDevice")
+                    b.HasOne("Core.Entities.Person", "Person")
                         .WithMany("Connections")
-                        .HasForeignKey("PersonalDeviceId");
+                        .HasForeignKey("PersonId");
+                });
+
+            modelBuilder.Entity("Core.Entities.Device", b =>
+                {
+                    b.HasOne("Core.Entities.DeviceType", "DeviceType")
+                        .WithMany("Devices")
+                        .HasForeignKey("DeviceTypeId");
+
+                    b.HasOne("Core.Entities.Location", "Location")
+                        .WithMany("Devices")
+                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Core.Entities.LogEntity", b =>
@@ -415,13 +456,6 @@ namespace Data.Migrations
                     b.HasOne("Core.Entities.Device", "Device")
                         .WithMany("Logs")
                         .HasForeignKey("DeviceId");
-                });
-
-            modelBuilder.Entity("Core.Entities.PersonalDevice", b =>
-                {
-                    b.HasOne("Core.Entities.Person", "Person")
-                        .WithMany("PersonalDevices")
-                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -473,13 +507,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.Device", b =>
-                {
-                    b.HasOne("Core.Entities.Location", "Location")
-                        .WithMany("Devices")
-                        .HasForeignKey("LocationId");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class InitialForMyDB : Migration
+    public partial class ThisIsTheWay : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,40 +21,6 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MongoLocationId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,10 +47,6 @@ namespace Data.Migrations
                     ExpirationDateAuth = table.Column<DateTime>(nullable: false),
                     CreationDateUTC = table.Column<DateTime>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    MongoDeviceId = table.Column<string>(nullable: true),
-                    MongoAccessDefinitionsId = table.Column<string>(nullable: true),
-                    LocationId = table.Column<int>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: true),
@@ -93,12 +55,56 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeviceTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    City = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<int>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,43 +193,30 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Logs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DeviceId = table.Column<int>(nullable: true),
-                    ActionTime = table.Column<DateTime>(nullable: false),
-                    Comments = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Logs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Logs_AspNetUsers_DeviceId",
-                        column: x => x.DeviceId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PersonalDevices",
+                name: "Devices",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    PersonId = table.Column<int>(nullable: true),
-                    Type = table.Column<byte>(nullable: false)
+                    DeviceTypeId = table.Column<int>(nullable: true),
+                    LocationId = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    ActiveState = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalDevices", x => x.Id);
+                    table.PrimaryKey("PK_Devices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonalDevices_AspNetUsers_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Devices_DeviceTypes_DeviceTypeId",
+                        column: x => x.DeviceTypeId,
+                        principalTable: "DeviceTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Devices_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -234,7 +227,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonalDeviceId = table.Column<int>(nullable: true),
+                    PersonId = table.Column<int>(nullable: true),
                     DeviceId = table.Column<int>(nullable: true),
                     StartDateUTC = table.Column<DateTime>(nullable: false),
                     FinishDateUTC = table.Column<DateTime>(nullable: false)
@@ -243,15 +236,37 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Connections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Connections_AspNetUsers_DeviceId",
+                        name: "FK_Connections_Devices_DeviceId",
                         column: x => x.DeviceId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Connections_PersonalDevices_PersonalDeviceId",
-                        column: x => x.PersonalDeviceId,
-                        principalTable: "PersonalDevices",
+                        name: "FK_Connections_AspNetUsers_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DeviceId = table.Column<int>(nullable: true),
+                    ActionTime = table.Column<DateTime>(nullable: false),
+                    Comments = table.Column<string>(nullable: true),
+                    LogType = table.Column<byte>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Logs_Devices_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -317,11 +332,6 @@ namespace Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_LocationId",
-                table: "AspNetUsers",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Commands_ConnectionId",
                 table: "Commands",
                 column: "ConnectionId");
@@ -332,19 +342,24 @@ namespace Data.Migrations
                 column: "DeviceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Connections_PersonalDeviceId",
+                name: "IX_Connections_PersonId",
                 table: "Connections",
-                column: "PersonalDeviceId");
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Devices_DeviceTypeId",
+                table: "Devices",
+                column: "DeviceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Devices_LocationId",
+                table: "Devices",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logs_DeviceId",
                 table: "Logs",
                 column: "DeviceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonalDevices_PersonId",
-                table: "PersonalDevices",
-                column: "PersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -377,10 +392,13 @@ namespace Data.Migrations
                 name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "PersonalDevices");
+                name: "Devices");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "DeviceTypes");
 
             migrationBuilder.DropTable(
                 name: "Locations");

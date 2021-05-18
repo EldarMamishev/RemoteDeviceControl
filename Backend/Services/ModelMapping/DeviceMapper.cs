@@ -31,7 +31,7 @@ namespace Services.ModelMapping
             {
                 Id = device.Id,
                 Name = device.Name,
-                Type = device.Type.ToString().ToLower(),
+                Type = device.DeviceType.Name,
                 LocationId = device.LocationId,
                 LocationName = $"{device.Location?.Country} - {device.Location?.City} - {device.Location?.Name}"
             };
@@ -45,16 +45,16 @@ namespace Services.ModelMapping
             {
                 Name = device.Name,
                 LocationId = device.LocationId,
-                Type = helper.DeviceTypeStringToEnumConverter(device.Type),
+                DeviceTypeId = (int?)helper.DeviceTypeStringToEnumConverter(device.Type),
                 Status = DeviceStatus.Sleeping
             };
 
-            switch(newDevice.Type)
+            switch((Core.Enums.DeviceType)newDevice.DeviceTypeId)
             {
-                case DeviceType.Lift:
+                case Core.Enums.DeviceType.Lift:
                     newDevice.ActiveState = $"Lift {newDevice.Name} is on 1 floor.";
                     break;
-                case DeviceType.Lock:
+                case Core.Enums.DeviceType.Lock:
                     newDevice.ActiveState = $"{newDevice.Name} is locked.";
                     break;
                 default:
