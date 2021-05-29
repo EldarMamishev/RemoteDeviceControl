@@ -12,17 +12,22 @@ namespace Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
+        public DbSet<AccessGroup> AccessGroups { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<SuperAdmin> SuperAdmins { get; set; }
-        public DbSet<Person> People { get; set; }
-        public DbSet<Device> Devices { get; set; }
-        public DbSet<Connection> Connections { get; set; }
         public DbSet<Command> Commands { get; set; }
-        public DbSet<Location> Locations { get; set; }
-        public DbSet<LogEntity> Logs{ get; set; }
+        public DbSet<CommandType> CommandTypes { get; set; }
+        public DbSet<Connection> Connections { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<DeviceField> DeviceFields { get; set; }
+        public DbSet<DeviceFieldCommand> DeviceFieldCommands { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
         public DbSet<Field> Fields { get; set; }
-        public DbSet<DeviceField> DeviceFields { get; set; }
+        public DbSet<FieldCommandType> FieldCommandTypes { get; set; }
+        public DbSet<FieldPossibleValue> FieldPossibleValues { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<LogEntity> Logs{ get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<SuperAdmin> SuperAdmins { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

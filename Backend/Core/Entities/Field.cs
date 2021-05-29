@@ -10,7 +10,10 @@ namespace Core.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public int? DeviceTypeId { get; set; }
         public virtual DeviceType DeviceType { get; set; }
         public virtual ICollection<DeviceField> DeviceFields{ get; set; }
+        public virtual ICollection<FieldCommandType> FieldCommandTypes { get; set; }
+        public virtual ICollection<FieldPossibleValue> FieldPossibleValues { get; set; }
     }
 }

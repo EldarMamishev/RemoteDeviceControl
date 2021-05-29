@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class AccessGroup
+    public class AccessGroup
     {
         public int Id { get; set; }
         public string AccessIdentifiers { get; set; }

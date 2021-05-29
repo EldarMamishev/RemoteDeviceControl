@@ -9,7 +9,9 @@ namespace Core.Entities
     {
         public int Id { get; set; }
         public string Value { get; set; }
+        public int? FieldId { get; set; }
         public virtual Field Field{ get; set; }
+        public int? DeviceId { get; set; }
         public virtual Device Device{ get; set; }
     }
 }
