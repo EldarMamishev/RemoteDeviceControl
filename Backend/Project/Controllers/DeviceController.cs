@@ -11,6 +11,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Connection;
 using Services.Facades.Base;
+using ViewModel.Log;
+using ViewModel.Device;
+using ViewModel.Shared;
+using WebApi.Controllers.Base;
 
 namespace WebApi.Controllers
 {
@@ -28,109 +32,31 @@ namespace WebApi.Controllers
             this.mappersFacade = mappersFacade;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> StartConnection([FromBody] ConnectionViewModel connection)
-        {
-            Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
-            Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
-
-            if (device.Status != DeviceStatus.Sleeping)
-                return Ok("Device is already busy.");
-
-            device.Status = DeviceStatus.Waiting;
-
-            LogEntity logEntity = new LogEntity()
-            {
-                DeviceId = connection.deviceId,
-                ActionTime = DateTime.Now,
-                Comments = $"Connection started by {person.FirstName} {person.LastName}" + Environment.NewLine + $"E-mail: {person.Email}" 
-                    + Environment.NewLine + DateTime.Now.ToShortDateString() + Environment.NewLine + DateTime.Now.ToShortTimeString() + Environment.NewLine
-            };
-
-            Connection connectionEntity = new Connection
-            {
-                DeviceId = connection.deviceId,
-                PersonId = connection.personId,
-                StartDateUTC = DateTime.Now
-            };
-
-            await this.unitOfWork.LogEntityRepository.Add(logEntity);
-            await this.unitOfWork.Commit();
-            await this.unitOfWork.ConnectionRepository.Add(connectionEntity);
-            await this.unitOfWork.Commit();
-            this.unitOfWork.DeviceRepository.Update(device);
-            await this.unitOfWork.Commit();
-
-            return Ok(connection);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ConnectFromDevice([FromBody] ConnectionViewModel connection)
-        {
-            Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
-            Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
-
-            if (device.Status != DeviceStatus.Sleeping)
-                return Ok("Device is already busy.");
-
-            device.Status = DeviceStatus.Waiting;
-
-            LogEntity logEntity = new LogEntity()
-            {
-                DeviceId = connection.deviceId,
-                ActionTime = DateTime.Now,
-                Comments = $"Device connected.\n"
-            };
-
-            this.unitOfWork.LogEntityRepository.Add(logEntity);
-            await this.unitOfWork.Commit();
-
-            return Ok(logEntity.Id);
-        }
-
-        [HttpGet]
+        //[HttpGet]
         //[Route("{personId:int}")]
-        public IActionResult GetActiveConnections(int personId)
-        {
-            IEnumerable<Connection> connections = this.unitOfWork.ConnectionRepository.GetActiveConnectionsForPerson(personId);
+        //public IActionResult CheckPerson(int personId)
+        //{
+        //    Person person = this.unitOfWork.PersonRepository.GetById(personId);
+        //    if (person is null)
+        //        return BadRequest();
 
-            return Ok(this.mappersFacade.ConnectionMapper.MapResponseFromConnections(connections));
+        //    return Ok(personId);
+        //}
+
+        [HttpGet]
+        public IActionResult GetAllDevices()
+        {
+            IEnumerable<Device> allDevices = this.unitOfWork.DeviceRepository.Get();
+
+            return Ok(this.mappersFacade.DeviceMapper.MapFromDevicesToDeviceResponses(allDevices));
         }
 
         [HttpGet]
-        [Route("{personId:int}")]
-        public IActionResult CheckPerson(int personId)
+        public IActionResult GetAllDevicesPerLocations()
         {
-            Person person = this.unitOfWork.PersonRepository.GetById(personId);
-            if (person is null)
-                return BadRequest();
+            var devices = this.mappersFacade.DeviceMapper.DevicesByBuildingsMapperAdmin(this.unitOfWork.DeviceRepository.GetAllDevicesPerLocations(), this.unitOfWork);
 
-            return Ok(personId);
-        }
-
-        [HttpPost]
-        [Route("{logId:int}")]
-        public IActionResult GetLog(int logId)
-        {
-            var log = this.unitOfWork.LogEntityRepository.GetById(logId);
-
-            return Ok(log.Comments);
-        }
-
-        [HttpPost]
-        public IActionResult GetLogsForDevice([FromBody] int deviceId)
-        {
-            string result;
-            try
-            {
-                result = this.mappersFacade.LogsMapper.MapStringFromLogs(this.unitOfWork.LogEntityRepository.GetLogsByDeviceId(deviceId));
-            }
-            catch
-            {
-                result = "No logs for current device";
-            }
-
-            return Ok(new LogViewModel { Log = result ?? string.Empty });
+            return Ok(devices);
         }
 
         [HttpPost]
@@ -143,11 +69,35 @@ namespace WebApi.Controllers
             return Ok(new LogViewModel { Log = device.ActiveState ?? string.Empty });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddNewDevice([FromBody]DeviceRequest device)
+        {
+            Device newDeviceEntity = this.mappersFacade.DeviceMapper.MapFromDeviceRequestToDevice(device);
+            await this.unitOfWork.GetRepository<Device>().Add(newDeviceEntity);
+            await this.unitOfWork.Context.SaveChangesAsync();
 
-    }
+            return Ok(this.mappersFacade.DeviceMapper.MapFromDeviceToDeviceResponse(newDeviceEntity));
+        }
 
-    public class LogViewModel
-    {
-        public string Log { get; set; }
+        [HttpPost]
+        public async Task<IActionResult> UpdateDevice([FromBody]DeviceWithIdRequest device)
+        {
+            Device newDeviceEntity = this.unitOfWork.DeviceRepository.GetById(device.Id);
+            newDeviceEntity.Name = string.IsNullOrWhiteSpace(device.Name) ? newDeviceEntity.Name : device.Name;
+            this.unitOfWork.DeviceRepository.Update(newDeviceEntity);
+            await this.unitOfWork.Commit();
+
+            return Ok(device);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteDevice([FromBody]SingleIdRequest deviceId)
+        {
+            Device newDeviceEntity = this.unitOfWork.DeviceRepository.GetById(deviceId.Id);
+            this.unitOfWork.DeviceRepository.Delete(newDeviceEntity);
+            await this.unitOfWork.Commit();
+
+            return Ok("Deleted");
+        }
     }
 }

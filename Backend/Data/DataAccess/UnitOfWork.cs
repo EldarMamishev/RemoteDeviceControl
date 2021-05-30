@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Entities;
 using Core.Entities.Base;
 using Data.Contracts.DataAccess;
 using Data.Repositories;
@@ -12,13 +11,16 @@ namespace Data.DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private AccessGroupRepository accessGroupRepository;
         private CommandRepository commandRepository;
+        private CommandTypeRepository commandTypeRepository;
         private ConnectionRepository connectionRepository;
         private DeviceRepository deviceRepository;
+        private DeviceTypeRepository deviceTypeRepository;
+        private FieldRepository fieldRepository;
         private LocationRepository locationRepository;
         private LogEntityRepository logEntityRepository;
         private PersonRepository personRepository;
-
 
         public DbContext Context { get; }
 
@@ -44,6 +46,17 @@ namespace Data.DataAccess
             }
         }
 
+        public AccessGroupRepository AccessGroupRepository
+        {
+            get
+            {
+                if (this.accessGroupRepository is null)
+                    this.accessGroupRepository = new AccessGroupRepository(this);
+
+                return this.accessGroupRepository;
+            }
+        }
+
         public CommandRepository CommandRepository
         {
             get
@@ -54,6 +67,18 @@ namespace Data.DataAccess
                 return this.commandRepository;
             }
         }
+
+        public CommandTypeRepository CommandTypeRepository
+        {
+            get
+            {
+                if (this.commandTypeRepository is null)
+                    this.commandTypeRepository = new CommandTypeRepository(this);
+
+                return this.commandTypeRepository;
+            }
+        }
+
         public ConnectionRepository ConnectionRepository
         {
             get
@@ -64,6 +89,7 @@ namespace Data.DataAccess
                 return this.connectionRepository;
             }
         }
+
         public DeviceRepository DeviceRepository
         {
             get
@@ -74,6 +100,29 @@ namespace Data.DataAccess
                 return this.deviceRepository;
             }
         }
+
+        public DeviceTypeRepository DeviceTypeRepository
+        {
+            get
+            {
+                if (this.deviceTypeRepository is null)
+                    this.deviceTypeRepository = new DeviceTypeRepository(this);
+
+                return this.deviceTypeRepository;
+            }
+        }
+
+        public FieldRepository FieldRepository
+        {
+            get
+            {
+                if (this.fieldRepository is null)
+                    this.fieldRepository = new FieldRepository(this);
+
+                return this.fieldRepository;
+            }
+        }
+
         public LocationRepository LocationRepository
         {
             get
@@ -84,6 +133,7 @@ namespace Data.DataAccess
                 return this.locationRepository;
             }
         }
+
         public LogEntityRepository LogEntityRepository
         {
             get
@@ -94,6 +144,7 @@ namespace Data.DataAccess
                 return this.logEntityRepository;
             }
         }
+
         public PersonRepository PersonRepository
         {
             get

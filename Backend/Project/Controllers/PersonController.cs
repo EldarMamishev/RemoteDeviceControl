@@ -11,6 +11,9 @@ using Services.Facades.Base;
 using ViewModel.PersonalDevice;
 using Business.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using ViewModel.Person;
+using ViewModel.Shared;
+using WebApi.Controllers.Base;
 
 namespace WebApi.Controllers
 {
@@ -20,38 +23,54 @@ namespace WebApi.Controllers
         private IUnitOfWork unitOfWork;
         private IPersonMappersFacade mappersFacade;
 
-        public PersonController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade) 
+        public PersonController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IPersonMappersFacade mappersFacade)
             : base(userManager)
         {
             this.unitOfWork = unitOfWork;
             this.mappersFacade = mappersFacade;
         }
 
-        [HttpGet]
-        public IActionResult GetAllDevices()
-        {
-            IEnumerable<Device> allDevices = this.unitOfWork.GetRepository<Device>().Get();
-            IEnumerable<Device> devices = allDevices?.Where(d => d.Connections.Any(c => c.PersonId == CurrentUser.Result.Id));
 
-            return Ok(this.mappersFacade.DeviceMapper.MapFromDevicesToDeviceResponses(allDevices));
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            var people = this.unitOfWork.PersonRepository.Get();
+
+            return Ok(this.mappersFacade.PersonMapper.MapPeopleToViewModel(people));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewDevice(DeviceRequest device)
+        public async Task<IActionResult> AddNewUser([FromBody]PersonRequest person)
         {
-            Device newDeviceEntity = this.mappersFacade.DeviceMapper.MapFromDeviceRequestToDevice(device);
-            await this.unitOfWork.GetRepository<Device>().Add(newDeviceEntity);
-            await this.unitOfWork.Context.SaveChangesAsync();
+            var newPerson = this.mappersFacade.PersonMapper.MapPerson(person);
+            await this.unitOfWork.PersonRepository.Add(newPerson);
+            await this.unitOfWork.Commit();
 
-            return Ok(this.mappersFacade.DeviceMapper.MapFromDeviceToDeviceResponse(newDeviceEntity));
+            return Ok(this.mappersFacade.PersonMapper.MapPersonToViewModel(newPerson));
         }
 
-        [HttpGet]
-        public IActionResult GetAllDevicesPerLocations()
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser([FromBody]PersonWithIdRequest person)
         {
-            var devices = this.mappersFacade.DeviceMapper.DevicesByBuildingsMapper(this.unitOfWork.DeviceRepository.GetAllDevicesPerLocations());
+            Person newPerson = this.unitOfWork.PersonRepository.GetById(person.id);
+            newPerson.FirstName = string.IsNullOrWhiteSpace(person.firstName) ? newPerson.FirstName : person.firstName;
+            newPerson.LastName = string.IsNullOrWhiteSpace(person.lastName) ? newPerson.LastName : person.lastName;
+            newPerson.UserName = string.IsNullOrWhiteSpace(person.userName) ? newPerson.UserName : person.userName;
+            newPerson.Email = string.IsNullOrWhiteSpace(person.email) ? newPerson.Email : person.email;
+            this.unitOfWork.PersonRepository.Update(newPerson);
+            await this.unitOfWork.Commit();
 
-            return Ok(devices);
+            return Ok(person);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser([FromBody] SingleIdRequest deviceId)
+        {
+            Person newPerson = this.unitOfWork.PersonRepository.GetById(deviceId.Id);
+            this.unitOfWork.PersonRepository.Delete(newPerson);
+            await this.unitOfWork.Commit();
+
+            return Ok("Deleted");
         }
     }
 }

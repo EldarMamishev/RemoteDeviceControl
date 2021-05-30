@@ -5,7 +5,7 @@ using Core.Entities.ApplicationIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace WebApi.Controllers.Base
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
