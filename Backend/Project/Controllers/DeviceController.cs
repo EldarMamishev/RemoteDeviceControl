@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Connection;
 using Services.Facades.Base;
-using ViewModel.Log;
+using ViewModel.LogEntity;
 using ViewModel.Device;
 using ViewModel.Shared;
 using WebApi.Controllers.Base;

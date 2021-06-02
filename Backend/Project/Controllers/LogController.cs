@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ViewModel.Connection;
 using Services.Facades.Base;
-using ViewModel.Log;
+using ViewModel.LogEntity;
 using WebApi.Controllers.Base;
 
 namespace WebApi.Controllers
