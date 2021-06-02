@@ -11,30 +11,56 @@ namespace Data.Contracts.DataAccess
         IRepository<TEntity> GetRepository<TEntity>()
             where TEntity : class, IBaseEntity;
         Task<int> Commit();
+        void Save();
 
         bool Backup();
 
-        CommandRepository CommandRepository
+        public AccessGroupRepository AccessGroupRepository
         {
             get;
         }
-        ConnectionRepository ConnectionRepository
+
+        public CommandRepository CommandRepository
         {
             get;
         }
-        DeviceRepository DeviceRepository
+
+        public CommandTypeRepository CommandTypeRepository
         {
             get;
         }
-        LocationRepository LocationRepository
+
+        public ConnectionRepository ConnectionRepository
         {
             get;
         }
-        LogEntityRepository LogEntityRepository
+
+        public DeviceRepository DeviceRepository
         {
             get;
         }
-        PersonRepository PersonRepository
+
+        public DeviceTypeRepository DeviceTypeRepository
+        {
+            get;
+        }
+
+        public FieldRepository FieldRepository
+        {
+            get;
+        }
+
+        public LocationRepository LocationRepository
+        {
+            get;
+        }
+
+        public LogEntityRepository LogEntityRepository
+        {
+            get;
+        }
+
+        public PersonRepository PersonRepository
         {
             get;
         }

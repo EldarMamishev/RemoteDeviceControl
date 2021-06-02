@@ -188,13 +188,14 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
 
   getDevices() {
     debugger;
-    var methodUrl = CONNECTION_PATH + "/Admin/GetAllDevicesPerLocations"
+
+    var methodUrl = CONNECTION_PATH + "/Device/GetAllDevicesPerLocations"
     this.http.get<KeyValuePair<string, BuildingViewmodel[]>[]>(methodUrl).subscribe(data => this.data = data);
   }
 
   getLocations() {
     debugger;
-    var methodUrl = CONNECTION_PATH + "/Admin/GetLocations"
+    var methodUrl = CONNECTION_PATH + "/Location/GetLocations"
     this.http.get<LocationViewmodel[]>(methodUrl).subscribe(data => this.locations = data);
   }
 
@@ -204,7 +205,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
     device.name = value.newData.name;
     device.type = value.newData.type;
     device.locationId = locationId;
-    var methodUrl = CONNECTION_PATH + "/Admin/AddNewDevice"
+    var methodUrl = CONNECTION_PATH + "/Device/AddNewDevice"
     this.http.post<Person>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
   }
 
@@ -219,7 +220,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
       this.newLocation = result;
       var viewModel = new NewlocationViewmodel();
       viewModel.name = this.newLocation;
-      var methodUrl = CONNECTION_PATH + "/Admin/AddLocation"
+      var methodUrl = CONNECTION_PATH + '/Location/AddLocation';
       var subscriber;
       this.http.post<String>(methodUrl, viewModel, httpOptions).subscribe(data => subscriber = data);
     });
