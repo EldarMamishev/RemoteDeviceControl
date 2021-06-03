@@ -1,0 +1,28 @@
+<label class="text141 text-basic label">Fields number</label>
+<input nbInput class="user-name-profile size-xl-medium" type="number" shape="rectangle" status="basic" [(ngModel)]="fieldsLength" (change)="initializeFields(fieldsLength)">
+<!--<div *ngFor="let field in fields  | async">-->
+<!--  <label class="text141 text-basic label">Name</label>-->
+<!--  <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic"  [(ngModel)]="field.name">-->
+<!--  <label class="text141 text-basic label">Value</label>-->
+<!--  <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic" [(ngModel)]="field.value">-->
+<!--</div>-->
+<!--<mat-list *ngFor="let field in fields">-->
+<!--  <label class="text141 text-basic label">Name</label>-->
+<!--  <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic"  [(ngModel)]="field.name">-->
+<!--  <label class="text141 text-basic label">Value</label>-->
+<!--  <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic" [(ngModel)]="field.value">-->
+<!--</mat-list>-->
+<ListView id="lv"  [items]="data">
+  <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+    <GridLayout class="list-group-item" [class.odd]="odd" [class.even]="even">
+      <Label>{{item.name}}</Label>
+    </GridLayout>
+  </ng-template>
+</ListView>
+<!--<button (click)="addField()">Add</button>-->
+<!--<ejs-listview #list id='sample-list' [dataSource]='data' [fields]='fields'>-->
+<!--  <ng-template  #template let-data="">-->
+<!--    <div class='text-content'> {{data.text}} <span class = 'delete-icon'></span> </div>-->
+<!--  </ng-template>-->
+<!--</ejs-listview>-->
+<!--<button ejs-button id="btn" (click)="addField()">Add Item</button>-->

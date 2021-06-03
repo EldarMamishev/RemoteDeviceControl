@@ -71,7 +71,7 @@ export class UsersTableComponent implements OnInit {
     this.deleteTitle = res
   });
 
-  private root = CONNECTION_PATH + '/admin/';
+  private root = CONNECTION_PATH + '/person/';
   settings = {
     "columns": {
       "id": {

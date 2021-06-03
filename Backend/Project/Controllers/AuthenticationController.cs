@@ -70,13 +70,13 @@ namespace WebApi.Controllers
             result.Token = token;
             result.Id = user.Id;
 
-            if (user.Id != 1)
+            if (user is Admin)
             {
-                result.Role = "user";
+                result.Role = "admin";
             }
             else
             {
-                result.Role = "admin";
+                result.Role = "user";
             }
 
             if (!Request.Headers.ContainsKey("www-authenticate"))

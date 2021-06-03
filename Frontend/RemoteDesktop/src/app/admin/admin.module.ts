@@ -13,17 +13,23 @@ import { LocationDialogComponent } from './admin-devices-per-buildings-accordion
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {MatDialogModule} from "@angular/material/dialog";
+import {NbDialogService} from "@nebular/theme";
+import {DeviceTypeComponent} from "./device-type/add-device-type-dialog/device-type.component";
+import {FieldListComponent} from "./device-type/add-device-type-dialog/fields/field-list.component";
+import {FieldComponent} from "./device-type/add-device-type-dialog/fields/field/field.component";
+import {MatListModule} from "@angular/material/list";
 
 
 @NgModule({
-  declarations: [AdminComponent, TabsComponent, UsersTableComponent, AdminDevicesPerBuildingsAccordionComponent, LocationDialogComponent],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    SharedModule,
-    MatInputModule,
-    FormsModule,
-    MatDialogModule
-  ]
+  declarations: [AdminComponent, DeviceTypeComponent, TabsComponent, UsersTableComponent, AdminDevicesPerBuildingsAccordionComponent, LocationDialogComponent, FieldListComponent, FieldComponent],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        SharedModule,
+        MatInputModule,
+        FormsModule,
+        MatDialogModule,
+        MatListModule
+    ]
 })
 export class AdminModule { }
