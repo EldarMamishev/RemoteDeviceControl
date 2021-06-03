@@ -64,6 +64,9 @@
   "AddLocation": "Додати локацію",
   "UsersData": "Дані про користувачів",
   "Male": "Чоловік",
-  "Female": "Жінка"
+  "Female": "Жінка",
+  "DeviceType": "Тип пристрою",
+  "Fields": "Поля",
+  "AddNewDeviceType": "Створити"
 }
 

@@ -66,7 +66,7 @@ namespace WebApi.Controllers
             if (device is null)
                 return Ok("Device is missing");
 
-            return Ok(new LogViewModel { Log = device.ActiveState ?? string.Empty });
+            return Ok(new LogViewModel { Log = device.Status.ToString() ?? string.Empty });
         }
 
         [HttpPost]
@@ -76,7 +76,20 @@ namespace WebApi.Controllers
             await this.unitOfWork.GetRepository<Device>().Add(newDeviceEntity);
             await this.unitOfWork.Context.SaveChangesAsync();
 
-            return Ok(this.mappersFacade.DeviceMapper.MapFromDeviceToDeviceResponse(newDeviceEntity));
+            Device response = this.unitOfWork.DeviceRepository.GetDeviceById(newDeviceEntity.Id);
+            Person user = (CurrentUser.Result as Person);
+
+            LogEntity logEntity = new LogEntity()
+            {
+                DeviceId = response.Id,
+                ActionTime = DateTime.Now,
+                Comments = $"Created by: Id={user?.Id} UserName={user?.UserName}{Environment.NewLine} At:{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"
+            };
+
+            await this.unitOfWork.LogEntityRepository.Add(logEntity);
+            await this.unitOfWork.Commit();
+
+            return Ok(this.mappersFacade.DeviceMapper.MapFromDeviceToDeviceResponse(response));
         }
 
         [HttpPost]

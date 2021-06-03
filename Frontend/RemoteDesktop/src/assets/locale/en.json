@@ -45,7 +45,7 @@
   "Connect": "Connect",
   "Logs": "Logs",
   "State": "Current state",
-  "CheckState": "Check",  
+  "CheckState": "Check",
   "EnterValue": "Enter value",
   "DevicesAmount": "Devices amount",
   "Overview": "Data overview",
@@ -64,5 +64,8 @@
   "AddLocation": "Add location",
   "UsersData": "Users data",
   "Male": "Male",
-  "Female": "Female"
+  "Female": "Female",
+  "DeviceType": "Device type",
+  "Fields": "Fields",
+  "AddNewDeviceType": "Add new"
 }

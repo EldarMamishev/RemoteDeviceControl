@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ViewModel.Device
 {
-    public class DeviceRequest
+    public class DeviceDetailsModel
     {
         public string Name { get; set; }
         public string TypeId { get; set; }

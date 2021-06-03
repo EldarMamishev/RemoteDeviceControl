@@ -13,6 +13,7 @@ using ViewModel.Connection;
 using Services.Facades.Base;
 using ViewModel.LogEntity;
 using WebApi.Controllers.Base;
+using System.Text;
 
 namespace WebApi.Controllers
 {
@@ -35,18 +36,12 @@ namespace WebApi.Controllers
         {
             Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
             Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
-
-            if (device.Status != DeviceStatus.Sleeping)
-                return Ok("Device is already busy.");
-
-            device.Status = DeviceStatus.Waiting;
-
+            
             LogEntity logEntity = new LogEntity()
             {
                 DeviceId = connection.deviceId,
                 ActionTime = DateTime.Now,
-                Comments = $"Connection started by {person.FirstName} {person.LastName}" + Environment.NewLine + $"E-mail: {person.Email}"
-                    + Environment.NewLine + DateTime.Now.ToShortDateString() + Environment.NewLine + DateTime.Now.ToShortTimeString() + Environment.NewLine
+                Comments = $"Connection started by: Id={person?.Id} UserName={person?.UserName}{Environment.NewLine} At:{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"
             };
 
             Connection connectionEntity = new Connection
@@ -60,10 +55,21 @@ namespace WebApi.Controllers
             await this.unitOfWork.Commit();
             await this.unitOfWork.ConnectionRepository.Add(connectionEntity);
             await this.unitOfWork.Commit();
-            this.unitOfWork.DeviceRepository.Update(device);
-            await this.unitOfWork.Commit();
 
-            return Ok(connection);
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder
+                .AppendLine($"Device \"{device.Name}\"")
+                .AppendLine($"Id: {device.Id} Name: {device.Name} Device type: {device.DeviceType.Name}")
+                .AppendLine($"Fields: ");
+
+            foreach (var field in device.DeviceFields)
+            {
+                stringBuilder
+                    .AppendLine($"{field.Field.Name}: {field.Value}");
+            }
+
+            return Ok(stringBuilder.ToString());
         }
 
         [HttpPost]
@@ -72,7 +78,7 @@ namespace WebApi.Controllers
             Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
             Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
 
-            if (device.Status != DeviceStatus.Sleeping)
+            if (device.Status != DeviceStatus.Available)
                 return Ok("Device is already busy.");
 
             device.Status = DeviceStatus.Waiting;

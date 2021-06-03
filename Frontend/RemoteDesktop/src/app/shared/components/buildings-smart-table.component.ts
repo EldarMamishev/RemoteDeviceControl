@@ -1,12 +1,12 @@
-﻿import {BuildingViewmodel} from "../../view-models/building-viewmodel";
+﻿import {BuildingViewmodel} from '../../view-models/building-viewmodel';
 
-﻿import { Component, Input, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import {Person} from "../../view-models/people-viewmodel";
-import {CONNECTION_PATH} from "../../constants";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {__await} from "tslib";
-import {SingleIdViewmodel} from "../../view-models/singleId-viewmodel";
+import {Person} from '../../view-models/people-viewmodel';
+import {CONNECTION_PATH} from '../../constants';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {__await} from 'tslib';
+import {SingleIdViewmodel} from '../../view-models/singleId-viewmodel';
 
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
 
@@ -56,12 +56,12 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
 
   onCreate(value) {
     debugger;
-    var device = new BuildingViewmodel();
+    const device = new BuildingViewmodel();
     device.name = value.newData.name;
-    device.type = value.newData.type;
+    device.typeId = value.newData.type;
     device.locationId = value.source.data[0].locationId;
     // device.locationId = this. parent.name.split(':')[0];
-    var methodUrl = CONNECTION_PATH + "/Admin/AddNewDevice"
+    const methodUrl = CONNECTION_PATH + '/Device/AddNewDevice';
     this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
     this._source.refresh();
     this._source.add(device);
@@ -70,25 +70,25 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
 
   onEdit(value) {
     debugger;
-    var device = new BuildingViewmodel();
+    const device = new BuildingViewmodel();
     device.name = value.newData.name;
     device.id = value.newData.id;
-    device.type = value.newData.type;
+    device.typeId = value.newData.type;
     device.locationId = value.source.data[0].locationId;
-    var methodUrl = CONNECTION_PATH + "/Admin/UpdateDevice"
+    const methodUrl = CONNECTION_PATH + '/Device/UpdateDevice';
     this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
     value.confirm.resolve();
     this._source.refresh();
-    this.edit.emit(value.data);;
+    this.edit.emit(value.data);
     this._source.refresh();
   }
 
   onDelete(value) {
     debugger;
-    var deviceId = new SingleIdViewmodel();
+    const deviceId = new SingleIdViewmodel();
     deviceId.id = value.data.id;
-    var methodUrl = CONNECTION_PATH + "/Admin/DeleteDevice"
-    var subscriber;
+    const methodUrl = CONNECTION_PATH + '/Device/DeleteDevice';
+    let subscriber;
     this.http.post<any>(methodUrl, deviceId, httpOptions).subscribe(data => subscriber = data);
     value.confirm.resolve();
     this.delete.emit(value.data);

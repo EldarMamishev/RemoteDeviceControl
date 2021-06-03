@@ -15,7 +15,7 @@ namespace Services.ModelMapping
         public string MapStringFromLogs(IEnumerable<LogEntity> logs)
         {
             if (logs is null || logs.ToList().Count == 0)
-                throw new IndexOutOfRangeException();
+                return string.Empty;
 
             StringBuilder oneLineLog = new StringBuilder();
 

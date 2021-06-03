@@ -31,7 +31,7 @@ namespace Services.ModelMapping
             {
                 Id = device.Id,
                 Name = device.Name,
-                Type = device.DeviceType.Name,
+                Type = device.DeviceType?.Name,
                 LocationId = device.LocationId,
                 LocationName = $"{device.Location?.Country} - {device.Location?.City} - {device.Location?.Name}"
             };
@@ -45,8 +45,8 @@ namespace Services.ModelMapping
             {
                 Name = device.Name,
                 LocationId = device.LocationId,
-                DeviceTypeId = (int?)helper.DeviceTypeStringToEnumConverter(device.Type),
-                Status = DeviceStatus.Sleeping
+                DeviceTypeId = int.TryParse(device.TypeId, out int result) ? (int?)result: null,
+                Status = DeviceStatus.Available
             };
 
             switch((Core.Enums.DeviceType)newDevice.DeviceTypeId)

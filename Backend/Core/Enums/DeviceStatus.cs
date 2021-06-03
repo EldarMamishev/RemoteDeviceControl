@@ -6,7 +6,7 @@ namespace Core.Enums
 {
     public enum DeviceStatus
     {
-        Sleeping = 0,
+        Available = 0,
         Waiting = 1,
         Active = 2
     }

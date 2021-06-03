@@ -21,6 +21,11 @@ namespace Data.Repositories
             return this.GetAsQuery().Include(d => d.Location).ToList().GroupBy(d => d.Location).ToDictionary(d => d.Key, d => d.ToList());
         }
 
+        public Device GetDeviceById(int id)
+        {
+            return this.GetAsQuery().Include(d => d.DeviceType).FirstOrDefault(x => x.Id == id);
+        }
+
         //public IDictionary<Location, Device> GetFilteredDevicesPerLocations(BuildingsFilter filter)
         //{
         //    return this.GetAsQuery().Where(d => 

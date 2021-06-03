@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ViewCell} from "ng2-smart-table";
-import {LocationDialogComponent} from "../admin/admin-devices-per-buildings-accordion/location-dialog/location-dialog.component";
-import {NewlocationViewmodel} from "../view-models/newlocation-viewmodel";
-import {CONNECTION_PATH} from "../constants";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {TranslateService} from "@ngx-translate/core";
-import {MatDialog} from "@angular/material/dialog";
-import {LogViewModel} from "../view-models/log-viewmodel";
+import {ViewCell} from 'ng2-smart-table';
+import {LocationDialogComponent} from '../admin/admin-devices-per-buildings-accordion/location-dialog/location-dialog.component';
+import {NewlocationViewmodel} from '../view-models/newlocation-viewmodel';
+import {CONNECTION_PATH} from '../constants';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {TranslateService} from '@ngx-translate/core';
+import {MatDialog} from '@angular/material/dialog';
+import {LogViewModel} from '../view-models/log-viewmodel';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
@@ -33,12 +33,12 @@ export class LogsButtonInputEditorComponent implements ViewCell, OnInit {
 
   onClick() {
     this.save.emit(this.rowData);
-    if (this.rowData.name == null)
-      alert("Data is not set.")
+    if (this.rowData.name == null) {
+      alert('Data is not set.');
+    }
 
-    debugger;
-    var methodUrl = CONNECTION_PATH + "/Device/GetLogsForDevice"
-    var subscriber: string;
+    const methodUrl = CONNECTION_PATH + '/Log/GetLogsForDevice';
+    let subscriber: string;
     this.http.post<LogViewModel>(methodUrl, this.rowData.id, httpOptions).subscribe(data => {
       subscriber = data.log;
       alert(data.log);

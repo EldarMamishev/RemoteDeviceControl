@@ -16,6 +16,7 @@ using ViewModel.Shared;
 using WebApi.Controllers.Base;
 using ViewModel.DeviceType;
 using ViewModel.Field;
+using System.Text;
 
 namespace WebApi.Controllers
 {
@@ -33,7 +34,7 @@ namespace WebApi.Controllers
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<DeviceTypeModel>> GetDeviceType(int deviceTypeId)
+        public ActionResult<DeviceTypeModel> GetDeviceType(int deviceTypeId)
         {
             var deviceType = this.unitOfWork.DeviceTypeRepository.GetById(deviceTypeId);
 
@@ -46,8 +47,7 @@ namespace WebApi.Controllers
                     possibleValues.Add(new FieldPossibleValueModel
                     {
                         Id = possibleValue.Id,
-                        Type = possibleValue.Type,
-                        Value = possibleValue.Value
+                        Name = possibleValue.Name
                     });
                 }
 
@@ -71,18 +71,45 @@ namespace WebApi.Controllers
         }
         
         [HttpGet]
-        public ActionResult<IEnumerable<DeviceTypeModel>> GetDeviceTypes()
+        public ActionResult<IEnumerable<DeviceTypeGridModel>> GetDeviceTypes()
         {
-            var deviceTypes = this.unitOfWork.DeviceTypeRepository.Get();
+            var deviceTypes = this.unitOfWork.DeviceTypeRepository.Get().ToList();
 
-            var result = new List<DeviceTypeModel>();
+            var result = new List<DeviceTypeGridModel>();
 
             foreach (var deviceType in deviceTypes)
             {
-                result.Add(new DeviceTypeModel()
+                var fields = new StringBuilder();
+
+                foreach (var field in deviceType.Fields)
+                {
+                    fields.AppendLine($"{field.Id} Name: {field.Name} - Type: {field.Type}");
+                }
+
+                result.Add(new DeviceTypeGridModel()
                 {
                     Id = deviceType.Id,
-                    Name = deviceType.Name
+                    Name = deviceType.Name,
+                    Fields = fields.ToString()
+                });
+            }
+
+            return Ok(result);
+        }
+        
+        [HttpGet]
+        public ActionResult<IEnumerable<GridFilterModel>> GetDeviceTypesFilter()
+        {
+            var deviceTypes = this.unitOfWork.DeviceTypeRepository.Get().ToList();
+
+            var result = new List<GridFilterModel>();
+
+            foreach (var deviceType in deviceTypes)
+            {
+                result.Add(new GridFilterModel()
+                {
+                    Value = deviceType.Id,
+                    Title = deviceType.Name
                 });
             }
 
@@ -98,17 +125,18 @@ namespace WebApi.Controllers
             };
 
             var fields = new List<Field>();
-            foreach(var fieldModel in model.Fields)
+            foreach (var fieldModel in model.Fields)
             {
-
                 var possibleValues = new List<FieldPossibleValue>();
-                foreach (var valueModel in fieldModel.PossibleValues)
-                {
-                    possibleValues.Add(new FieldPossibleValue
+                if (fieldModel.PossibleValues != null && fieldModel.PossibleValues.Any())
+                {                     
+                    foreach (var valueModel in fieldModel.PossibleValues)
                     {
-                        Type = valueModel.Type,
-                        Value = valueModel.Value
-                    });
+                        possibleValues.Add(new FieldPossibleValue
+                        {
+                            Name = valueModel.Name
+                        });
+                    }
                 }
 
                 fields.Add(new Field() 
