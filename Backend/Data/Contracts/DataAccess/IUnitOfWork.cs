@@ -40,6 +40,11 @@ namespace Data.Contracts.DataAccess
             get;
         }
 
+        public DeviceFieldRepository DeviceFieldRepository
+        {
+            get;
+        }
+
         public DeviceTypeRepository DeviceTypeRepository
         {
             get;

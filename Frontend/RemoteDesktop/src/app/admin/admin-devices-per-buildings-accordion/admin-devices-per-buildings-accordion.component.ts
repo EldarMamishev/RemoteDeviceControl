@@ -12,6 +12,7 @@ import {NewlocationViewmodel} from '../../view-models/newlocation-viewmodel';
 import {StateButtonInputEditorComponent} from '../../state-button-input-editor/state-button-input-editor.component';
 import {ConnectButtonInputEditorComponent} from '../../connect-button-input-editor/connect-button-input-editor.component';
 import {LogsButtonInputEditorComponent} from '../../logs-button-input-editor/logs-button-input-editor.component';
+import {AddFieldsButtonEditorComponent} from '../../add-fields-button-editor/add-fields-button-editor.component';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
@@ -118,6 +119,14 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         'type': 'custom',
         'width': '150px',
         'renderComponent': ConnectButtonInputEditorComponent,
+        'filter': false,
+        sort: false
+      },
+      'addFields': {
+        'title': 'Add fields',
+        'type': 'custom',
+        'width': '150px',
+        'renderComponent': AddFieldsButtonEditorComponent,
         'filter': false,
         sort: false
       },

@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> StartConnection([FromBody] ConnectionViewModel connection)
         {
             Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
-            Device device = this.unitOfWork.DeviceRepository.GetById(connection.deviceId);
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(connection.deviceId);
             
             LogEntity logEntity = new LogEntity()
             {
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
 
             stringBuilder
                 .AppendLine($"Device \"{device.Name}\"")
-                .AppendLine($"Id: {device.Id} Name: {device.Name} Device type: {device.DeviceType.Name}")
+                .AppendLine($"Id: {device.Id} Name: {device.Name} Device type: {device.DeviceType.Name} Location: {device.Location.Name}")
                 .AppendLine($"Fields: ");
 
             foreach (var field in device.DeviceFields)

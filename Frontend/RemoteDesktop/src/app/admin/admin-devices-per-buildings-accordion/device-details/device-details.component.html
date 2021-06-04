@@ -1,3 +1,36 @@
-<p>
-  device-details works!
-</p>
+<nb-card style="width: auto" class="profile-card">
+  <nb-card-header>
+    <div class="space space48">
+      <h5 class="heading10 text-basic">Create device type</h5>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <mat-label style="margin-right: 20px">Name:</mat-label>
+    <mat-label style="margin-right: 20px">{{data.name}}</mat-label>
+    <ul>
+      <h3 style="margin-bottom: 20px ">Fields:</h3>
+      <ng-container formArrayName="fields">
+        <li style="margin-left: 30px"  *ngFor="let field of data.fields; let i = index">
+          <ng-container [formGroupName]="i">
+            <mat-label style="margin-right: 20px">Name:</mat-label>
+            <mat-label style="margin-right: 20px">{{field.name}}</mat-label>
+            <mat-label style="margin-right: 20px">Type:</mat-label>
+            <mat-label style="margin-right: 20px">{{field.type}}</mat-label>
+            <mat-label style="margin-right: 20px">Value:</mat-label>
+            <input nbInput class="user-name-profile size-xl-medium" type="text" value="field.value">
+          </ng-container>
+        </li>
+      </ng-container>
+    </ul>
+
+    <button nbButton class="card-button size-xl-medium"  (click)="load()" appearance="filled" status="success">
+      <nb-icon class="icon btn-icon" icon="reload"></nb-icon>
+    </button>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="buttons_div">
+      <button nbButton [mat-dialog-close]="data" (click)="save()" appearance="filled" status="success">Ok</button>
+      <button style="float: right;" nbButton (click)="onNoClick()" status="warning">Cancel</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

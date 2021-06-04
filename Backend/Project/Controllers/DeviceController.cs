@@ -15,6 +15,7 @@ using ViewModel.LogEntity;
 using ViewModel.Device;
 using ViewModel.Shared;
 using WebApi.Controllers.Base;
+using ViewModel.Field;
 
 namespace WebApi.Controllers
 {
@@ -78,6 +79,20 @@ namespace WebApi.Controllers
 
             Device response = this.unitOfWork.DeviceRepository.GetDeviceById(newDeviceEntity.Id);
             Person user = (CurrentUser.Result as Person);
+            var deviceFields = new List<DeviceField>();
+            foreach (var field in response.DeviceType.Fields)
+            {
+                deviceFields.Add(new DeviceField()
+                {
+                    DeviceId = response.Id,
+                    FieldId = field.Id,
+                    Value = string.Empty
+                });
+            }
+
+            response.DeviceFields = deviceFields;
+            this.unitOfWork.DeviceRepository.Update(response);
+            await this.unitOfWork.Commit();
 
             LogEntity logEntity = new LogEntity()
             {
@@ -111,6 +126,57 @@ namespace WebApi.Controllers
             await this.unitOfWork.Commit();
 
             return Ok("Deleted");
+        }
+
+        [HttpGet]
+        public IActionResult GetAddDeviceFieldsData(int deviceId)
+        {
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
+            //IEnumerable<DeviceField> deviceFields = this.unitOfWork.DeviceFieldRepository.GetDeviceFieldsByDeviceId(deviceId);
+
+            var fields = new List<DeviceFieldModel>();
+            foreach (var field in device.DeviceFields)
+            {
+                fields.Add(new DeviceFieldModel()
+                {
+                    Id = field.Id,
+                    FieldTypeId = field.Field.Id,
+                    Name = field.Field.Name,
+                    Type = field.Field.Type,
+                    Value = field.Value
+                });
+            }
+
+            var response = new DeviceDetailsModel()
+            {
+                Id = device.Id,
+                Name = device.Name,
+                Type = device.DeviceType.Name,
+                Fields = fields
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public IActionResult AddDeviceFields(DeviceFieldListModel deviceFieldList)
+        {
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceFieldList.DeviceId);
+
+            foreach (var field in deviceFieldList.Fields)
+            {
+                device.DeviceFields.Add(new DeviceField()
+                {
+                    DeviceId = deviceFieldList.DeviceId,
+                    FieldId = field.FieldTypeId,
+                    Value = field.Value
+                });
+            }
+
+            this.unitOfWork.DeviceRepository.Update(device);
+            this.unitOfWork.Commit();
+
+            return Ok();
         }
     }
 }

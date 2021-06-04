@@ -2,7 +2,6 @@
 using Core.Entities;
 using Data.Contracts.DataAccess;
 using Data.DataAccess;
-using Data.Repositories.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +22,12 @@ namespace Data.Repositories
 
         public Device GetDeviceById(int id)
         {
-            return this.GetAsQuery().Include(d => d.DeviceType).FirstOrDefault(x => x.Id == id);
+            return this.GetAsQuery()
+                .Include(d => d.DeviceType.Fields)
+                .Include(d => d.Location)
+                .Include(x => x.DeviceFields)
+                .ThenInclude(x => x.Field)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         //public IDictionary<Location, Device> GetFilteredDevicesPerLocations(BuildingsFilter filter)

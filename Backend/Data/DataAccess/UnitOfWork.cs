@@ -15,6 +15,7 @@ namespace Data.DataAccess
         private CommandRepository commandRepository;
         private CommandTypeRepository commandTypeRepository;
         private ConnectionRepository connectionRepository;
+        private DeviceFieldRepository deviceFieldRepository;
         private DeviceRepository deviceRepository;
         private DeviceTypeRepository deviceTypeRepository;
         private FieldRepository fieldRepository;
@@ -87,6 +88,17 @@ namespace Data.DataAccess
                     this.connectionRepository = new ConnectionRepository(this);
 
                 return this.connectionRepository;
+            }
+        }
+
+        public DeviceFieldRepository DeviceFieldRepository
+        {
+            get
+            {
+                if (this.deviceFieldRepository is null)
+                    this.deviceFieldRepository = new DeviceFieldRepository(this);
+
+                return this.deviceFieldRepository;
             }
         }
 

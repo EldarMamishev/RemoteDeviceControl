@@ -7,6 +7,11 @@ import {CONNECTION_PATH} from '../../constants';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {__await} from 'tslib';
 import {SingleIdViewmodel} from '../../view-models/singleId-viewmodel';
+import {MatDialog} from '@angular/material/dialog';
+import {LocationDialogComponent} from '../../admin/admin-devices-per-buildings-accordion/location-dialog/location-dialog.component';
+import {NewlocationViewmodel} from '../../view-models/newlocation-viewmodel';
+import {DeviceDetailsModel} from '../../view-models/device-details.model';
+import {DeviceDetailsComponent} from '../../admin/admin-devices-per-buildings-accordion/device-details/device-details.component';
 
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
 
@@ -43,8 +48,10 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
   @Output() delete = new EventEmitter<any>();
   @Output() select = new EventEmitter<any>();
 
-  constructor(private cd: ChangeDetectorRef, private http: HttpClient) {
+  constructor(private cd: ChangeDetectorRef, private http: HttpClient, public dialog: MatDialog) {
   }
+
+  data: DeviceDetailsModel;
 
   ngAfterViewInit() {
     /**
@@ -54,7 +61,7 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
     Promise.resolve().then(() => this.cd.detectChanges());
   }
 
-  onCreate(value) {
+  async onCreate(value) {
     debugger;
     const device = new BuildingViewmodel();
     device.name = value.newData.name;
@@ -62,10 +69,34 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
     device.locationId = value.source.data[0].locationId;
     // device.locationId = this. parent.name.split(':')[0];
     const methodUrl = CONNECTION_PATH + '/Device/AddNewDevice';
-    this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
+    // const t = await this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).toPromise()
+    //   .then(resp => {
+    //     device.id = resp.id;
+    //     const dialogRefs = this.dialog.open(DeviceDetailsComponent, {
+    //       data: resp.id,
+    //       width: 'auto'
+    //     });
+    //   });
+    // device.id = t.id;
+    this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => {
+      device.id = data.id;
+      // const dialogRef = this.dialog.open(DeviceDetailsComponent, {
+      //   data: data.id,
+      //   width: 'auto'
+      // });
+    });
     this._source.refresh();
     this._source.add(device);
     this._source.refresh();
+
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   this.data = result;
+    //   const methodUrl = CONNECTION_PATH + '/Location/AddLocation';
+    //   let subscriber;
+    //   this.http.post<String>(methodUrl, this.data, httpOptions).subscribe(data => subscriber = data);
+    // });
   }
 
   onEdit(value) {

@@ -6,24 +6,6 @@
   </nb-card-header>
 
   <nb-card-body>
-<!--    <div class="space space49">-->
-<!--      <div class="space space51">-->
-<!--        <div class="space space65">-->
-<!--          <label class="text141 text-basic label">Name</label>-->
-<!--          <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic">-->
-<!--        </div>-->
-
-<!--        <h1 class="heading12 text-basic" translate>Fields</h1>-->
-<!--        <app-field-list></app-field-list>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <mat-list *ngFor="let field in fields">-->
-<!--      <label class="text141 text-basic label">Name</label>-->
-<!--      <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic"  [(ngModel)]="field.name">-->
-<!--      <label class="text141 text-basic label">Value</label>-->
-<!--      <input nbInput class="user-name-profile size-xl-medium" type="text" shape="rectangle" status="basic" [(ngModel)]="field.value">-->
-<!--    </mat-list>-->
     <ul [formGroup]="form">
       <mat-label style="margin-right: 20px">Name:</mat-label>
       <input nbInput class="user-name-profile size-xl-medium"  type="text" formControlName="name">
