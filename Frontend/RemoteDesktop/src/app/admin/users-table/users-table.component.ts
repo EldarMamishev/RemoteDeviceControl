@@ -89,6 +89,10 @@ export class UsersTableComponent implements OnInit {
         'title': this.userNameTitle,
         'filter': true
       },
+      'discriminator': {
+        'title': 'Role',
+        'filter': true
+      },
       'email': {
         'title': this.emailTitle,
         'filter': true
@@ -115,8 +119,8 @@ export class UsersTableComponent implements OnInit {
     'actions': {
       'columnTitle': this.actionsTitle,
       'add': false,
-      'edit': true,
-      'delete': true
+      'edit': false,
+      'delete': false
     },
     'mode': 'internal'
   };

@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ViewCell} from 'ng2-smart-table';
 import {CONNECTION_PATH} from '../constants';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ConnectionViewmodel} from '../view-models/connection-viewmodel';
+import {LogViewModel} from '../view-models/log-viewmodel';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 @Component({
@@ -35,11 +36,12 @@ export class ConnectButtonInputEditorComponent implements ViewCell, OnInit {
     const methodUrl = CONNECTION_PATH + '/Connection/StartConnection';
     let k;
     const body = new ConnectionViewmodel();
-    body.personId = parseInt(localStorage.getItem('rdc_user'));
-    body.deviceId = this.rowData.id;
-    this.http.post<ConnectionViewmodel>(methodUrl, body, httpOptions).subscribe(data => {
-      k = data;
-      alert(`${this.rowData.name} connected!`);
+    let params = new HttpParams();
+    params = params.append('personId', localStorage.getItem('rdc_user'));
+    params = params.append('deviceId', this.rowData.id);
+    this.http.get<LogViewModel>(methodUrl, {params: params}).subscribe(data => {
+      console.log(k = data);
+      alert(data.log);
     });
   }
 }

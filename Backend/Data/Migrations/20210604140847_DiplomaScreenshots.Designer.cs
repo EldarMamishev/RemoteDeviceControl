@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210531113444_PossibleValue")]
-    partial class PossibleValue
+    [Migration("20210604140847_DiplomaScreenshots")]
+    partial class DiplomaScreenshots
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -375,10 +375,7 @@ namespace Data.Migrations
                     b.Property<int?>("FieldId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Core.Entities.ApplicationIdentity;
 using Core.Entities.Base;
 using Data.Repositories;
+using Data.Repositories.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Contracts.DataAccess
@@ -14,6 +16,11 @@ namespace Data.Contracts.DataAccess
         void Save();
 
         bool Backup();
+
+        public ApplicationUserRepository<ApplicationUser> ApplicationUserRepository
+        {
+            get;
+        }
 
         public AccessGroupRepository AccessGroupRepository
         {

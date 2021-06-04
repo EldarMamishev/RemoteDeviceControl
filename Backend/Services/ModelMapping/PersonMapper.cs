@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.ApplicationIdentity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,29 +12,28 @@ namespace Services.ModelMapping
 {
     public class PersonMapper
     {
-        public IEnumerable<PersonResponse> MapPeopleToViewModel(IEnumerable<Person> people)
+        public IEnumerable<PersonResponse> MapPeopleToViewModel(IEnumerable<ApplicationUser> people)
         {
             List<PersonResponse> result = new List<PersonResponse>();
 
             foreach (var person in people)
             {
-                if (person.Id == 1)
-                    continue;
                 result.Add(this.MapPersonToViewModel(person));
             }
 
             return result;
         }
 
-        public PersonResponse MapPersonToViewModel(Person person)
+        public PersonResponse MapPersonToViewModel(ApplicationUser person)
         {
             var result = new PersonResponse()
             {
                 id = person.Id,
-                firstName = person.FirstName,
-                lastName = person.LastName,
+                firstName = ((Person)person).FirstName,
+                lastName = ((Person)person).LastName,
                 email = person.Email,
-                userName = person.UserName
+                userName = person.UserName,
+                discriminator = person.GetType().Name
             };
 
             return result;

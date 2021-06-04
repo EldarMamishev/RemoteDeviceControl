@@ -50,13 +50,14 @@ namespace WebApi.Controllers
             return Ok(log.Comments);
         }
 
-        [HttpPost]
-        public IActionResult GetLogsForDevice([FromBody] int deviceId)
+        [HttpGet]
+        public IActionResult GetLogsForDevice(int deviceId)
         {
             string result;
+            var logs = this.unitOfWork.LogEntityRepository.GetLogsByDeviceId(deviceId);
             try
             {
-                result = this.mappersFacade.LogsMapper.MapStringFromLogs(this.unitOfWork.LogEntityRepository.GetLogsByDeviceId(deviceId));
+                result = this.mappersFacade.LogsMapper.MapStringFromLogs(logs);
             }
             catch
             {

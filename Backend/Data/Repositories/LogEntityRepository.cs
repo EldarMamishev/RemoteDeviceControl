@@ -18,7 +18,7 @@ namespace Data.Repositories
 
         public IEnumerable<LogEntity> GetLogsByDeviceId(int deviceId)
         {
-            return this.GetAsQuery().Where(d => d.Id == deviceId).ToList();
+            return this.GetAsQuery().Where(d => d.DeviceId == deviceId).ToList();
         }
     }
 }

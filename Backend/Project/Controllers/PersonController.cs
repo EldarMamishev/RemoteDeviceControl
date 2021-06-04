@@ -34,7 +34,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var people = this.unitOfWork.PersonRepository.Get();
+            var people = this.unitOfWork.ApplicationUserRepository.Get();
 
             return Ok(this.mappersFacade.PersonMapper.MapPeopleToViewModel(people));
         }

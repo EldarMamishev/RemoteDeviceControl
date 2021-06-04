@@ -64,11 +64,15 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Login([FromBody] Login login)
         {
             await this.Authenticate(login.Username);
-            var result = new PersonLoginResponse();
             var user = await _userManager.FindByNameAsync(login.Username);
             var token = MakeToken(user);
-            result.Token = token;
-            result.Id = user.Id;
+
+            var result = new PersonLoginResponse
+            {
+                Token = token,
+                Id = user.Id,
+                UserName = user.UserName
+            };
 
             if (user is Admin)
             {

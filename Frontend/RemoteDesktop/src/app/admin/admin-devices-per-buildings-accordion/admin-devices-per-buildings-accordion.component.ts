@@ -207,8 +207,10 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
     device.name = value.newData.name;
     device.typeId = value.newData.type;
     device.locationId = locationId;
+    device.userId = Number(localStorage.getItem('rdc_user'));
+    device.userName = localStorage.getItem('rdc_userName');
     const methodUrl = CONNECTION_PATH + '/Device/AddNewDevice';
-    this.http.post<Person>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
+    this.http.post<BuildingViewmodel>(methodUrl, device, httpOptions).subscribe(data => device.id = data.id);
   }
 
   addLocation() {

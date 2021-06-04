@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Entities.ApplicationIdentity;
 using Core.Entities.Base;
 using Data.Contracts.DataAccess;
 using Data.Repositories;
+using Data.Repositories.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +13,7 @@ namespace Data.DataAccess
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private ApplicationUserRepository<ApplicationUser> applicationUserRepository;
         private AccessGroupRepository accessGroupRepository;
         private CommandRepository commandRepository;
         private CommandTypeRepository commandTypeRepository;
@@ -44,6 +47,17 @@ namespace Data.DataAccess
             catch (Exception ex)
             {
                 return false;
+            }
+        }
+
+        public ApplicationUserRepository<ApplicationUser> ApplicationUserRepository
+        {
+            get
+            {
+                if (this.applicationUserRepository is null)
+                    this.applicationUserRepository = new ApplicationUserRepository<ApplicationUser>(this);
+
+                return this.applicationUserRepository;
             }
         }
 

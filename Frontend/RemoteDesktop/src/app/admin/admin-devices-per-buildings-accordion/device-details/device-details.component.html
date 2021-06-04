@@ -9,22 +9,18 @@
     <mat-label style="margin-right: 20px">{{data.name}}</mat-label>
     <ul>
       <h3 style="margin-bottom: 20px ">Fields:</h3>
-      <ng-container formArrayName="fields">
         <li style="margin-left: 30px"  *ngFor="let field of data.fields; let i = index">
-          <ng-container [formGroupName]="i">
             <mat-label style="margin-right: 20px">Name:</mat-label>
             <mat-label style="margin-right: 20px">{{field.name}}</mat-label>
             <mat-label style="margin-right: 20px">Type:</mat-label>
             <mat-label style="margin-right: 20px">{{field.type}}</mat-label>
             <mat-label style="margin-right: 20px">Value:</mat-label>
-            <input nbInput class="user-name-profile size-xl-medium" type="text" value="field.value">
-          </ng-container>
+            <input nbInput class="user-name-profile size-xl-medium" type="text" [(ngModel)]="field.value">
         </li>
-      </ng-container>
     </ul>
 
     <button nbButton class="card-button size-xl-medium"  (click)="load()" appearance="filled" status="success">
-      <nb-icon class="icon btn-icon" icon="reload"></nb-icon>
+      <nb-icon class="icon btn-icon" icon="star"></nb-icon>
     </button>
   </nb-card-body>
   <nb-card-footer>

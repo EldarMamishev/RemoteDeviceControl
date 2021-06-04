@@ -3,10 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class ThisIsTheWay : Migration
+    public partial class DiplomaScreenshots : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AccessGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccessIdentifiers = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessGroups", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -24,37 +37,16 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "CommandTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    RefreshToken = table.Column<string>(nullable: true),
-                    ExpirationDateAuth = table.Column<DateTime>(nullable: false),
-                    CreationDateUTC = table.Column<DateTime>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Birthday = table.Column<DateTime>(nullable: true),
-                    Gender = table.Column<byte>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_CommandTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,6 +79,47 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    RefreshToken = table.Column<string>(nullable: true),
+                    ExpirationDateAuth = table.Column<DateTime>(nullable: false),
+                    CreationDateUTC = table.Column<DateTime>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Birthday = table.Column<DateTime>(nullable: true),
+                    Gender = table.Column<byte>(nullable: true),
+                    AccessGroupId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AccessGroups_AccessGroupId",
+                        column: x => x.AccessGroupId,
+                        principalTable: "AccessGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -105,6 +138,56 @@ namespace Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    DeviceTypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fields_DeviceTypes_DeviceTypeId",
+                        column: x => x.DeviceTypeId,
+                        principalTable: "DeviceTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Devices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    DeviceTypeId = table.Column<int>(nullable: true),
+                    LocationId = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    ActiveState = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Devices_DeviceTypes_DeviceTypeId",
+                        column: x => x.DeviceTypeId,
+                        principalTable: "DeviceTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Devices_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,30 +276,49 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Devices",
+                name: "FieldCommandTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommandTypeId = table.Column<int>(nullable: true),
+                    FieldId = table.Column<int>(nullable: true),
+                    DefaultAction = table.Column<int>(nullable: true),
+                    DefaultDelta = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldCommandTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FieldCommandTypes_CommandTypes_CommandTypeId",
+                        column: x => x.CommandTypeId,
+                        principalTable: "CommandTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FieldCommandTypes_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FieldPossibleValues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    DeviceTypeId = table.Column<int>(nullable: true),
-                    LocationId = table.Column<int>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
-                    ActiveState = table.Column<string>(nullable: true)
+                    FieldId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Devices", x => x.Id);
+                    table.PrimaryKey("PK_FieldPossibleValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Devices_DeviceTypes_DeviceTypeId",
-                        column: x => x.DeviceTypeId,
-                        principalTable: "DeviceTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Devices_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
+                        name: "FK_FieldPossibleValues_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -250,6 +352,33 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeviceFields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(nullable: true),
+                    FieldId = table.Column<int>(nullable: true),
+                    DeviceId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeviceFields_Devices_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Devices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DeviceFields_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Logs",
                 columns: table => new
                 {
@@ -278,16 +407,49 @@ namespace Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ConnectionId = table.Column<int>(nullable: true),
-                    CommandType = table.Column<int>(nullable: false),
-                    MongoCommandDetailsId = table.Column<string>(nullable: true)
+                    CommandTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Commands", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Commands_CommandTypes_CommandTypeId",
+                        column: x => x.CommandTypeId,
+                        principalTable: "CommandTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Commands_Connections_ConnectionId",
                         column: x => x.ConnectionId,
                         principalTable: "Connections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeviceFieldCommands",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommandId = table.Column<int>(nullable: true),
+                    DeviceFieldId = table.Column<int>(nullable: true),
+                    OldValue = table.Column<string>(nullable: true),
+                    NewValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceFieldCommands", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeviceFieldCommands_Commands_CommandId",
+                        column: x => x.CommandId,
+                        principalTable: "Commands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DeviceFieldCommands_DeviceFields_DeviceFieldId",
+                        column: x => x.DeviceFieldId,
+                        principalTable: "DeviceFields",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -332,6 +494,16 @@ namespace Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_AccessGroupId",
+                table: "AspNetUsers",
+                column: "AccessGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Commands_CommandTypeId",
+                table: "Commands",
+                column: "CommandTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Commands_ConnectionId",
                 table: "Commands",
                 column: "ConnectionId");
@@ -347,6 +519,26 @@ namespace Data.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeviceFieldCommands_CommandId",
+                table: "DeviceFieldCommands",
+                column: "CommandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceFieldCommands_DeviceFieldId",
+                table: "DeviceFieldCommands",
+                column: "DeviceFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceFields_DeviceId",
+                table: "DeviceFields",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceFields_FieldId",
+                table: "DeviceFields",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Devices_DeviceTypeId",
                 table: "Devices",
                 column: "DeviceTypeId");
@@ -355,6 +547,26 @@ namespace Data.Migrations
                 name: "IX_Devices_LocationId",
                 table: "Devices",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldCommandTypes_CommandTypeId",
+                table: "FieldCommandTypes",
+                column: "CommandTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldCommandTypes_FieldId",
+                table: "FieldCommandTypes",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldPossibleValues_FieldId",
+                table: "FieldPossibleValues",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fields_DeviceTypeId",
+                table: "Fields",
+                column: "DeviceTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logs_DeviceId",
@@ -380,7 +592,13 @@ namespace Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Commands");
+                name: "DeviceFieldCommands");
+
+            migrationBuilder.DropTable(
+                name: "FieldCommandTypes");
+
+            migrationBuilder.DropTable(
+                name: "FieldPossibleValues");
 
             migrationBuilder.DropTable(
                 name: "Logs");
@@ -389,7 +607,19 @@ namespace Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Commands");
+
+            migrationBuilder.DropTable(
+                name: "DeviceFields");
+
+            migrationBuilder.DropTable(
+                name: "CommandTypes");
+
+            migrationBuilder.DropTable(
                 name: "Connections");
+
+            migrationBuilder.DropTable(
+                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "Devices");
@@ -402,6 +632,9 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "AccessGroups");
         }
     }
 }

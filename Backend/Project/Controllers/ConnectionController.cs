@@ -31,23 +31,23 @@ namespace WebApi.Controllers
             this.mappersFacade = mappersFacade;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> StartConnection([FromBody] ConnectionViewModel connection)
+        [HttpGet]
+        public async Task<IActionResult> StartConnection(int personId, int deviceId)
         {
-            Person person = this.unitOfWork.PersonRepository.GetById(connection.personId);
-            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(connection.deviceId);
+            Person person = this.unitOfWork.PersonRepository.GetById(personId);
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
             
             LogEntity logEntity = new LogEntity()
             {
-                DeviceId = connection.deviceId,
+                DeviceId = deviceId,
                 ActionTime = DateTime.Now,
                 Comments = $"Connection started by: Id={person?.Id} UserName={person?.UserName}{Environment.NewLine} At:{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"
             };
 
             Connection connectionEntity = new Connection
             {
-                DeviceId = connection.deviceId,
-                PersonId = connection.personId,
+                DeviceId = deviceId,
+                PersonId = personId,
                 StartDateUTC = DateTime.Now
             };
 
@@ -69,7 +69,12 @@ namespace WebApi.Controllers
                     .AppendLine($"{field.Field.Name}: {field.Value}");
             }
 
-            return Ok(stringBuilder.ToString());
+            var result = new LogViewModel()
+            {
+                Log = stringBuilder.ToString()
+            };
+
+            return Ok(result);
         }
 
         [HttpPost]

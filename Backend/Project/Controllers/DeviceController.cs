@@ -76,9 +76,10 @@ namespace WebApi.Controllers
             Device newDeviceEntity = this.mappersFacade.DeviceMapper.MapFromDeviceRequestToDevice(device);
             await this.unitOfWork.GetRepository<Device>().Add(newDeviceEntity);
             await this.unitOfWork.Context.SaveChangesAsync();
+            var user = await _userManager.FindByNameAsync(device.UserName);
 
             Device response = this.unitOfWork.DeviceRepository.GetDeviceById(newDeviceEntity.Id);
-            Person user = (CurrentUser.Result as Person);
+            //Person user = (CurrentUser.Result as Person);
             var deviceFields = new List<DeviceField>();
             foreach (var field in response.DeviceType.Fields)
             {
@@ -165,12 +166,16 @@ namespace WebApi.Controllers
 
             foreach (var field in deviceFieldList.Fields)
             {
-                device.DeviceFields.Add(new DeviceField()
+                device.DeviceFields.Where(x => x.Id == field.Id).ToList().ForEach(x =>
                 {
-                    DeviceId = deviceFieldList.DeviceId,
-                    FieldId = field.FieldTypeId,
-                    Value = field.Value
+                    x.Value = field.Value;
                 });
+                //device.DeviceFields.Add(new DeviceField()
+                //{
+                //    DeviceId = deviceFieldList.DeviceId,
+                //    FieldId = field.FieldTypeId,
+                //    Value = field.Value
+                //});
             }
 
             this.unitOfWork.DeviceRepository.Update(device);
