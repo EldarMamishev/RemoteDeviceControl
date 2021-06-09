@@ -41,12 +41,14 @@ export class ConnectionModalComponent implements OnInit {
   }
 
   save() {
-    console.log(this.data);
-    const maintenanceUrl = CONNECTION_PATH + '/Connection/StartMaintenance';
-    let k;
-    this.data.deviceId = this.id;
-    this.data.personId = Number(localStorage.getItem('rdc_user'));
-    this.http.post(maintenanceUrl, this.data).subscribe(response => k = response);
+    if (this.data.time > 0) {
+      const maintenanceUrl = CONNECTION_PATH + '/Connection/StartMaintenance';
+      let k;
+      this.data.deviceId = this.id;
+      this.data.personId = Number(localStorage.getItem('rdc_user'));
+      console.log(this.data);
+      this.http.post(maintenanceUrl, this.data).subscribe(response => k = response);
+    }
     this.dialogRef.close();
   }
 
