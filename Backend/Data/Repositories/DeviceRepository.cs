@@ -25,6 +25,8 @@ namespace Data.Repositories
             return this.GetAsQuery()
                 .Include(d => d.DeviceType.Fields)
                 .Include(d => d.Location)
+                .Include(x => x.Logs)
+                .Include(x => x.Connections)
                 .Include(x => x.DeviceFields)
                 .ThenInclude(x => x.Field)
                 .FirstOrDefault(x => x.Id == id);

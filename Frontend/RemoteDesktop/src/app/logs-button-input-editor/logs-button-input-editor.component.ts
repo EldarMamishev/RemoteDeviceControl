@@ -8,6 +8,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {MatDialog} from '@angular/material/dialog';
 import {LogViewModel} from '../view-models/log-viewmodel';
 import {DeviceDetailsModel} from '../view-models/device-details.model';
+import {ConnectionModalComponent} from '../connect-button-input-editor/connection-modal/connection-modal.component';
+import {LogsModalComponent} from './logs-modal/logs-modal.component';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 
@@ -38,28 +40,9 @@ export class LogsButtonInputEditorComponent implements ViewCell, OnInit {
       alert('Data is not set.');
     }
 
-    const methodUrl = CONNECTION_PATH + '/Log/GetLogsForDevice';
-    let subscriber: string;
-    let params = new HttpParams();
-    params = params.append('deviceId', this.rowData.id);
-
-    this.http.get<LogViewModel>(methodUrl, {
-      params: params
-    }).subscribe(data => {
-      subscriber = data.log;
-      alert(data.log);
+    const dialogRef = this.dialog.open(LogsModalComponent, {
+      data: this.rowData.id,
+      width: 'auto'
     });
-
-
-    // const dialogRef = this.dialog.open(LocationDialogComponent, {
-    //   width: 'auto'
-    // });
-    //
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   var methodUrl = CONNECTION_PATH + "/Device/GetLogsForDevice"
-    //   var subscriber;
-    //   this.http.post<String>(methodUrl, this.rowData.id, httpOptions).subscribe(data => subscriber = data);
-    // });
   }
 }

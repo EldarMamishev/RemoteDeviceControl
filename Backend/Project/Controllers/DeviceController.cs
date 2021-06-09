@@ -16,6 +16,7 @@ using ViewModel.Device;
 using ViewModel.Shared;
 using WebApi.Controllers.Base;
 using ViewModel.Field;
+using System.Text;
 
 namespace WebApi.Controllers
 {
@@ -63,11 +64,25 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult GetCurrentState([FromBody] int deviceId)
         {
-            Device device = this.unitOfWork.DeviceRepository.GetById(deviceId);
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
+
             if (device is null)
                 return Ok("Device is missing");
 
-            return Ok(new LogViewModel { Log = device.Status.ToString() ?? string.Empty });
+            var logMessage = new StringBuilder();
+            logMessage.AppendLine(device.Status.ToString() ?? string.Empty);
+
+            if (device.Status == DeviceStatus.Maintenance)
+            {
+                var lastConnection = device.Connections.OrderByDescending(x => x.StartDateUTC).FirstOrDefault();
+                var timeLeft = lastConnection.FinishDateUTC - DateTime.Now;
+                logMessage.AppendLine($"{device.Name} is on maintenance from {lastConnection.StartDateUTC.ToShortDateString()} {lastConnection.StartDateUTC.ToShortTimeString()}");
+                logMessage.AppendLine($"Ends in {(int)timeLeft.TotalDays} days, {timeLeft.Hours} hours, {timeLeft.Minutes} minutes, {timeLeft.Seconds} seconds");
+            }
+
+            var log = new LogViewModel { Log = logMessage.ToString() };
+
+            return Ok(log);
         }
 
         [HttpPost]
@@ -133,12 +148,9 @@ namespace WebApi.Controllers
         public IActionResult GetAddDeviceFieldsData(int deviceId)
         {
             Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
-            //IEnumerable<DeviceField> deviceFields = this.unitOfWork.DeviceFieldRepository.GetDeviceFieldsByDeviceId(deviceId);
 
-            var fields = new List<DeviceFieldModel>();
-            foreach (var field in device.DeviceFields)
-            {
-                fields.Add(new DeviceFieldModel()
+            var fields = device.DeviceFields.Select(field =>
+                new DeviceFieldModel()
                 {
                     Id = field.Id,
                     FieldTypeId = field.Field.Id,
@@ -146,13 +158,13 @@ namespace WebApi.Controllers
                     Type = field.Field.Type,
                     Value = field.Value
                 });
-            }
 
             var response = new DeviceDetailsModel()
             {
                 Id = device.Id,
                 Name = device.Name,
                 Type = device.DeviceType.Name,
+                Location = device.Location.Name,
                 Fields = fields
             };
 

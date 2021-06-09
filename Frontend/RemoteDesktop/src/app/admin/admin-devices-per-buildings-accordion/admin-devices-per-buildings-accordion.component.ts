@@ -123,7 +123,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         sort: false
       },
       'addFields': {
-        'title': 'Add fields',
+        'title': 'Update fields',
         'type': 'custom',
         'width': '150px',
         'renderComponent': AddFieldsButtonEditorComponent,
@@ -187,7 +187,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDeviceTypesFilter();
-    this.settings.columns.type.editor.config.list = this.typeList;
+    this.settings.columns.type.editor.config.list = this.typeList.deviceTypes;
+    this.settings.columns.type.filter.config.list = this.typeList.deviceTypeFilters;
   }
 
   getDevices() {
@@ -234,7 +235,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
     const methodUrl = CONNECTION_PATH + '/DeviceType/GetDeviceTypesFilter';
     this.http.get<any>(methodUrl).subscribe(data => this.typeList = data);
     // this.typeList = subscriber;
-    this.settings.columns.type.editor.config.list = this.typeList;
+    this.settings.columns.type.editor.config.list = this.typeList.deviceTypes;
+    this.settings.columns.type.filter.config.list = this.typeList.deviceTypeFilters;
     this.settings = Object.assign({}, this.settings);
     return this.typeList;
   }

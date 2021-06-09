@@ -1,20 +1,20 @@
 <nb-card style="width: auto" class="profile-card">
   <nb-card-header>
     <div class="space space48">
-      <h5 class="heading10 text-basic">Create device type</h5>
+      <h5 class="heading10 text-basic"><span translate>Update</span> {{data.name}} <span translate>Fields</span></h5>
     </div>
   </nb-card-header>
   <nb-card-body>
-    <mat-label style="margin-right: 20px">Name:</mat-label>
+    <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
     <mat-label style="margin-right: 20px">{{data.name}}</mat-label>
     <ul>
-      <h3 style="margin-bottom: 20px ">Fields:</h3>
-        <li style="margin-left: 30px"  *ngFor="let field of data.fields; let i = index">
-            <mat-label style="margin-right: 20px">Name:</mat-label>
+      <h3 style="margin-bottom: 20px "><span translate>Fields</span>:</h3>
+        <li style="margin-left: 30px; margin-bottom: 20px "  *ngFor="let field of data.fields; let i = index">
+            <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
             <mat-label style="margin-right: 20px">{{field.name}}</mat-label>
-            <mat-label style="margin-right: 20px">Type:</mat-label>
+            <mat-label style="margin-right: 20px"><span translate>Type</span>:</mat-label>
             <mat-label style="margin-right: 20px">{{field.type}}</mat-label>
-            <mat-label style="margin-right: 20px">Value:</mat-label>
+            <mat-label style="margin-right: 20px"><span translate>Value</span>:</mat-label>
             <input nbInput class="user-name-profile size-xl-medium" type="text" [(ngModel)]="field.value">
         </li>
     </ul>

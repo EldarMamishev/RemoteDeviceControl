@@ -22,6 +22,7 @@ export class UsersTableComponent implements OnInit {
   emailTitle: string;
   lastNameTitle: string;
   firstNameTitle: string;
+  roleTitle: string;
   genderTitle: string;
   selectTitle: string;
   maleTitle: string;
@@ -42,6 +43,9 @@ export class UsersTableComponent implements OnInit {
   });
   lastNameSubscr = this.translate.get('LastName').subscribe((res: string) => {
     this.lastNameTitle = res;
+  });
+  roleSubscr = this.translate.get('Role').subscribe((res: string) => {
+    this.roleTitle = res;
   });
   emailSubscr = this.translate.get('Email').subscribe((res: string) => {
     this.emailTitle = res;
@@ -90,7 +94,7 @@ export class UsersTableComponent implements OnInit {
         'filter': true
       },
       'discriminator': {
-        'title': 'Role',
+        'title': this.roleTitle,
         'filter': true
       },
       'email': {

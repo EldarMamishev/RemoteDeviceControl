@@ -1,0 +1,45 @@
+<nb-card style="width: auto" class="profile-card">
+  <nb-card-header>
+    <div class="space space48">
+      <h5 class="heading10 text-basic"><span translate>Connect {{info.name}}</span></h5>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div>
+      <mat-label style="margin-right: 20px">Id:</mat-label>
+      <mat-label style="margin-right: 20px">{{info.id}}</mat-label>
+      <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
+      <mat-label style="margin-right: 20px">{{info.name}}</mat-label>
+      <mat-label style="margin-right: 20px"><span translate>Type</span>:</mat-label>
+      <mat-label style="margin-right: 20px">{{info.type}}</mat-label>
+      <mat-label style="margin-right: 20px"><span translate>Building</span>:</mat-label>
+      <mat-label style="margin-right: 20px">{{info.location}}</mat-label>
+      <ul>
+        <h3 style="margin-bottom: 20px "><span translate>Fields</span>:</h3>
+        <li style="margin-left: 30px; margin-bottom: 20px " *ngFor="let field of info.fields; let i = index">
+          <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
+          <mat-label style="margin-right: 20px">{{field.name}}</mat-label>
+          <mat-label style="margin-right: 20px"><span translate>Type</span>:</mat-label>
+          <mat-label style="margin-right: 20px">{{field.type}}</mat-label>
+          <mat-label style="margin-right: 20px"><span translate>Value</span>:</mat-label>
+          <mat-label class="user-name-profile size-xl-medium" type="text">{{field.value}}</mat-label>
+        </li>
+      </ul>
+    </div>
+    <h3 style="margin-bottom: 20px "><span translate>Maintenance</span>:</h3>
+    <mat-label style="margin-right: 20px"><span translate>Time</span>:</mat-label>
+    <input nbInput class="user-name-profile size-xl-medium" type="number" [(ngModel)]="data.time">
+    <mat-label style="margin-right: 20px"><span translate>Measure</span>:</mat-label>
+    <nb-select class="select size-xl-tiny" type="text" [(ngModel)]="data.timeIdentifier">
+      <nb-option [value]="0" translate>Seconds</nb-option>
+      <nb-option [value]="1" translate>Minutes</nb-option>
+      <nb-option [value]="2" translate>Hours</nb-option>
+    </nb-select>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="buttons_div">
+      <button nbButton [mat-dialog-close]="data" (click)="save()"  appearance="filled" status="success">Ok</button>
+      <button style="float: right;" nbButton (click)="onNoClick()" status="warning">Cancel</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -27,14 +27,11 @@ export class AddDeviceTypeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: string) {}
 
   ngOnInit(): void {
-    const field = new FieldModel();
-    field.name = 'test';
-    field.type = 'int';
     this.form = this.formBuilder.group({
       name: this.formBuilder.control('name'),
       fields: this.formBuilder.array([
         this.formBuilder.group({
-          name: this.formBuilder.control('First'),
+          name: this.formBuilder.control(''),
           type: this.formBuilder.control('int'),
           possibleValues: this.formBuilder.array([])
         })
@@ -51,7 +48,7 @@ export class AddDeviceTypeComponent implements OnInit {
   add() {
     this.formArray.push(
       this.formBuilder.group({
-        name: this.formBuilder.control('sectest'),
+        name: this.formBuilder.control(''),
         type: this.formBuilder.control('int'),
         possibleValues: this.formBuilder.array([])
       })

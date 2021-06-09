@@ -1,37 +1,27 @@
 <nb-card class="profile-card">
   <nb-card-header>
     <div class="space space48">
-      <h5 class="heading10 text-basic">Create device type</h5>
+      <h5 class="heading10 text-basic" translate>CreateDeviceType</h5>
     </div>
   </nb-card-header>
 
   <nb-card-body>
     <ul [formGroup]="form">
-      <mat-label style="margin-right: 20px">Name:</mat-label>
+      <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
       <input nbInput class="user-name-profile size-xl-medium"  type="text" formControlName="name">
-
-      <h3 style="margin-bottom: 20px ">Fields:</h3>
+      <h3 style="margin-bottom: 20px "><span translate>Fields</span>:</h3>
       <ng-container formArrayName="fields">
         <li style="margin-left: 30px"  *ngFor="let control of formArray.controls; let i = index">
           <ng-container [formGroupName]="i">
-            <mat-label style="margin-right: 20px">Name:</mat-label>
+            <mat-label style="margin-right: 20px"><span translate>Name</span>:</mat-label>
             <input nbInput class="user-name-profile size-xl-medium" type="text" formControlName="name">
-            <mat-label style="margin-right: 20px">Type:</mat-label>
+            <mat-label style="margin-right: 20px"><span translate>Type</span>:</mat-label>
             <nb-select class="select size-xl-tiny" type="text" formControlName="type">
-              <nb-option value="int" >Int</nb-option>
-              <nb-option value="string" >String</nb-option>
-              <nb-option value="bool" >Bool</nb-option>
-              <nb-option value="enum" >Enumeration</nb-option>
+              <nb-option value="int" translate>Int</nb-option>
+              <nb-option value="string" translate>String</nb-option>
+              <nb-option value="bool" translate>Bool</nb-option>
+              <nb-option value="enum" translate>Enumeration</nb-option>
             </nb-select>
-<!--            <ul style="width: 100%; margin: 20px;">-->
-<!--              <ng-container formArrayName="possibleValues">-->
-<!--                <li style="margin-left: 30px" *ngFor="let control of getVariants(i); let j = index">-->
-<!--                  <ng-container [formGroupName]="j">-->
-<!--                    <input nbInput class="user-name-profile size-xl-medium" type="text" formControlName="name">-->
-<!--                  </ng-container>-->
-<!--                </li>-->
-<!--              </ng-container>-->
-<!--            </ul>-->
           </ng-container>
         </li>
       </ng-container>

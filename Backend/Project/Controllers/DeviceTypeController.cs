@@ -102,17 +102,29 @@ namespace WebApi.Controllers
         {
             var deviceTypes = this.unitOfWork.DeviceTypeRepository.Get().ToList();
 
-            var result = new List<GridFilterModel>();
+            var deviceTypeModels = new List<GridFilterModel>();
+            var deviceTypeFilters = new List<GridFilterModel>();
 
             foreach (var deviceType in deviceTypes)
             {
-                result.Add(new GridFilterModel()
+                deviceTypeModels.Add(new GridFilterModel()
                 {
                     Value = deviceType.Id,
                     Title = deviceType.Name
                 });
+
+                deviceTypeFilters.Add(new GridFilterModel()
+                {
+                    Value = deviceType.Name,
+                    Title = deviceType.Name
+                });
             }
 
+            var result = new DeviceGridFilters()
+            {
+                DeviceTypeFilters = deviceTypeFilters,
+                DeviceTypes = deviceTypeModels
+            };
             return Ok(result);
         }
         

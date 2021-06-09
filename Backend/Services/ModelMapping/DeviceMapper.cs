@@ -31,6 +31,11 @@ namespace Services.ModelMapping
             {
                 Id = device.Id,
                 Name = device.Name,
+                //Type = new ValueNamePair<int?, string>()
+                //{
+                //    Value = device.DeviceTypeId,
+                //    Name = device.DeviceType?.Name
+                //},
                 Type = device.DeviceType?.Name,
                 LocationId = device.LocationId,
                 LocationName = $"{device.Location?.Country} - {device.Location?.City} - {device.Location?.Name}"

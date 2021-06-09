@@ -9,12 +9,14 @@ import {MissingTranslationHandler, TranslateLoader, TranslateModule} from "@ngx-
 import {HttpClient} from "@angular/common/http";
 import {MissingTranslationService} from "../missing-translation-service";
 import {HttpLoaderFactory} from "../app.module";
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [ProfileCardComponent, ProfileComponent],
-  imports: [
-    ProfileRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        ProfileRoutingModule,
+        SharedModule,
+        FormsModule
+    ]
 })
 export class ProfileModule { }

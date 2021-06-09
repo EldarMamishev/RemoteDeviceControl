@@ -50,17 +50,45 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateUser([FromBody]PersonWithIdRequest person)
+        public async Task<IActionResult> UpdateUser([FromBody]PersonWithIdRequest model)
         {
-            Person newPerson = this.unitOfWork.PersonRepository.GetById(person.id);
-            newPerson.FirstName = string.IsNullOrWhiteSpace(person.firstName) ? newPerson.FirstName : person.firstName;
-            newPerson.LastName = string.IsNullOrWhiteSpace(person.lastName) ? newPerson.LastName : person.lastName;
-            newPerson.UserName = string.IsNullOrWhiteSpace(person.userName) ? newPerson.UserName : person.userName;
-            newPerson.Email = string.IsNullOrWhiteSpace(person.email) ? newPerson.Email : person.email;
-            this.unitOfWork.PersonRepository.Update(newPerson);
+            Person person = this.unitOfWork.PersonRepository.GetById(model.Id);
+            person.FirstName = string.IsNullOrWhiteSpace(model.FirstName) ? person.FirstName : model.FirstName;
+            person.LastName = string.IsNullOrWhiteSpace(model.LastName) ? person.LastName : model.LastName;
+            person.UserName = string.IsNullOrWhiteSpace(model.UserName) ? person.UserName : model.UserName;
+            person.Email = string.IsNullOrWhiteSpace(model.Email) ? person.Email : model.Email;
+            person.PhoneNumber = string.IsNullOrWhiteSpace(model.Phone) ? person.PhoneNumber : model.Phone;
+            person.Address = string.IsNullOrWhiteSpace(model.Address) ? person.Address : model.Address;
+            person.City = string.IsNullOrWhiteSpace(model.City) ? person.City : model.City;
+            person.Country = string.IsNullOrWhiteSpace(model.Country) ? person.Country : model.Country;
+            person.Birthday = model.DateOfBirth ?? person.Birthday;
+
+            this.unitOfWork.PersonRepository.Update(person);
+
             await this.unitOfWork.Commit();
 
-            return Ok(person);
+            return Ok(model);
+        }
+
+        [HttpGet]
+        public ActionResult<PersonWithIdRequest> GetUserInfo(int userId)
+        {
+            Person person = this.unitOfWork.PersonRepository.GetById(userId);
+            var model = new PersonWithIdRequest
+            {
+                Id = person.Id,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                UserName = person.UserName,
+                Phone = person.PhoneNumber,
+                Email = person.Email,
+                Address = person.Address,
+                City = person.City,
+                Country = person.Country,
+                DateOfBirth = person.Birthday
+            };
+
+            return Ok(model);
         }
 
         [HttpPost]

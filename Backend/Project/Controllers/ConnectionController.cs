@@ -14,6 +14,9 @@ using Services.Facades.Base;
 using ViewModel.LogEntity;
 using WebApi.Controllers.Base;
 using System.Text;
+using System.Threading;
+using ViewModel.Field;
+using ViewModel.Device;
 
 namespace WebApi.Controllers
 {
@@ -36,7 +39,13 @@ namespace WebApi.Controllers
         {
             Person person = this.unitOfWork.PersonRepository.GetById(personId);
             Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
-            
+
+            if (device.Status == DeviceStatus.Maintenance)
+                return Ok(new LogViewModel()
+                {
+                    Log = "Device is on maintenance"
+                });
+
             LogEntity logEntity = new LogEntity()
             {
                 DeviceId = deviceId,
@@ -56,25 +65,87 @@ namespace WebApi.Controllers
             await this.unitOfWork.ConnectionRepository.Add(connectionEntity);
             await this.unitOfWork.Commit();
 
-            var stringBuilder = new StringBuilder();
+            var fields = device.DeviceFields.Select(field =>
+                new DeviceFieldModel()
+                {
+                    Id = field.Id,
+                    FieldTypeId = field.Field.Id,
+                    Name = field.Field.Name,
+                    Type = field.Field.Type,
+                    Value = field.Value
+                });
 
-            stringBuilder
-                .AppendLine($"Device \"{device.Name}\"")
-                .AppendLine($"Id: {device.Id} Name: {device.Name} Device type: {device.DeviceType.Name} Location: {device.Location.Name}")
-                .AppendLine($"Fields: ");
-
-            foreach (var field in device.DeviceFields)
+            var result = new DeviceDetailsModel()
             {
-                stringBuilder
-                    .AppendLine($"{field.Field.Name}: {field.Value}");
-            }
-
-            var result = new LogViewModel()
-            {
-                Log = stringBuilder.ToString()
+                Id = device.Id,
+                Name = device.Name,
+                Type = device.DeviceType.Name,
+                Location = device.Location.Name,
+                Fields = fields
             };
 
             return Ok(result);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> StartMaintenance([FromBody] ConnectionMaintenanceModel model)
+        {
+            Person person = this.unitOfWork.PersonRepository.GetById(model.PersonId);
+            Device device = this.unitOfWork.DeviceRepository.GetDeviceById(model.DeviceId);
+            int multiplier = model.TimeIdentifier == TimeIdentifiersEnum.Seconds ? 1 
+                : model.TimeIdentifier == TimeIdentifiersEnum.Minutes ? 60 
+                : 3600;
+
+            var connectionEntity = new Connection
+            {
+                DeviceId = model.DeviceId,
+                PersonId = model.PersonId,
+                StartDateUTC = DateTime.Now,
+                FinishDateUTC = DateTime.Now.AddSeconds((long)model.Time * multiplier)
+            };
+
+            var logEntity = new LogEntity()
+            {
+                DeviceId = model.DeviceId,
+                ActionTime = DateTime.Now,
+                Comments = $"Maintenance started by: Id={person?.Id} UserName={person?.UserName}{Environment.NewLine}" 
+                    + $"Start:{connectionEntity.StartDateUTC.ToShortDateString()} {connectionEntity.StartDateUTC.ToShortTimeString()}{Environment.NewLine}"
+                    + $"End:{connectionEntity.FinishDateUTC.ToShortDateString()} {connectionEntity.FinishDateUTC.ToShortTimeString()}"
+            };
+
+            device.Status = DeviceStatus.Maintenance;
+
+            if (device.Logs == null)
+                device.Logs = new List<LogEntity>();
+
+            device.Logs.Add(logEntity);
+
+            if (device.Connections == null)
+                device.Connections = new List<Connection>();
+
+            device.Connections.Add(connectionEntity);
+
+            this.unitOfWork.DeviceRepository.Update(device);
+            await this.unitOfWork.Commit();
+
+            var sleepTime = new TimeSpan(0, 0, multiplier * model.Time);
+
+            Thread.Sleep(sleepTime);
+
+            var connectionEndLog = new LogEntity()
+            {
+                DeviceId = model.DeviceId,
+                ActionTime = DateTime.Now,
+                Comments = $"Maintenance ended at: {connectionEntity.FinishDateUTC.ToShortDateString()} {connectionEntity.FinishDateUTC.ToShortTimeString()}"
+            };
+
+            device.Status = DeviceStatus.Available;
+            device.Logs.Add(connectionEndLog);
+
+            this.unitOfWork.DeviceRepository.Update(device);
+            await this.unitOfWork.Commit();
+
+            return Ok();
         }
 
         [HttpPost]

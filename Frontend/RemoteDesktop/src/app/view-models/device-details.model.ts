@@ -5,5 +5,6 @@ export class DeviceDetailsModel {
   id?: number;
   name: string;
   type: string;
+  location: string;
   fields: DeviceFieldModel[];
 }

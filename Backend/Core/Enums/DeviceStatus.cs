@@ -8,6 +8,7 @@ namespace Core.Enums
     {
         Available = 0,
         Waiting = 1,
-        Active = 2
+        Active = 2,
+        Maintenance = 3
     }
 }

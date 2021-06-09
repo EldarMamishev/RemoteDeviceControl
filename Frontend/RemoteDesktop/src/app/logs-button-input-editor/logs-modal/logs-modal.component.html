@@ -1,0 +1,19 @@
+<nb-card style="width: auto" class="profile-card">
+  <nb-card-header>
+    <div class="space space48">
+      <h5 class="heading10 text-basic" translate>Logs</h5>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <ul>
+      <li style="margin-left: 30px; margin-bottom: 20px "  *ngFor="let log of data.logs; let i = index">
+        <mat-label style="margin-right: 20px">{{log}}</mat-label>
+      </li>
+    </ul>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="buttons_div">
+      <button style="float: right;" nbButton [mat-dialog-close]="data" appearance="filled" status="success">Ok</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

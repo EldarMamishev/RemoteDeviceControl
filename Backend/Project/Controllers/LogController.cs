@@ -53,18 +53,18 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetLogsForDevice(int deviceId)
         {
-            string result;
+            var result = new LogListModel();
             var logs = this.unitOfWork.LogEntityRepository.GetLogsByDeviceId(deviceId);
             try
             {
-                result = this.mappersFacade.LogsMapper.MapStringFromLogs(logs);
+                result.Logs = logs.Select(x => x.Comments).ToList();
             }
             catch
             {
-                result = "No logs for current device";
+                return Ok("No logs for current device");
             }
 
-            return Ok(new LogViewModel { Log = result ?? string.Empty });
+            return Ok(result);
         }
 
     }

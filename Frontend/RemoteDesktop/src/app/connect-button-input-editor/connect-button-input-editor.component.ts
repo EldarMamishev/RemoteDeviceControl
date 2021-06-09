@@ -6,6 +6,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ConnectionViewmodel} from '../view-models/connection-viewmodel';
 import {LogViewModel} from '../view-models/log-viewmodel';
+import {DeviceDetailsComponent} from '../admin/admin-devices-per-buildings-accordion/device-details/device-details.component';
+import {ConnectionModalComponent} from './connection-modal/connection-modal.component';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 @Component({
@@ -33,15 +35,10 @@ export class ConnectButtonInputEditorComponent implements ViewCell, OnInit {
     if (this.rowData.name == null) {
       alert('Data is not set.');
     }
-    const methodUrl = CONNECTION_PATH + '/Connection/StartConnection';
-    let k;
-    const body = new ConnectionViewmodel();
-    let params = new HttpParams();
-    params = params.append('personId', localStorage.getItem('rdc_user'));
-    params = params.append('deviceId', this.rowData.id);
-    this.http.get<LogViewModel>(methodUrl, {params: params}).subscribe(data => {
-      console.log(k = data);
-      alert(data.log);
+
+    const dialogRef = this.dialog.open(ConnectionModalComponent, {
+      data: this.rowData.id,
+      width: 'auto'
     });
   }
 }

@@ -25,6 +25,10 @@ import { LIGHT_THEME, DARK_THEME } from './theme';
 import {MissingTranslationHandler, TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MissingTranslationService} from "./missing-translation-service";
+import { ConnectionModalComponent } from './connect-button-input-editor/connection-modal/connection-modal.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import { LogsModalComponent } from './logs-button-input-editor/logs-modal/logs-modal.component';
 
 const mediaBreakpoints: NbMediaBreakpoint[] = [
   {
@@ -55,7 +59,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConnectionModalComponent,
+    LogsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -69,10 +75,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingTranslationService },
+      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingTranslationService},
       useDefaultLang: false,
     }),
-    NbThemeModule.forRoot({ name: 'light' }, [LIGHT_THEME], mediaBreakpoints),
+    NbThemeModule.forRoot({name: 'light'}, [LIGHT_THEME], mediaBreakpoints),
     NbLayoutModule,
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
@@ -82,6 +88,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
     SharedModule,
     AppRoutingModule,
     NbButtonModule,
+    MatFormFieldModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

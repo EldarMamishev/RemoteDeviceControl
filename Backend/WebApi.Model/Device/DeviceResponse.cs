@@ -12,4 +12,10 @@ namespace ViewModel.Device
         public string LocationName { get; set; }
         public int? LocationId { get; set; }
     }
+
+    //public class ValueNamePair<TValue, TName>
+    //{
+    //    public TValue Value { get; set; }
+    //    public TName Name { get; set; }
+    //}
 }
