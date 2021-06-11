@@ -28,7 +28,7 @@
     </div>
     <h3 style="margin-bottom: 20px "><span translate>Maintenance</span>:</h3>
     <mat-label style="margin-right: 20px"><span translate>Time</span>:</mat-label>
-    <input nbInput class="user-name-profile size-xl-medium" type="number" [(ngModel)]="data.time">
+    <input nbInput class="user-name-profile size-xl-medium" type="number" [min]="0" [max]="60" [(ngModel)]="data.time">
     <mat-label style="margin-right: 20px"><span translate>Measure</span>:</mat-label>
     <nb-select class="select size-xl-tiny" type="text" [(ngModel)]="data.timeIdentifier">
       <nb-option [value]="0" translate>Seconds</nb-option>

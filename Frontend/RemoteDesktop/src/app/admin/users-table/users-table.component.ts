@@ -134,6 +134,7 @@ export class UsersTableComponent implements OnInit {
   constructor(
     private http: HttpClient, private translate: TranslateService
   ) {
+    this.getUsers();
   }
 
   onCreate() {

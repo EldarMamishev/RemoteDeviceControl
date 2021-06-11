@@ -120,6 +120,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         'width': '150px',
         'renderComponent': ConnectButtonInputEditorComponent,
         'filter': false,
+        'editable': false,
+        'addable': false,
         sort: false
       },
       'addFields': {
@@ -127,6 +129,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         'type': 'custom',
         'width': '150px',
         'renderComponent': AddFieldsButtonEditorComponent,
+        'editable': false,
+        'addable': false,
         'filter': false,
         sort: false
       },
@@ -136,6 +140,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         'type': 'custom',
         'width': '170px',
         'renderComponent': StateButtonInputEditorComponent,
+        'editable': false,
+        'addable': false,
         'filter': false,
         sort: false
       },
@@ -144,6 +150,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         'type': 'custom',
         'width': '130px',
         'renderComponent': LogsButtonInputEditorComponent,
+        'editable': false,
+        'addable': false,
         'filter': false,
         sort: false
       }
@@ -186,6 +194,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getDevices();
     this.getDeviceTypesFilter();
     this.settings.columns.type.editor.config.list = this.typeList.deviceTypes;
     this.settings.columns.type.filter.config.list = this.typeList.deviceTypeFilters;

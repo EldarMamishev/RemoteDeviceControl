@@ -33,7 +33,7 @@ namespace Services.ModelMapping
                 lastName = ((Person)person).LastName,
                 email = person.Email,
                 userName = person.UserName,
-                discriminator = person.GetType().Name
+                discriminator = person.GetType().Name.Replace("Proxy", string.Empty)
             };
 
             return result;

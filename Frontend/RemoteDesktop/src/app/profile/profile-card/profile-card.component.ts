@@ -6,6 +6,7 @@ import {CONNECTION_PATH} from '../../constants';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {DeviceFieldListModel} from '../../view-models/device-field-list.model';
 import {UserDetailsModel} from '../../view-models/user-details.model';
+import {NbDateService} from '@nebular/theme';
 
 const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 @Component({
@@ -16,13 +17,19 @@ const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json
 })
 export class ProfileCardComponent implements OnInit {
   data: UserDetailsModel;
+  maxDate: Date;
+
   constructor(
+    protected dateService: NbDateService<Date>,
     private http: HttpClient,
     private router: Router
-  ) { }
+  ) {
+    this.load();
+  }
 
   ngOnInit(): void {
     this.load();
+    this.maxDate = this.dateService.addYear(this.dateService.today(), -18);
   }
 
   load() {

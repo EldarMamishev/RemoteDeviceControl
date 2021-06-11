@@ -55,9 +55,9 @@
           <input nbInput class="address-profile size-xl-medium" placeholder="{{'Line1' | translate}}" type="text" shape="rectangle" status="basic" [(ngModel)]="data.address">
           <label class="text1111 text-basic label" translate>DoB</label>
 
-            <input [nbDatepicker]="datepicker2" nbInput class="birthday-profile size-xl-medium" placeholder="{{'EnterDate' | translate}}" shape="rectangle" status="basic"
+            <input [nbDatepicker]="datepicker2" nbInput class="birthday-profile size-xl-medium" placeholder="{{'EnterDate' | translate}}" shape="rectangle" status="basic" [value]="data.dateOfBirth" [defaultValue]="maxDate"
                    [(ngModel)]="data.dateOfBirth">
-            <nb-datepicker #datepicker2>
+            <nb-datepicker [max]="maxDate" [(date)]="data.dateOfBirth"  [(ngModel)]="data.dateOfBirth" #datepicker2>
             </nb-datepicker>
 
         </div>

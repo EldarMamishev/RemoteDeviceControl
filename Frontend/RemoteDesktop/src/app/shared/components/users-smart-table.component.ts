@@ -1,4 +1,4 @@
-﻿import { Component, Input, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+﻿import {Component, Input, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy, Output, EventEmitter, OnInit} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import {Person} from "../../view-models/people-viewmodel";
 import {CONNECTION_PATH} from "../../constants";
@@ -23,7 +23,7 @@ const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/js
 
 // (createConfirm)="onCreate($event)"
 
-export class UsersSmartTableComponent implements AfterViewInit {
+export class UsersSmartTableComponent implements AfterViewInit, OnInit {
 
   private _source = new LocalDataSource([]);
   get dataSource(): LocalDataSource {
@@ -45,6 +45,8 @@ export class UsersSmartTableComponent implements AfterViewInit {
   @Output() select = new EventEmitter<any>();
 
   constructor(private cd: ChangeDetectorRef, private http: HttpClient) {
+    this._source.refresh();
+
   }
 
   ngAfterViewInit() {
@@ -53,6 +55,13 @@ export class UsersSmartTableComponent implements AfterViewInit {
      * We need to trigger it manually for the correct first time render.
      */
     Promise.resolve().then(() => this.cd.detectChanges());
+    this._source.refresh();
+  }
+
+  ngOnInit() {
+    Promise.resolve().then(() => this.cd.detectChanges());
+    this.cd.detectChanges();
+    this._source.refresh();
   }
 
   // onCreate(value) {

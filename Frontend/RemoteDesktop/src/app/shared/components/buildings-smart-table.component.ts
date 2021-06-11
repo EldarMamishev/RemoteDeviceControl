@@ -59,6 +59,7 @@ export class BuildingsSmartTableComponent implements AfterViewInit {
      * We need to trigger it manually for the correct first time render.
      */
     Promise.resolve().then(() => this.cd.detectChanges());
+    this._source.refresh();
   }
 
   async onCreate(value) {

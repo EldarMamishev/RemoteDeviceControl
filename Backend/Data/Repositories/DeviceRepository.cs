@@ -17,7 +17,7 @@ namespace Data.Repositories
 
         public IDictionary<Location, List<Device>> GetAllDevicesPerLocations()
         {
-            return this.GetAsQuery().Include(d => d.Location).ToList().GroupBy(d => d.Location).ToDictionary(d => d.Key, d => d.ToList());
+            return this.GetAsQuery().Include(d => d.Location).ToList().OrderBy(x => x.LocationId).GroupBy(d => d.Location).ToDictionary(d => d.Key, d => d.ToList()).ToDictionary(x => x.Key, x => x.Value);
         }
 
         public Device GetDeviceById(int id)

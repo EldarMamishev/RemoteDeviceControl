@@ -2,6 +2,7 @@
 
   <nb-layout-header *ngIf="(layout$ | async)?.header" class="header">
     <img class="image7" src="/assets/images/home.svg" (click)="OnHomeClicked()">
+    <h1 style="margin-left: 2%;">Remote Desktop</h1>
     <div class="space space5">
       <nb-select [(selected)]="language" (selectedChange)="OnSelectedLanguageChanged()" class="localization size-xl-tiny" placeholder="Localization" status="primary">
           <nb-option value="ua" translate>Lang.Ukrainian</nb-option>

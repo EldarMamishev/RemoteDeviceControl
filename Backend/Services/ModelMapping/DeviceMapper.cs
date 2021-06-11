@@ -105,7 +105,7 @@ namespace Services.ModelMapping
             //    response.Add($"{n.Id}:{n.Name}", new List<DeviceResponse>());
             //}
 
-            return response.ToImmutableList();
+            return response.OrderBy(x => x.Key).ToImmutableList();
         }
     }
 }
