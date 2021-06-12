@@ -8,6 +8,7 @@ namespace ViewModel.Device
     public class DeviceDetailsModel
     {
         public int Id { get; set; }
+        public bool Busy { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Location { get; set; }

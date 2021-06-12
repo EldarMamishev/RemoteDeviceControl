@@ -126,9 +126,25 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateDevice([FromBody]DeviceWithIdRequest device)
         {
-            Device newDeviceEntity = this.unitOfWork.DeviceRepository.GetById(device.Id);
-            newDeviceEntity.Name = string.IsNullOrWhiteSpace(device.Name) ? newDeviceEntity.Name : device.Name;
-            this.unitOfWork.DeviceRepository.Update(newDeviceEntity);
+            Device deviceEntity = this.unitOfWork.DeviceRepository.GetDeviceById(device.Id);
+
+            bool valueChanged = !string.IsNullOrWhiteSpace(device.Name) && deviceEntity.Name != device.Name;
+
+            if (valueChanged)
+            {
+                var logEntity = new LogEntity()
+                {
+                    DeviceId = deviceEntity.Id,
+                    ActionTime = DateTime.Now,
+                    Comments = $"Id: {device.Id}     Device renamed:    Old value: {deviceEntity.Name}    New value: {device.Name}    At:{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"
+                };
+
+                deviceEntity.Logs.Add(logEntity);
+            }
+
+            deviceEntity.Name = valueChanged ? device.Name : deviceEntity.Name;            
+
+            this.unitOfWork.DeviceRepository.Update(deviceEntity);
             await this.unitOfWork.Commit();
 
             return Ok(device);
@@ -162,6 +178,7 @@ namespace WebApi.Controllers
             var response = new DeviceDetailsModel()
             {
                 Id = device.Id,
+                Busy = device.Status != DeviceStatus.Available,
                 Name = device.Name,
                 Type = device.DeviceType.Name,
                 Location = device.Location.Name,
@@ -176,19 +193,32 @@ namespace WebApi.Controllers
         {
             Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceFieldList.DeviceId);
 
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"Values changed at {DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}:");
+
             foreach (var field in deviceFieldList.Fields)
             {
                 device.DeviceFields.Where(x => x.Id == field.Id).ToList().ForEach(x =>
                 {
+                    bool valueChanged = x.Value != field.Value;
+
+                    if (valueChanged)
+                    {
+                        stringBuilder.AppendLine($"Field Name: {field.Name}     Old Value: {x.Value}    New Value: {field.Value}    ");
+                    }
+
                     x.Value = field.Value;
                 });
-                //device.DeviceFields.Add(new DeviceField()
-                //{
-                //    DeviceId = deviceFieldList.DeviceId,
-                //    FieldId = field.FieldTypeId,
-                //    Value = field.Value
-                //});
             }
+
+            var logEntity = new LogEntity()
+            {
+                DeviceId = device.Id,
+                ActionTime = DateTime.Now,
+                Comments = stringBuilder.ToString()
+            };
+
+            device.Logs.Add(logEntity);
 
             this.unitOfWork.DeviceRepository.Update(device);
             this.unitOfWork.Commit();

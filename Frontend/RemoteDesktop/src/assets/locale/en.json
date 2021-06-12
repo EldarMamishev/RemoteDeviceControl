@@ -46,7 +46,7 @@
   "Connect": "Connect",
   "Logs": "Logs",
   "State": "Current state",
-  "CheckState": "Check",
+  "CheckState": "Status",
   "EnterValue": "Enter value",
   "DevicesAmount": "Devices amount",
   "Overview": "Data overview",
@@ -60,7 +60,7 @@
   "Profile.Exit": "Exit",
   "Lock": "Lock",
   "Lift": "Lift",
-  "Submit": "Submit",
+  "Submit": "Reload",
   "Backup": "Backup",
   "AddLocation": "Add location",
   "UsersData": "Users data",
@@ -91,5 +91,6 @@
   "Dnipro": "Dnipro",
   "Lviv": "Lviv",
   "Mykolaiv": "Mykolaiv",
-  "Sumy": "Sumy"
+  "Sumy": "Sumy",
+  "NewLocationName": "Write new location's name."
 }

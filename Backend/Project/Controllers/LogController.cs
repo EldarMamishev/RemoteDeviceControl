@@ -66,6 +66,5 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
-
     }
 }

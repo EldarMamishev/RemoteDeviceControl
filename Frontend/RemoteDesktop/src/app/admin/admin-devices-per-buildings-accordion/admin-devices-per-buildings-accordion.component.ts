@@ -98,6 +98,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
       },
       'type': {
         'title': this.typeTitle,
+        'editable': false,
         'editor': {
           'type': 'list',
           'valuePrepareFunction': (cell, row) => row,
@@ -115,7 +116,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         }
       },
       'connect': {
-        'title': this.connectTitle,
+        'title': '',
         'type': 'custom',
         'width': '150px',
         'renderComponent': ConnectButtonInputEditorComponent,
@@ -125,7 +126,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         sort: false
       },
       'addFields': {
-        'title': 'Update fields',
+        'title': '',
         'type': 'custom',
         'width': '150px',
         'renderComponent': AddFieldsButtonEditorComponent,
@@ -135,8 +136,8 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         sort: false
       },
       'currentState': {
-        'title': this.stateTitle,
-        'value': this.stateTitle,
+        'title': '',
+        'value': '',
         'type': 'custom',
         'width': '170px',
         'renderComponent': StateButtonInputEditorComponent,
@@ -146,7 +147,7 @@ export class AdminDevicesPerBuildingsAccordionComponent implements OnInit {
         sort: false
       },
       'logs': {
-        'title': this.logsTitle,
+        'title': '',
         'type': 'custom',
         'width': '130px',
         'renderComponent': LogsButtonInputEditorComponent,

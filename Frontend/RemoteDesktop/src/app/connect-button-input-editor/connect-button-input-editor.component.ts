@@ -30,7 +30,7 @@ export class ConnectButtonInputEditorComponent implements ViewCell, OnInit {
     this.renderValue = this.value.toString().toUpperCase();
   }
 
-  onClick() {
+  async onClick() {
     this.save.emit(this.rowData);
     if (this.rowData.name == null) {
       alert('Data is not set.');

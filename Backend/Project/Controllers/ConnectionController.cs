@@ -40,18 +40,11 @@ namespace WebApi.Controllers
             Person person = this.unitOfWork.PersonRepository.GetById(personId);
             Device device = this.unitOfWork.DeviceRepository.GetDeviceById(deviceId);
 
-            if (device.Status == DeviceStatus.Maintenance)
-                return Ok(new LogViewModel()
-                {
-                    Log = "Device is on maintenance"
-                });
-
-            LogEntity logEntity = new LogEntity()
-            {
-                DeviceId = deviceId,
-                ActionTime = DateTime.Now,
-                Comments = $"Connection started by: Id={person?.Id} UserName={person?.UserName}{Environment.NewLine} At:{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}"
-            };
+            //if (device.Status == DeviceStatus.Maintenance)
+            //    return Ok(new LogViewModel()
+            //    {
+            //        Log = "Device is on maintenance"
+            //    });
 
             Connection connectionEntity = new Connection
             {
@@ -60,8 +53,6 @@ namespace WebApi.Controllers
                 StartDateUTC = DateTime.Now
             };
 
-            await this.unitOfWork.LogEntityRepository.Add(logEntity);
-            await this.unitOfWork.Commit();
             await this.unitOfWork.ConnectionRepository.Add(connectionEntity);
             await this.unitOfWork.Commit();
 
